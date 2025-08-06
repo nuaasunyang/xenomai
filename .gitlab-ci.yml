@@ -20,8 +20,8 @@ variables:
   KDIR: "/tmp/kernel"
   USE_CCACHE: "1"
   CCACHE_MAXSIZE: "1G"
-  IPIPE_URL: "https://source.denx.de/Xenomai"
-  DOVETAIL_URL: "https://source.denx.de/Xenomai/linux-dovetail.git"
+  IPIPE_URL: "https://gitlab.com/Xenomai/legacy"
+  DOVETAIL_URL: "https://gitlab.com/Xenomai/linux-dovetail.git"
   GCC_VERSION: "10"
   PACKAGES: "u-boot-tools git make bc bison libelf-dev autotools-dev \
              autoconf autogen libtool pkg-config ccache flex libssl-dev"
