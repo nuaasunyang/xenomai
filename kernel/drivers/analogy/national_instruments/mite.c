@@ -806,6 +806,7 @@ static void __exit mite_cleanup(void)
 }
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM driver for the NI Mite PCI interface chip");
 module_init(mite_init);
 module_exit(mite_cleanup);
 
