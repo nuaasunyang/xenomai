@@ -37,4 +37,4 @@ static void __exit zynq7000_gpio_exit(void)
 module_exit(zynq7000_gpio_exit);
 
 MODULE_LICENSE("GPL");
-
+MODULE_DESCRIPTION("RTDM gpio driver for the Zynq 7000 SoC");

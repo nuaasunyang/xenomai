@@ -34,4 +34,4 @@ static void __exit bcm2835_gpio_exit(void)
 module_exit(bcm2835_gpio_exit);
 
 MODULE_LICENSE("GPL");
-
+MODULE_DESCRIPTION("RTDM gpio driver for the Broadcom 2835 SoC");

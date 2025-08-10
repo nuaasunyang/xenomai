@@ -41,3 +41,4 @@ static void __exit omap_gpio_exit(void)
 module_exit(omap_gpio_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM gpio driver for the OMAP family of SOCs");

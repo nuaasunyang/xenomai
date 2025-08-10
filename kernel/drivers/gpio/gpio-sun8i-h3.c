@@ -41,3 +41,4 @@ static void __exit h3_gpio_exit(void)
 module_exit(h3_gpio_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM gpio driver for Allwinner's H3 SoC");

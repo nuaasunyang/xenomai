@@ -40,3 +40,4 @@ static void __exit cherryview_gpio_exit(void)
 module_exit(cherryview_gpio_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM gpio driver for Intel Cherryview pinctrl");
