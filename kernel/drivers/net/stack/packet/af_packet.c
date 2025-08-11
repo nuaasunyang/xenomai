@@ -31,6 +31,7 @@
 #include <stack_mgr.h>
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Real-time capable AF_PACKET implementation");
 
 /***
  *  rt_packet_rcv
