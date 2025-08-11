@@ -660,3 +660,4 @@ struct udd_device *udd_get_device(struct rtdm_fd *fd)
 EXPORT_SYMBOL_GPL(udd_get_device);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("User-space device driver framework");
