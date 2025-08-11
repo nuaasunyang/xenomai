@@ -34,6 +34,7 @@
 #include <rtcfg/rtcfg_proc.h>
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Real-Time Configuration Distribution Protocol");
 
 static int __init rtcfg_init(void)
 {
