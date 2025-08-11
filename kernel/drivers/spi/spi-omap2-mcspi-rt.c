@@ -1030,3 +1030,4 @@ static struct platform_driver omap2_mcspi_spi_driver = {
 module_platform_driver(omap2_mcspi_spi_driver);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM SPI driver for the OMAP2 family of SOCs");

@@ -462,3 +462,4 @@ void rtdm_spi_remove_master(struct rtdm_spi_master *master)
 EXPORT_SYMBOL_GPL(rtdm_spi_remove_master);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM SPI master/controller driver");
