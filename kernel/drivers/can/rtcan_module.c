@@ -38,6 +38,7 @@
 #include "corectl.h"
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RT-Socket-CAN, CAN raw socket interface");
 
 const char rtcan_rtdm_provider_name[] =
     "(C) 2006 RT-Socket-CAN Development Team";
