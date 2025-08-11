@@ -86,6 +86,7 @@ static struct hlist_head port_hash[RT_UDP_SOCKETS * 2];
 #define port_hash_mask (RT_UDP_SOCKETS * 2 - 1)
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Real-time capable UDP implementation");
 
 module_param(auto_port_start, uint, 0444);
 module_param(auto_port_mask, uint, 0444);

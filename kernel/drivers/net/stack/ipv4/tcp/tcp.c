@@ -187,6 +187,7 @@ struct rt_tcp_dispatched_packet_send_cmd {
  */
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Real-time capable TCP implementation");
 
 static struct {
 	struct rtdm_dev_context dummy;
