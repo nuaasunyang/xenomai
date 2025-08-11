@@ -35,6 +35,7 @@
 #include <rtnet_port.h> /* for netdev_priv() */
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Real-Time Capturing Interface");
 
 static unsigned int rtcap_rtskbs = 128;
 module_param(rtcap_rtskbs, uint, 0444);

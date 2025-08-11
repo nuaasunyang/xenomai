@@ -439,3 +439,4 @@ static void __exit rtnetproxy_cleanup_module(void)
 module_init(rtnetproxy_init_module);
 module_exit(rtnetproxy_cleanup_module);
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Driver to transport IP data from/to Linux kernel mode");
