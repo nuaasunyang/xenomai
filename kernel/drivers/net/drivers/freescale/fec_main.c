@@ -3699,3 +3699,4 @@ module_platform_driver(fec_driver);
 
 MODULE_ALIAS("platform:"DRIVER_NAME);
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM driver for the Motorola Fast Ethernet Controller (FEC) MPC8xx");
