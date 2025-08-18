@@ -717,3 +717,4 @@ static struct platform_driver bcm2835_spi_driver = {
 module_platform_driver(bcm2835_spi_driver);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM SPI driver for the Broadcom 2835 SoC");

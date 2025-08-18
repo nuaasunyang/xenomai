@@ -678,3 +678,4 @@ static struct platform_driver sun6i_spi_driver = {
 module_platform_driver(sun6i_spi_driver);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM SPI driver for Allwinner A31 controller");
