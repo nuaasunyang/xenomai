@@ -548,3 +548,4 @@ module_init(heapcheck_init);
 module_exit(heapcheck_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Cobalt heap test driver");
