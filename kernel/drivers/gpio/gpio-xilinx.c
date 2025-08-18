@@ -37,4 +37,4 @@ static void __exit xilinx_gpio_exit(void)
 module_exit(xilinx_gpio_exit);
 
 MODULE_LICENSE("GPL");
-
+MODULE_DESCRIPTION("RTDM gpio driver for Xilinx SoCs");

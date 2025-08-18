@@ -40,3 +40,4 @@ static void __exit mxc_gpio_exit(void)
 module_exit(mxc_gpio_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM gpio driver for the i.MX 6Quad and 7Dual SoCs");

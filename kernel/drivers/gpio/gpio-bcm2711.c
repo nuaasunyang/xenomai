@@ -24,3 +24,4 @@ static void __exit bcm2711_gpio_exit(void)
 module_exit(bcm2711_gpio_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM gpio driver for the Broadcom 2711 SoC");
