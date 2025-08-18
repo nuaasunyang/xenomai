@@ -1517,3 +1517,4 @@ module_init(eth1394_init);
 module_exit(eth1394_exit);
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTDM driver for Ethernet emulation over FireWire");
