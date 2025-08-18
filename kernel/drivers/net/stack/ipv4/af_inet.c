@@ -36,6 +36,7 @@
 #include <ipv4/route.h>
 
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Real-time capable IPv4 implementation");
 
 struct route_solicit_params {
 	struct rtnet_device *rtdev;
