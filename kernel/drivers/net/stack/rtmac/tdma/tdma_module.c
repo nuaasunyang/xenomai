@@ -316,3 +316,4 @@ module_exit(tdma_release);
 
 MODULE_AUTHOR("Jan Kiszka");
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTmac - TDMA");

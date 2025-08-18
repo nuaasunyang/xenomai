@@ -80,3 +80,4 @@ module_exit(rtmac_release);
 
 MODULE_AUTHOR("Marc Kleine-Budde, Jan Kiszka");
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTmac - real-time networking media access control subsystem");

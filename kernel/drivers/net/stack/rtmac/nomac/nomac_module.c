@@ -161,3 +161,4 @@ module_exit(nomac_release);
 
 MODULE_AUTHOR("Jan Kiszka");
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("RTmac - NoMAC");
