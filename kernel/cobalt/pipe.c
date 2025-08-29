@@ -48,7 +48,7 @@ static LIST_HEAD(xnpipe_sleepq);
 
 static LIST_HEAD(xnpipe_asyncq);
 
-static int xnpipe_wakeup_virq;
+static struct irq_work xnpipe_wakeup_work;
 
 static struct class *xnpipe_class;
 
@@ -147,7 +147,7 @@ static inline void xnpipe_dequeue_all(struct xnpipe_state *state, int mask)
 	__sigpending;							\
 })
 
-static irqreturn_t xnpipe_wakeup_proc(int sirq, void *dev_id)
+static void xnpipe_wakeup_proc(struct irq_work *work)
 {
 	struct xnpipe_state *state;
 	unsigned long rbits;
@@ -221,13 +221,11 @@ check_async:
 	}
 out:
 	xnlock_put_irqrestore(&nklock, s);
-
-	return IRQ_HANDLED;
 }
 
 static inline void xnpipe_schedule_request(void) /* hw IRQs off */
 {
-	pipeline_post_sirq(xnpipe_wakeup_virq);
+	irq_work_queue(&xnpipe_wakeup_work);
 }
 
 static inline ssize_t xnpipe_flush_bufq(void (*fn)(void *buf, void *xstate),
@@ -1149,6 +1147,8 @@ int xnpipe_mount(void)
 		state->nroutq = 0;
 	}
 
+	init_irq_work(&xnpipe_wakeup_work, xnpipe_wakeup_proc);
+
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(6,4,0)
 	xnpipe_class = class_create("rtpipe");
 #else
@@ -1180,21 +1180,12 @@ int xnpipe_mount(void)
 		return -EBUSY;
 	}
 
-	xnpipe_wakeup_virq = pipeline_create_inband_sirq(xnpipe_wakeup_proc);
-	if (xnpipe_wakeup_virq < 0) {
-		printk(XENO_ERR
-		       "unable to reserve synthetic IRQ for message pipes\n");
-		return xnpipe_wakeup_virq;
-	}
-
 	return 0;
 }
 
 void xnpipe_umount(void)
 {
 	int i;
-
-	pipeline_delete_inband_sirq(xnpipe_wakeup_virq);
 
 	unregister_chrdev(XNPIPE_DEV_MAJOR, "rtpipe");
 
