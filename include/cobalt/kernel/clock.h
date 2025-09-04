@@ -78,7 +78,7 @@ struct xnclock {
 #endif
 	} ops;
 	/* Private section. */
-	struct xntimerdata *timerdata;
+	struct xntimerdata __percpu *timerdata;
 	int id;
 #ifdef CONFIG_SMP
 	/** Possible CPU affinity of clock beat. */
