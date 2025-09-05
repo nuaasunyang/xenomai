@@ -555,8 +555,8 @@ static int test_attach(struct a4l_device *dev, a4l_lnkdesc_t *arg)
 {
 	typedef void (*setup_subd_function) (struct a4l_subdevice *subd);
 	struct fake_priv *priv = (struct fake_priv *) dev->priv;
+	struct ao_ai2_priv **priv_ptr;
 	struct a4l_subdevice *subd;
-	unsigned long tmp;
 	struct ai_priv *r;
 	int i, ret = 0;
 
@@ -632,8 +632,8 @@ static int test_attach(struct a4l_device *dev, a4l_lnkdesc_t *arg)
 	r->quanta_cnt = priv->quanta_cnt;
 
 	/* A0 and AI2 shared their private buffers */
-	tmp = (unsigned long) sds[AO_SUBD].subd->priv;
-	memcpy(sds[AI2_SUBD].subd->priv, &tmp, sds[AI2_SUBD].private_len) ;
+	priv_ptr = (struct ao_ai2_priv **)sds[AI2_SUBD].subd->priv;
+	*priv_ptr = (struct ao_ai2_priv *)sds[AO_SUBD].subd->priv;
 
 	/* create the task */
 	ret = rtdm_task_init(&priv->task, "Fake AI task", task_proc, dev,
