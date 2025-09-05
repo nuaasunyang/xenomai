@@ -997,7 +997,8 @@ static void speedo_resume(struct rtnet_device *rtdev)
 		ias_cmd->cmd_status = cpu_to_le32((CmdSuspend | CmdIASetup) | 0xa000);
 		ias_cmd->link =
 			cpu_to_le32(TX_RING_ELEM_DMA(sp, sp->cur_tx % TX_RING_SIZE));
-		memcpy(ias_cmd->params, rtdev->dev_addr, 6);
+		memcpy(((u8 *)ias_cmd) + offsetof(struct descriptor, params),
+		       rtdev->dev_addr, 6);
 		sp->last_cmd = ias_cmd;
 	}
 
@@ -1705,7 +1706,8 @@ static void set_rx_mode(struct rtnet_device *rtdev)
 		sp->tx_ring[entry].status = cpu_to_le32(CmdSuspend | CmdConfigure);
 		sp->tx_ring[entry].link =
 			cpu_to_le32(TX_RING_ELEM_DMA(sp, (entry + 1) % TX_RING_SIZE));
-		config_cmd_data = (void *)&sp->tx_ring[entry].tx_desc_addr;
+		config_cmd_data = ((u8 *)&sp->tx_ring[entry]) +
+			offsetof(struct TxFD, tx_desc_addr);
 		/* Construct a full CmdConfig frame. */
 		memcpy(config_cmd_data, i82558_config_cmd, CONFIG_DATA_SIZE);
 		config_cmd_data[1] = (txfifo << 4) | rxfifo;
