@@ -167,15 +167,19 @@ int rtcfg_send_stage_1(struct rtcfg_connection *conn)
 
 #if IS_ENABLED(CONFIG_XENO_DRIVERS_NET_RTIPV4)
 	if (stage_1_frm->addr_type == RTCFG_ADDR_IP) {
+		__u32 *ip_addr;
+
 		rtskb_put(rtskb, 2 * RTCFG_ADDRSIZE_IP);
 
-		memcpy(stage_1_frm->client_addr, &(conn->addr.ip_addr), 4);
+		ip_addr = (__u32 *)stage_1_frm->client_addr;
+		*ip_addr = conn->addr.ip_addr;
 
 		stage_1_frm =
 			(struct rtcfg_frm_stage_1_cfg *)(((u8 *)stage_1_frm) +
 							 RTCFG_ADDRSIZE_IP);
 
-		memcpy(stage_1_frm->server_addr, &(rtdev->local_ip), 4);
+		ip_addr = (__u32 *)stage_1_frm->server_addr;
+		*ip_addr = rtdev->local_ip;
 
 		stage_1_frm =
 			(struct rtcfg_frm_stage_1_cfg *)(((u8 *)stage_1_frm) +
@@ -326,9 +330,11 @@ int rtcfg_send_announce_new(int ifindex)
 
 #if IS_ENABLED(CONFIG_XENO_DRIVERS_NET_RTIPV4)
 	if (announce_new->addr_type == RTCFG_ADDR_IP) {
+		__u32 *ip_addr = (__u32 *)announce_new->addr;
+
 		rtskb_put(rtskb, RTCFG_ADDRSIZE_IP);
 
-		memcpy(announce_new->addr, &(rtdev->local_ip), 4);
+		*ip_addr = rtdev->local_ip;
 
 		announce_new =
 			(struct rtcfg_frm_announce *)(((u8 *)announce_new) +
@@ -381,9 +387,11 @@ int rtcfg_send_announce_reply(int ifindex, u8 *dest_mac_addr)
 
 #if IS_ENABLED(CONFIG_XENO_DRIVERS_NET_RTIPV4)
 	if (announce_rpl->addr_type == RTCFG_ADDR_IP) {
+		__u32 *ip_addr = (__u32 *)announce_rpl->addr;
+
 		rtskb_put(rtskb, RTCFG_ADDRSIZE_IP);
 
-		memcpy(announce_rpl->addr, &(rtdev->local_ip), 4);
+		*ip_addr = rtdev->local_ip;
 
 		announce_rpl =
 			(struct rtcfg_frm_announce *)(((u8 *)announce_rpl) +
@@ -498,10 +506,11 @@ int rtcfg_send_dead_station(struct rtcfg_connection *conn)
 
 #if IS_ENABLED(CONFIG_XENO_DRIVERS_NET_RTIPV4)
 	if (dead_station_frm->addr_type == RTCFG_ADDR_IP) {
+		__u32 *ip_addr = (__u32 *)dead_station_frm->logical_addr;
+
 		rtskb_put(rtskb, RTCFG_ADDRSIZE_IP);
 
-		memcpy(dead_station_frm->logical_addr, &(conn->addr.ip_addr),
-		       4);
+		*ip_addr = conn->addr.ip_addr;
 
 		dead_station_frm = (struct rtcfg_frm_dead_station
 					    *)(((u8 *)dead_station_frm) +
