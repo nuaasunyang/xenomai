@@ -266,9 +266,6 @@ static int dev_8255_attach(struct a4l_device *dev, a4l_lnkdesc_t *arg)
 			goto out_attach;
 		}
 
-		memset(subd, 0, sizeof(struct a4l_subdevice));
-		memset(subd->priv, 0, sizeof(subd_8255_t));
-
 		subd_8255 = (subd_8255_t *)subd->priv;
 
 		if(request_region(addrs[i], _8255_SIZE, "Analogy 8255") == 0) {
