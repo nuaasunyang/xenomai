@@ -17,7 +17,7 @@ static RT_SEM sem;
 
 static void background_task(void *arg)
 {
-	unsigned int safety = 100000000, count = 0;
+	RTIME start;
 	int ret;
 
 	traceobj_enter(&trobj);
@@ -29,10 +29,9 @@ static void background_task(void *arg)
 
 	traceobj_mark(&trobj, 2);
 
-	while (--safety > 0) {
+	start = rt_timer_read();
+	while (rt_timer_read() < start + 1000000000)
 		compiler_barrier();
-		count++;
-	}
 
 	traceobj_exit(&trobj);
 }
