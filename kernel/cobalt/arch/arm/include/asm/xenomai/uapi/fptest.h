@@ -20,7 +20,8 @@
 
 #define __COBALT_HAVE_VFP  0x1
 
-static inline void fp_regs_set(int features, unsigned int val)
+static inline void __attribute__ ((always_inline))
+fp_regs_set(int features, unsigned int val)
 {
 	unsigned long long e[16];
 	unsigned int i;
@@ -41,8 +42,9 @@ static inline void fp_regs_set(int features, unsigned int val)
 	}
 }
 
-static inline unsigned int fp_regs_check(int features, unsigned int val,
-					 int (*report)(const char *fmt, ...))
+static inline unsigned int __attribute__ ((always_inline))
+fp_regs_check(int features, unsigned int val,
+	      int (*report)(const char *fmt, ...))
 {
 	unsigned int result = val, i;
 	unsigned long long e[16];
