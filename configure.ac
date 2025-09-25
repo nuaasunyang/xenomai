@@ -937,6 +937,7 @@ if test $rtcore_type = cobalt; then
    XENO_COBALT_CFLAGS="$XENO_USER_CFLAGS"
    case "$build_for" in
     i*86*-*) XENO_COBALT_CFLAGS="$XENO_COBALT_CFLAGS -fno-omit-frame-pointer";;
+    arm*-*) XENO_COBALT_CFLAGS="$XENO_COBALT_CFLAGS -marm";;
     esac
 
 dnl Build wrapping information. XENO_POSIX_WRAPPERS lists all wrapping
