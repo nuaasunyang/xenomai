@@ -37,8 +37,8 @@
 #include <getopt.h>
 #include <asm/unistd.h>
 #include <asm/xenomai/features.h>
-#include <asm/xenomai/syscall.h>
 #include <asm/xenomai/uapi/fptest.h>
+#include <cobalt/uapi/asm-generic/syscall.h>
 #include <cobalt/trace.h>
 #include <rtdm/testing.h>
 #include <sys/cobalt.h>
