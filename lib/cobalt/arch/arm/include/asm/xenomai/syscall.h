@@ -29,6 +29,10 @@
 #error "ARM OABI support has been removed with Xenomai 3.3.x"
 #endif
 
+#ifdef __thumb__
+#error "Xenomai syscalls cannot be issued in Thumb mode"
+#endif
+
 /*
  * Some of the following macros have been adapted from Linux's
  * implementation of the syscall mechanism in <asm-arm/unistd.h>:
@@ -54,8 +58,8 @@
 	LOADARGS_4(syscode, arg1, arg2, arg3, arg4);		\
 	__a4 = (unsigned long) (arg5)
 
-#define CLOBBER_REGS_0
-#define CLOBBER_REGS_1 "r0"
+#define CLOBBER_REGS_0 "r7"
+#define CLOBBER_REGS_1 CLOBBER_REGS_0, "r0"
 #define CLOBBER_REGS_2 CLOBBER_REGS_1, "r1"
 #define CLOBBER_REGS_3 CLOBBER_REGS_2, "r2"
 #define CLOBBER_REGS_4 CLOBBER_REGS_3, "r3"
@@ -69,7 +73,8 @@
 #define LOADREGS_5 LOADREGS_4; __r4 = __a4
 
 #define ASM_INDECL_0							\
-	register unsigned long __r0  __asm__ ("r0");
+	register unsigned long __r0  __asm__ ("r0");			\
+	register unsigned long __r7  __asm__ ("r7");
 #define ASM_INDECL_1 ASM_INDECL_0;					\
 	unsigned long __a0;
 #define ASM_INDECL_2 ASM_INDECL_1;					\
@@ -91,15 +96,15 @@
 #define XENOMAI_DO_SYSCALL(nr, op, args...)				\
 	({								\
 		ASM_INDECL_##nr;					\
-		unsigned long __r7 = __xn_syscode(op);			\
 		LOADARGS_##nr(__xn_syscode(op), args);			\
 		__asm__ __volatile__ ("" : /* */ : /* */ :		\
 				      CLOBBER_REGS_##nr);		\
 		LOADREGS_##nr;						\
+		__r7 = __xn_syscode(op);				\
 		__asm__ __volatile__ (					\
-			"push {r7}; mov %%r7,%[__r7]; swi\t0; pop {r7}"	\
+			"swi 0"						\
 			: "=r" (__r0)					\
-			: ASM_INPUT_##nr, [__r7] "r" (__r7)		\
+			: ASM_INPUT_##nr, "r" (__r7)			\
 			: "memory");					\
 		(int) __r0;						\
 	})
