@@ -52,13 +52,12 @@ static inline void xndebug_shadow_init(struct xnthread *thread)
 #endif  /* !XENO_OPT_DEBUG */
 
 #ifdef CONFIG_XENO_OPT_DEBUG_TRACE_RELAX
-void xndebug_notify_relax(struct xnthread *thread,
-			  int reason);
+void xndebug_notify_relax(int reason);
 void xndebug_trace_relax(int nr, unsigned long *backtrace,
 			 int reason);
 #else
 static inline
-void xndebug_notify_relax(struct xnthread *thread, int reason)
+void xndebug_notify_relax(int reason)
 {
 }
 static inline

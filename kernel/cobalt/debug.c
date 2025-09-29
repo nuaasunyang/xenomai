@@ -196,10 +196,15 @@ DEFINE_PRIVATE_XNLOCK(relax_lock);
  * executable mappings that could be involved).
  */
 
-void xndebug_notify_relax(struct xnthread *thread, int reason)
+void xndebug_notify_relax(int reason)
 {
-	xnthread_signal(thread, SIGSHADOW,
-			  sigshadow_int(SIGSHADOW_ACTION_BACKTRACE, reason));
+	kernel_siginfo_t si;
+
+	memset(&si, 0, sizeof(si));
+	si.si_signo = SIGSHADOW;
+	si.si_code = SI_QUEUE;
+	si.si_int = sigshadow_int(SIGSHADOW_ACTION_BACKTRACE, reason);
+	send_sig_info(SIGSHADOW, &si, current);
 }
 
 void xndebug_trace_relax(int nr, unsigned long *backtrace,

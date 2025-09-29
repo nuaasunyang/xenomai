@@ -2116,7 +2116,7 @@ void xnthread_relax(int notify, int reason)
 	if (xnthread_test_state(thread, XNUSER) && notify) {
 		if (xnthread_test_state(thread, XNWARN)) {
 			/* Help debugging spurious relaxes. */
-			xndebug_notify_relax(thread, reason);
+			xndebug_notify_relax(reason);
 			memset(&si, 0, sizeof(si));
 			si.si_signo = SIGDEBUG;
 			si.si_code = SI_QUEUE;
