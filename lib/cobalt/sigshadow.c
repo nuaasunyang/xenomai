@@ -18,6 +18,7 @@
 
 #include <pthread.h>
 #include <signal.h>
+#include <asm/xenomai/debug.h>
 #include <asm/xenomai/syscall.h>
 #include "internal.h"
 
@@ -43,7 +44,7 @@ static bool past_constructors;
 int cobalt_sigshadow_handler(int sig, siginfo_t *si, void *ctxt)
 {
 	void *frames[SIGSHADOW_BACKTRACE_DEPTH];
-	int action, arg, nr, skip;
+	int action, reason, nr, skip;
 
 	if (si->si_code != SI_QUEUE)
 		return 0;
@@ -55,11 +56,14 @@ int cobalt_sigshadow_handler(int sig, siginfo_t *si, void *ctxt)
 		XENOMAI_SYSCALL1(sc_cobalt_migrate, COBALT_PRIMARY);
 		break;
 	case SIGSHADOW_ACTION_BACKTRACE:
-		arg = sigshadow_arg(si->si_int);
-		nr = backtrace(frames, ARRAY_SIZE(frames));
+		reason = sigshadow_arg(si->si_int);
+		nr = 0;
+		if (!cobalt_avoid_backtrace(reason))
+			nr = backtrace(frames, ARRAY_SIZE(frames));
 		/* Skip the sighandler context. */
 		skip = nr > 3 ? 3 : 0;
-		XENOMAI_SYSCALL3(sc_cobalt_backtrace, nr - skip, frames + skip, arg);
+		XENOMAI_SYSCALL3(sc_cobalt_backtrace, nr - skip, frames + skip,
+				 reason);
 		break;
 	case SIGSHADOW_ACTION_HOME:
 		/*
