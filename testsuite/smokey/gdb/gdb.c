@@ -1,7 +1,7 @@
 /*
  * gdb test.
  *
- * Copyright (C) Siemens AG, 2015-2019
+ * Copyright (C) Siemens AG, 2015-2025
  *
  * Authors.
  *  Jan Kiszka <jan.kiszka@siemens.com>
@@ -107,6 +107,20 @@ static void send_command(const char *string, int wait_for_prompt)
 		wait_for_pattern("(gdb) ");
 }
 
+static char *read_remaining_output(void)
+{
+	static char buf[64];
+	ssize_t ret;
+
+	ret = read(pipe_out[0], buf, sizeof(buf));
+	if (ret <= 0)
+		return NULL;
+
+	buf[ret - 1] = 0;
+
+	return buf;
+}
+
 static void check_output(const char *fn, int line, const char *expression,
 			 const char *pattern)
 {
@@ -118,9 +132,11 @@ static void check_output(const char *fn, int line, const char *expression,
 		if (*match != read_string[pos]) {
 			rt_print_flush_buffers();
 			read_string[pos + 1] = 0;
-			fprintf(stderr, "FAILURE %s:%d: checking expression "
-				"\"%s\", expected \"%s\", found \"%s\"\n",
-				fn, line, expression, pattern, read_string);
+			fprintf(stderr,
+				"FAILURE %s:%d: checking expression "
+				"\"%s\", expected \"%s\", found \"%s\", remaining \"%s\"\n",
+				fn, line, expression, pattern, read_string,
+				read_remaining_output());
 			send_command("q\n", 0);
 			exit(EXIT_FAILURE);
 		}
