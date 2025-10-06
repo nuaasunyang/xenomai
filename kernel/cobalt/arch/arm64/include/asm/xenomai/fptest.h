@@ -7,19 +7,22 @@
 #ifndef _COBALT_ARM64_FPTEST_H
 #define _COBALT_ARM64_FPTEST_H
 
-#include <linux/errno.h>
 #include <asm/xenomai/uapi/fptest.h>
 #include <asm/hwcap.h>
+#include <asm/neon.h>
 
 #define have_fp (ELF_HWCAP & HWCAP_FP)
 
 static inline int fp_linux_begin(void)
 {
-	return -ENOSYS;
+	kernel_neon_begin();
+
+	return 0;
 }
 
 static inline void fp_linux_end(void)
 {
+	kernel_neon_end();
 }
 
 static inline int fp_detect(void)
