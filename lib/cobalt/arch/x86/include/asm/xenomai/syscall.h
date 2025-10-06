@@ -41,50 +41,13 @@
 /* The one that cannot fail. */
 #define DOSYSCALLSAFE  "int $0x80\n\t"
 
-asm (".L__X'%ebx = 1\n\t"
-     ".L__X'%ecx = 2\n\t"
-     ".L__X'%edx = 2\n\t"
-     ".L__X'%eax = 3\n\t"
-     ".L__X'%esi = 3\n\t"
-     ".L__X'%edi = 3\n\t"
-     ".L__X'%ebp = 3\n\t"
-     ".L__X'%esp = 3\n\t"
-     ".macro bpushl name reg\n\t"
-     ".if 1 - \\name\n\t"
-     ".if 2 - \\name\n\t"
-     "pushl %ebx\n\t"
-     ".else\n\t"
-     "xchgl \\reg, %ebx\n\t"
-     ".endif\n\t"
-     ".endif\n\t"
-     ".endm\n\t"
-     ".macro bpopl name reg\n\t"
-     ".if 1 - \\name\n\t"
-     ".if 2 - \\name\n\t"
-     "popl %ebx\n\t"
-     ".else\n\t"
-     "xchgl \\reg, %ebx\n\t"
-     ".endif\n\t"
-     ".endif\n\t"
-     ".endm\n\t"
-     ".macro bmovl name reg\n\t"
-     ".if 1 - \\name\n\t"
-     ".if 2 - \\name\n\t"
-     "movl \\reg, %ebx\n\t"
-     ".endif\n\t"
-     ".endif\n\t"
-     ".endm\n\t");
-
 #define XENOMAI_DO_SYSCALL(nr, op, args...)			\
 ({								\
 	unsigned __resultvar;					\
 	asm volatile (						\
-		LOADARGS_##nr					\
-		"movl %1, %%eax\n\t"				\
 		DOSYSCALL					\
-		RESTOREARGS_##nr				\
 		: "=a" (__resultvar)				\
-		: "g" (__xn_syscode(op)) ASMFMT_##nr(args)	\
+		: "a" (__xn_syscode(op)) ASMFMT_##nr(args)	\
 		: "memory", "cc");				\
 	(int) __resultvar;					\
 })
@@ -93,44 +56,24 @@ asm (".L__X'%ebx = 1\n\t"
 ({								\
 	unsigned __resultvar;					\
 	asm volatile (						\
-		LOADARGS_##nr					\
-		"movl %1, %%eax\n\t"				\
 		DOSYSCALLSAFE					\
-		RESTOREARGS_##nr				\
 		: "=a" (__resultvar)				\
-		: "g" (__xn_syscode(op)) ASMFMT_##nr(args)	\
+		: "a" (__xn_syscode(op)) ASMFMT_##nr(args)	\
 		: "memory", "cc");				\
 	(int) __resultvar;					\
 })
 
-#define LOADARGS_0
-#define LOADARGS_1 \
-	"bpushl .L__X'%k2, %k2\n\t" \
-	"bmovl .L__X'%k2, %k2\n\t"
-#define LOADARGS_2	LOADARGS_1
-#define LOADARGS_3	LOADARGS_1
-#define LOADARGS_4	LOADARGS_1
-#define LOADARGS_5	LOADARGS_1
-
-#define RESTOREARGS_0
-#define RESTOREARGS_1 \
-	"bpopl .L__X'%k2, %k2\n\t"
-#define RESTOREARGS_2	RESTOREARGS_1
-#define RESTOREARGS_3	RESTOREARGS_1
-#define RESTOREARGS_4	RESTOREARGS_1
-#define RESTOREARGS_5	RESTOREARGS_1
-
 #define ASMFMT_0()
 #define ASMFMT_1(arg1) \
-	, "acdSD" (arg1)
+	ASMFMT_0(), "b" (arg1)
 #define ASMFMT_2(arg1, arg2) \
-	, "adSD" (arg1), "c" (arg2)
+	ASMFMT_1(arg1), "c" (arg2)
 #define ASMFMT_3(arg1, arg2, arg3) \
-	, "aSD" (arg1), "c" (arg2), "d" (arg3)
+	ASMFMT_2(arg1, arg2), "d" (arg3)
 #define ASMFMT_4(arg1, arg2, arg3, arg4) \
-	, "aD" (arg1), "c" (arg2), "d" (arg3), "S" (arg4)
+	ASMFMT_3(arg1, arg2, arg3), "S" (arg4)
 #define ASMFMT_5(arg1, arg2, arg3, arg4, arg5) \
-	, "a" (arg1), "c" (arg2), "d" (arg3), "S" (arg4), "D" (arg5)
+	ASMFMT_4(arg1, arg2, arg3, arg4), "D" (arg5)
 
 #define XENOMAI_SYSBIND(breq) \
 	XENOMAI_DO_SYSCALL_SAFE(1, sc_cobalt_bind, breq)
