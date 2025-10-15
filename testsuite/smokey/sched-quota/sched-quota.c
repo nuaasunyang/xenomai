@@ -17,6 +17,7 @@
 #include <sys/cobalt.h>
 #include <boilerplate/time.h>
 #include <boilerplate/ancillaries.h>
+#include <copperplate/threadobj.h>
 #include <smokey/smokey.h>
 
 smokey_test_plugin(sched_quota,
@@ -63,6 +64,7 @@ static volatile int throttle;
 static unsigned long __attribute__(( noinline ))
 __do_work(unsigned long count)
 {
+	threadobj_spin(1000);
 	return count + 1;
 }
 
