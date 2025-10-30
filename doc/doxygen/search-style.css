@@ -1,0 +1,24 @@
+#MSearchSelect {
+    font-size: 1.2em !important;
+}
+
+#MSearchBox {
+    height: 1.4em !important;
+}
+
+#MSearchField {
+    font-size: 1.2em !important;
+    width: 14em !important;
+}
+
+#MSearchSelectWindow {
+    font-size: 1.2em !important;
+}
+
+.SelectItem {
+    font: 1.2em var(--font-family-search) !important;
+}
+
+.SRPage .SREntry {
+    font-size: 1.2em !important;
+}
