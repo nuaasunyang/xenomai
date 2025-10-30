@@ -153,11 +153,13 @@ MAKEINDEX_CMD_NAME     = makeindex
 
 COMPACT_LATEX          = NO
 
-# The PAPER_TYPE tag can be used to set the paper type that is used
-# by the printer. Possible values are: a4, a4wide, letter, legal and
-# executive. If left blank a4wide will be used.
+# The PAPER_TYPE tag can be used to set the paper type that is used by the
+# printer. Possible values are: a4 (210 x 297 mm), letter (8.5 x 11 inches),
+# legal (8.5 x 14 inches) and executive (7.25 x 10.5 inches).
+# The default value is: a4.
+# This tag requires that the tag GENERATE_LATEX is set to YES.
 
-PAPER_TYPE             = a4wide
+PAPER_TYPE             = a4
 
 # The EXTRA_PACKAGES tag can be to specify one or more names of LaTeX
 # packages that should be included in the LaTeX output.
