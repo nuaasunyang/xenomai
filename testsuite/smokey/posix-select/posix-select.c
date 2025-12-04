@@ -99,7 +99,7 @@ static void *mq_thread(void *cookie)
 	return NULL;
 }
 
-static int run_posix_select(struct smokey_test *t, int argc, char *const argv[])
+static int test_posix_select_with_mq(void)
 {
 	struct mq_attr qa;
 	pthread_t tcb;
@@ -139,6 +139,17 @@ out:
 	pthread_join(tcb, NULL);
 
 	mq_unlink("/select_test_mq");
+
+	return ret;
+}
+
+static int run_posix_select(struct smokey_test *t, int argc, char *const argv[])
+{
+	int ret;
+
+	ret = test_posix_select_with_mq();
+	if (ret)
+		return ret;
 
 	return ret;
 }
