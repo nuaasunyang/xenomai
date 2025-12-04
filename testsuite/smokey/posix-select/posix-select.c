@@ -143,11 +143,39 @@ out:
 	return ret;
 }
 
+static int test_select_timeout(void)
+{
+	struct timeval tv;
+	int ret;
+
+	/* Invalid timeval, usec too big, normalization to 1 sec, 1 usec */
+	tv.tv_sec = 0;
+	tv.tv_usec = 1000 * 1000 + 1;
+
+	/* y2038 speciality ahead:
+	 * select() services provided by Linux and Cobalt both normalize the
+	 * timeout value before using it. pselect() services do not do that.
+	 *
+	 * As the select() service of libcobalt is routed to the pselect() of
+	 * Cobalt we have to do the normalization in userspace. The test below
+	 * is exactly stressing that case.
+	 */
+	ret = select(0, NULL, NULL, NULL, &tv);
+	if (!smokey_assert(ret == 0))
+		return ret;
+
+	return 0;
+}
+
 static int run_posix_select(struct smokey_test *t, int argc, char *const argv[])
 {
 	int ret;
 
 	ret = test_posix_select_with_mq();
+	if (ret)
+		return ret;
+
+	ret = test_select_timeout();
 	if (ret)
 		return ret;
 
