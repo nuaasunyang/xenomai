@@ -57,6 +57,11 @@ static inline int do_select(int __nfds, fd_set *__restrict __readfds,
 
 	pthread_setcanceltype(oldtype, NULL);
 
+	if (__timeout) {
+		__timeout->tv_sec = to.tv_sec;
+		__timeout->tv_usec = to.tv_nsec / 1000;
+	}
+
 	if (err == -EADV || err == -EPERM || err == -ENOSYS)
 		err = __STD(__select64(__nfds, __readfds, __writefds,
 				       __exceptfds, __timeout));
