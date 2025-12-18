@@ -22,6 +22,10 @@
 #include <asm/xenomai/syscall.h>
 
 #if __USE_TIME_BITS64 && __TIMESIZE == 32
+
+#define USEC_PER_SEC	1000000L
+#define NSEC_PER_USEC	1000L
+
 /*
  * The time64 wrapper for select() is a little different:
  * There is no y2038 safe syscall for select() itself, but we have pselect()
@@ -36,8 +40,10 @@ static inline int do_select(int __nfds, fd_set *__restrict __readfds,
 	int err, oldtype;
 
 	if (__timeout) {
-		to.tv_sec = __timeout->tv_sec;
-		to.tv_nsec = __timeout->tv_usec * 1000;
+		to.tv_sec =
+			__timeout->tv_sec + (__timeout->tv_usec / USEC_PER_SEC);
+		to.tv_nsec =
+			(__timeout->tv_usec % USEC_PER_SEC) * NSEC_PER_USEC;
 	}
 
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
