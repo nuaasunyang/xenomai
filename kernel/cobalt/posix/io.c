@@ -387,7 +387,7 @@ COBALT_SYSCALL(select, primary,
 	ret = __cobalt_select(nfds, u_rfds, u_wfds, u_xfds, to, false);
 
 	if (u_tv) {
-		tv = cobalt_timespec64_to_timeval(to);
+		cobalt_timespec64_to_timeval(&tv, to);
 		/*
 		 * Writing to u_tv might fail. We ignore a possible error here
 		 * to report back the number of changed fds (or the error).

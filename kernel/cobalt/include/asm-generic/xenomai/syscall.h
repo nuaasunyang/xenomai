@@ -147,15 +147,11 @@ cobalt_timeval_to_timespec64(struct timespec64 *ts,
 	ts->tv_nsec = (src->tv_usec % USEC_PER_SEC) * NSEC_PER_USEC;
 }
 
-static inline struct __kernel_old_timeval
-cobalt_timespec64_to_timeval(const struct timespec64 *src)
+static inline void cobalt_timespec64_to_timeval(struct __kernel_old_timeval *tv,
+						const struct timespec64 *src)
 {
-	struct __kernel_old_timeval tv;
-
-	tv.tv_sec = src->tv_sec + (src->tv_nsec / NSEC_PER_SEC);
-	tv.tv_usec = (src->tv_nsec % NSEC_PER_SEC) / NSEC_PER_USEC;
-
-	return tv;
+	tv->tv_sec = src->tv_sec + (src->tv_nsec / NSEC_PER_SEC);
+	tv->tv_usec = (src->tv_nsec % NSEC_PER_SEC) / NSEC_PER_USEC;
 }
 
 /* 32bit syscall emulation */
