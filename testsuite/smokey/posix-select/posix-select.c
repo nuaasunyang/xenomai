@@ -143,11 +143,63 @@ out:
 	return ret;
 }
 
+static int test_select_timeout(void)
+{
+	unsigned long diff_in_nsec;
+	struct timespec ts1, ts2;
+	struct timeval tv;
+	int ret;
+
+	/* Invalid timeval, usec too big, normalization to 1 sec, 1 usec */
+	tv.tv_sec = 0;
+	tv.tv_usec = 1000 * 1000 + 1;
+
+	ret = smokey_check_errno(clock_gettime(CLOCK_MONOTONIC, &ts1));
+	if (ret)
+		return ret;
+
+	/*
+	 * y2038 speciality ahead:
+	 * select() services provided by Linux and Cobalt both normalize the
+	 * timeout value before using it. pselect() services do not do that.
+	 *
+	 * As the select() service of libcobalt is routed to the pselect() of
+	 * Cobalt we have to do the normalization in userspace. The test below
+	 * is exactly stressing that case.
+	 */
+	ret = select(0, NULL, NULL, NULL, &tv);
+	if (!smokey_assert(ret == 0))
+		return ret;
+
+	ret = smokey_check_errno(clock_gettime(CLOCK_MONOTONIC, &ts2));
+	if (ret)
+		return ret;
+
+	/*
+	 * Check that the writeback happened as expected. This makes also sure
+	 * that the normalization took place.
+	 */
+	smokey_assert(tv.tv_sec == 1);
+	smokey_assert(tv.tv_usec == 1);
+
+	diff_in_nsec = (ts2.tv_sec * 1000 * 1000 * 1000) + ts2.tv_nsec;
+	diff_in_nsec -= (ts1.tv_sec * 1000 * 1000 * 1000) + ts1.tv_nsec;
+
+	/* Check that at least 1sec has passed */
+	smokey_assert(diff_in_nsec > 1 * 1000 * 1000 * 1000); // 1sec
+
+	return 0;
+}
+
 static int run_posix_select(struct smokey_test *t, int argc, char *const argv[])
 {
 	int ret;
 
 	ret = test_posix_select_with_mq();
+	if (ret)
+		return ret;
+
+	ret = test_select_timeout();
 	if (ret)
 		return ret;
 
