@@ -519,7 +519,7 @@ COBALT_SYSCALL32emu(select, primary,
 		return -EFAULT;
 
 	if (u_tv) {
-		ts64 = cobalt_timeval_to_timespec64(&tv);
+		cobalt_timeval_to_timespec64(&ts64, &tv);
 		to = &ts64;
 	}
 
