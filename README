@@ -5,9 +5,6 @@ Where to start from?
 https://v3.xenomai.org/overview/ is the best place to start learning
 about Xenomai 3.
 
-Also, make sure to read the per-architecture README files, i.e.:
-kernel/cobalt/arch/*/README
-
 Documentation
 =============
 
