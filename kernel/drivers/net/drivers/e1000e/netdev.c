@@ -3912,11 +3912,6 @@ static int e1000_probe(struct pci_dev *pdev,
 	if (err)
 		goto err_pci_reg;
 
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(6,0,0)
-	/* AER (Advanced Error Reporting) hooks */
-	pci_enable_pcie_error_reporting(pdev);
-#endif
-
 	pci_set_master(pdev);
 	/* PCI config space info */
 	err = pci_save_state(pdev);
@@ -4239,11 +4234,6 @@ static void e1000_remove(struct pci_dev *pdev)
 				     pci_select_bars(pdev, IORESOURCE_MEM));
 
 	rtdev_free(netdev);
-
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(6,0,0)
-	/* AER disable */
-	pci_disable_pcie_error_reporting(pdev);
-#endif
 
 	pci_disable_device(pdev);
 }

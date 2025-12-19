@@ -2029,10 +2029,6 @@ static int igb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (err)
 		goto err_pci_reg;
 
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(6,0,0)
-	pci_enable_pcie_error_reporting(pdev);
-#endif
-
 	pci_set_master(pdev);
 	pci_save_state(pdev);
 
@@ -2466,10 +2462,6 @@ static void igb_remove(struct pci_dev *pdev)
 
 	kfree(adapter->shadow_vfta);
 	rtdev_free(netdev);
-
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(6,0,0)
-	pci_disable_pcie_error_reporting(pdev);
-#endif
 
 	pci_disable_device(pdev);
 }

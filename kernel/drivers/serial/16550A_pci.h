@@ -36,7 +36,6 @@ struct rt_16550_pci_board {
 #define PCI_DEVICE_ID_CP112UL		0x1120
 #define PCI_DEVICE_ID_CP114UL		0x1143
 #define PCI_DEVICE_ID_CP138U		0x1380
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,17,0)
 #define PCI_DEVICE_ID_MOXA_CP102UL	0x1021
 #define PCI_DEVICE_ID_MOXA_CP102U	0x1022
 #define PCI_DEVICE_ID_MOXA_C104		0x1040
@@ -48,7 +47,6 @@ struct rt_16550_pci_board {
 #define PCI_DEVICE_ID_MOXA_CP134U	0x1340
 #define PCI_DEVICE_ID_MOXA_C168		0x1680
 #define PCI_DEVICE_ID_MOXA_CP168U	0x1681
-#endif
 
 static const struct rt_16550_pci_board rt_16550_moxa_c104 = {
 	.name = "Moxa C104H/PCI",

@@ -267,7 +267,7 @@ although this is not mandatory if building with `--disable-tls`.
 _Cobalt_-specific requirements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- The kernel version must be 5.10 or better.
+- The kernel version must be 6.1 or better.
 
 - An interrupt pipeline (Dovetail) patch must be available for your
   target kernel. You can find the official patches issued by the
