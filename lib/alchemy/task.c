@@ -104,7 +104,8 @@ static struct alchemy_task *find_alchemy_task(RT_TASK *task, int *err_r)
 	if (bad_pointer(tcb))
 		goto bad_handle;
 
-	if (threadobj_get_magic(&tcb->thobj) == task_magic)
+	if (threadobj_get_magic(&tcb->thobj) == task_magic &&
+	    (task->thread == tcb->thobj.ptid || task->thread == 0))
 		return tcb;
 bad_handle:
 	*err_r = -EINVAL;
