@@ -2160,11 +2160,31 @@ out:
 int rt_task_bind(RT_TASK *task,
 		 const char *name, RTIME timeout)
 {
-	return alchemy_bind_object(name,
-				   &alchemy_task_table,
-				   timeout,
-				   offsetof(struct alchemy_task, cobj),
-				   &task->handle);
+	struct alchemy_task *tcb;
+	struct service svc;
+	int ret;
+
+	task->thread = 0;
+
+	ret = alchemy_bind_object(name,
+				  &alchemy_task_table,
+				  timeout,
+				  offsetof(struct alchemy_task, cobj),
+				  &task->handle);
+	if (ret == 0) {
+		CANCEL_DEFER(svc);
+
+		tcb = get_alchemy_task(task, &ret);
+		if (tcb != NULL) {
+			if (threadobj_local_p(&tcb->thobj))
+				task->thread = tcb->thobj.ptid;
+			put_alchemy_task(tcb);
+		}
+
+		CANCEL_RESTORE(svc);
+	}
+
+	return ret;
 }
 
 /**
