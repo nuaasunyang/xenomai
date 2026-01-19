@@ -18,7 +18,6 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/wait.h>
-#include <xeno_config.h>
 #include <smokey/smokey.h>
 #include "lib/cobalt/current.h"
 
