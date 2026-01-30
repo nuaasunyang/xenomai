@@ -7,9 +7,12 @@ noinst_HEADERS =	\
 
 lib_LTLIBRARIES = libcobalt.la libmodechk.la
 
+noinst_LTLIBRARIES = libcobaltnativeoff.la
+
 libcobalt_la_LDFLAGS = @XENO_LIB_LDFLAGS@ -version-info 2:0:0 -lpthread -lrt
 
 libcobalt_la_LIBADD = \
+	libcobaltnativeoff.la			\
 	arch/@XENO_TARGET_ARCH@/libarch.la	\
 	../boilerplate/libboilerplate.la
 
@@ -42,6 +45,18 @@ libcobalt_la_CPPFLAGS =			\
 	@XENO_COBALT_CFLAGS@		\
 	-I$(top_srcdir)/include/cobalt	\
 	-I$(top_srcdir)/include
+
+# source files that require native off_t size
+libcobaltnativeoff_la_SOURCES =	\
+	mmap.c
+
+libcobaltnativeoff_la_LDFLAGS = @XENO_LIB_LDFLAGS@
+
+libcobaltnativeoff_la_CPPFLAGS =	\
+	@XENO_COBALT_CFLAGS@		\
+	-I$(top_srcdir)/include/cobalt	\
+	-I$(top_srcdir)/include		\
+	-U_TIME_BITS -U_FILE_OFFSET_BITS
 
 libmodechk_la_LIBADD = libcobalt.la
 
