@@ -58,8 +58,8 @@ static void *__map_umm(const char *name, uint32_t *size_r)
 		return MAP_FAILED;
 	}
 
-	addr = __RT(mmap(NULL, statbuf.size, PROT_READ|PROT_WRITE,
-			 MAP_SHARED, fd, 0));
+	addr = __RT(mmap64(NULL, statbuf.size, PROT_READ|PROT_WRITE,
+			   MAP_SHARED, fd, 0));
 	__RT(close(fd));
 
 	*size_r = statbuf.size;

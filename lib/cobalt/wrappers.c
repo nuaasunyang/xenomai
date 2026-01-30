@@ -28,7 +28,6 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <sys/mman.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -383,22 +382,6 @@ int __real_select (int __nfds, fd_set *__restrict __readfds,
 {
 	return select(__nfds, __readfds, __writefds, __exceptfds, __timeout);
 }
-
-__weak
-void *__real_mmap(void *addr, size_t length, int prot, int flags,
-		  int fd, off_t offset)
-{
-	return mmap(addr, length, prot, flags, fd, offset);
-}
-
-#if mmap64 != mmap
-__weak
-void *__real_mmap64(void *addr, size_t length, int prot, int flags,
-		  int fd, off64_t offset)
-{
-	return mmap64(addr, length, prot, flags, fd, offset);
-}
-#endif
 
 __weak
 int __real_vfprintf(FILE *stream, const char *fmt, va_list args)
