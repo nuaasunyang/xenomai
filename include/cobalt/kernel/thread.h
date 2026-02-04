@@ -204,6 +204,8 @@ struct xnthread {
 	void (*entry)(void *cookie); /* Thread entry routine */
 	void *cookie;		/* Cookie to pass to the entry routine */
 
+	pid_t host_pid;		/* PID of host task (if any), or -1 */
+
 	/**
 	 * Thread data visible from userland through a window on the
 	 * global heap.
@@ -453,7 +455,10 @@ void xnthread_deregister(struct xnthread *thread);
 char *xnthread_format_status(unsigned long status,
 			     char *buf, int size);
 
-pid_t xnthread_host_pid(struct xnthread *thread);
+static inline pid_t xnthread_host_pid(struct xnthread *thread)
+{
+	return thread->host_pid;
+}
 
 int xnthread_set_clock(struct xnthread *thread,
 		       struct xnclock *newclock);

@@ -284,6 +284,7 @@ int __xnthread_init(struct xnthread *thread,
 	/* These will be filled by xnthread_start() */
 	thread->entry = NULL;
 	thread->cookie = NULL;
+	thread->host_pid = -1;
 	init_completion(&thread->exited);
 	memset(xnthread_archtcb(thread), 0, sizeof(struct xnarchtcb));
 	memset(thread->sigarray, 0, sizeof(thread->sigarray));
@@ -375,16 +376,6 @@ char *xnthread_format_status(unsigned long status, char *buf, int size)
 	*wp = '\0';
 
 	return buf;
-}
-
-pid_t xnthread_host_pid(struct xnthread *thread)
-{
-	if (xnthread_test_state(thread, XNROOT))
-		return 0;
-	if (!xnthread_host_task(thread))
-		return -1;
-
-	return task_pid_nr(xnthread_host_task(thread));
 }
 
 int xnthread_set_clock(struct xnthread *thread, struct xnclock *newclock)
