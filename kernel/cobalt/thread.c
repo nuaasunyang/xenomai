@@ -1588,7 +1588,7 @@ static void grace_elapsed(struct rcu_head *head)
 	complete(&wgs->done);
 }
 
-static void wait_for_rcu_grace_period(struct pid *pid)
+static void wait_for_rcu_grace_period(struct xnthread *thread)
 {
 	struct wait_grace_struct wait = {
 		.done = COMPLETION_INITIALIZER_ONSTACK(wait.done),
@@ -1600,12 +1600,12 @@ static void wait_for_rcu_grace_period(struct pid *pid)
 	for (;;) {
 		call_rcu(&wait.rcu, grace_elapsed);
 		wait_for_completion(&wait.done);
-		if (pid == NULL)
+		if (thread == NULL)
 			break;
 		rcu_read_lock();
-		p = pid_task(pid, PIDTYPE_PID);
+		p = find_task_by_pid_ns(thread->host_pid, &init_pid_ns);
 		rcu_read_unlock();
-		if (p == NULL)
+		if (p != xnthread_host_task(thread))
 			break;
 		reinit_completion(&wait.done);
 	}
@@ -1648,8 +1648,6 @@ int xnthread_join(struct xnthread *thread, bool uninterruptible)
 {
 	struct xnthread *curr = xnthread_current();
 	int ret = 0, switched = 0;
-	struct pid *pid;
-	pid_t tpid;
 	spl_t s;
 
 	XENO_BUG_ON(COBALT, xnthread_test_state(thread, XNROOT));
@@ -1670,7 +1668,6 @@ int xnthread_join(struct xnthread *thread, bool uninterruptible)
 	trace_cobalt_thread_join(thread);
 
 	xnthread_set_state(thread, XNJOINED);
-	tpid = xnthread_host_pid(thread);
 
 	if (curr && !xnthread_test_state(curr, XNRELAX)) {
 		xnlock_put_irqrestore(&nklock, s);
@@ -1678,15 +1675,6 @@ int xnthread_join(struct xnthread *thread, bool uninterruptible)
 		switched = 1;
 	} else
 		xnlock_put_irqrestore(&nklock, s);
-
-	/*
-	 * Since in theory, we might be sleeping there for a long
-	 * time, we get a reference on the pid struct holding our
-	 * target, then we check for its existence upon wake up.
-	 */
-	pid = find_get_pid(tpid);
-	if (pid == NULL)
-		goto done;
 
 	/*
 	 * We have a tricky issue to deal with, which involves code
@@ -1726,17 +1714,13 @@ int xnthread_join(struct xnthread *thread, bool uninterruptible)
 		wait_for_completion(&thread->exited);
 	else {
 		ret = wait_for_completion_interruptible(&thread->exited);
-		if (ret < 0) {
-			put_pid(pid);
+		if (ret < 0)
 			return -EINTR;
-		}
 	}
 
 	/* Make sure the joinee has scheduled away ultimately. */
-	wait_for_rcu_grace_period(pid);
+	wait_for_rcu_grace_period(thread);
 
-	put_pid(pid);
-done:
 	ret = 0;
 	if (switched)
 		ret = xnthread_harden();
