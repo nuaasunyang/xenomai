@@ -1037,7 +1037,7 @@ static int vfile_schedlist_next(struct xnvfile_snapshot_iterator *it,
 		priv->curr = list_next_entry(thread, glink);
 
 	p->cpu = xnsched_cpu(thread->sched);
-	p->pid = xnthread_host_pid(thread);
+	p->pid = thread->host_pid;
 	memcpy(p->name, thread->name, sizeof(p->name));
 	p->cprio = thread->cprio;
 	p->state = xnthread_get_state(thread);
@@ -1197,7 +1197,7 @@ static int vfile_schedstat_next(struct xnvfile_snapshot_iterator *it,
 
 	sched = thread->sched;
 	p->cpu = xnsched_cpu(sched);
-	p->pid = xnthread_host_pid(thread);
+	p->pid = thread->host_pid;
 	memcpy(p->name, thread->name, sizeof(p->name));
 	p->state = xnthread_get_state(thread);
 	if (thread->lock_count > 0)

@@ -820,7 +820,7 @@ COBALT_SYSCALL(thread_getpid, current, (unsigned long pth))
 	if (thread == NULL)
 		pid = -ESRCH;
 	else
-		pid = xnthread_host_pid(&thread->threadbase);
+		pid = thread->threadbase.host_pid;
 
 	xnlock_put_irqrestore(&nklock, s);
 

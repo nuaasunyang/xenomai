@@ -455,11 +455,6 @@ void xnthread_deregister(struct xnthread *thread);
 char *xnthread_format_status(unsigned long status,
 			     char *buf, int size);
 
-static inline pid_t xnthread_host_pid(struct xnthread *thread)
-{
-	return thread->host_pid;
-}
-
 int xnthread_set_clock(struct xnthread *thread,
 		       struct xnclock *newclock);
 

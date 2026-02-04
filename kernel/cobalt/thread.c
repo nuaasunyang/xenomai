@@ -167,8 +167,7 @@ static int map_kthread(struct xnthread *thread, struct kthread_arg *ka)
 
 	xnthread_test_cancel();
 
-	xntrace_pid(xnthread_host_pid(thread),
-		    xnthread_current_priority(thread));
+	xntrace_pid(thread->host_pid, xnthread_current_priority(thread));
 
 	return ret;
 }
@@ -1092,7 +1091,7 @@ void xnthread_resume(struct xnthread *thread, int mask)
 
 	trace_cobalt_thread_resume(thread, mask);
 
-	xntrace_pid(xnthread_host_pid(thread), xnthread_current_priority(thread));
+	xntrace_pid(thread->host_pid, xnthread_current_priority(thread));
 
 	sched = thread->sched;
 	oldstate = thread->state;
@@ -2066,7 +2065,7 @@ void xnthread_relax(int notify, int reason)
 	 */
 	XENO_WARN(COBALT, is_primary_domain(),
 		  "xnthread_relax() failed for thread %s[%d]",
-		  thread->name, xnthread_host_pid(thread));
+		  thread->name, thread->host_pid);
 
 	pipeline_leave_oob_finish();
 
@@ -2447,7 +2446,7 @@ int xnthread_killall(int grace, int mask)
 
 		if (XENO_DEBUG(COBALT))
 			printk(XENO_INFO "terminating %s[%d]\n",
-			       t->name, xnthread_host_pid(t));
+			       t->name, t->host_pid);
 		nrkilled++;
 		xnthread_cancel(t);
 	}

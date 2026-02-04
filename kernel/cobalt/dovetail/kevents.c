@@ -70,14 +70,14 @@ void handle_oob_trap_entry(unsigned int trapnr, struct pt_regs *regs)
 		       "kernel-space at %pS (pid %d)\n", thread->name,
 		       trapnr,
 		       (void *)xnarch_fault_pc(regs),
-		       xnthread_host_pid(thread));
+		       thread->host_pid);
 	} else if (xnarch_fault_notify(trapnr)) /* Don't report debug traps */
 		printk(XENO_WARNING
 		       "switching %s to secondary mode after exception #%u from "
 		       "user-space at 0x%lx (pid %d)\n", thread->name,
 		       trapnr,
 		       xnarch_fault_pc(regs),
-		       xnthread_host_pid(thread));
+		       thread->host_pid);
 #endif
 
 	if (xnarch_fault_pf_p(trapnr))

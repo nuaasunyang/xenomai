@@ -372,7 +372,7 @@ COBALT_SYSCALL(event_inquire, current,
 		xnsynch_for_each_sleeper(thread, &event->synch) {
 			if (nrwait >= nrpids)
 				break;
-			t[nrwait++] = xnthread_host_pid(thread);
+			t[nrwait++] = thread->host_pid;
 		}
 	}
 

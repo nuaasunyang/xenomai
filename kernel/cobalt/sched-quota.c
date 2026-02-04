@@ -749,7 +749,7 @@ static int vfile_sched_quota_next(struct xnvfile_snapshot_iterator *it,
 		return VFILE_SEQ_SKIP;
 
 	p->cpu = xnsched_cpu(thread->sched);
-	p->pid = xnthread_host_pid(thread);
+	p->pid = thread->host_pid;
 	memcpy(p->name, thread->name, sizeof(p->name));
 	p->tgid = thread->quota->tgid;
 	p->prio = thread->cprio;

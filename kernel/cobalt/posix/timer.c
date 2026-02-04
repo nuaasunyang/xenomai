@@ -184,7 +184,7 @@ static int cobalt_timer_create_internal(clockid_t clockid,
 		goto fail;
 	}
 
-	timer->target = xnthread_host_pid(&target->threadbase);
+	timer->target = target->threadbase.host_pid;
 	cc->timers[timer_id] = timer;
 
 	xnlock_put_irqrestore(&nklock, s);

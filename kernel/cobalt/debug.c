@@ -296,7 +296,7 @@ void xndebug_trace_relax(int nr, unsigned long *backtrace,
 	 */
 	spot.depth = depth;
 	spot.proghash = thread->proghash;
-	spot.pid = xnthread_host_pid(thread);
+	spot.pid = thread->host_pid;
 	spot.reason = reason;
 	strcpy(spot.thread, thread->name);
 	hash = jhash2((u32 *)&spot, sizeof(spot) / sizeof(u32), 0);

@@ -49,7 +49,7 @@ DECLARE_EVENT_CLASS(thread_event,
 	TP_fast_assign(
 		__entry->state = thread->state;
 		__entry->info = thread->info;
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 	),
 
 	TP_printk("pid=%d state=0x%lx info=0x%lx",
@@ -216,12 +216,12 @@ TRACE_EVENT(cobalt_switch_context,
 	TP_fast_assign(
 		__entry->prev = prev;
 		__wrap_assign_str(prev_name, prev->name);
-		__entry->prev_pid = xnthread_host_pid(prev);
+		__entry->prev_pid = prev->host_pid;
 		__entry->prev_prio = xnthread_current_priority(prev);
 		__entry->prev_state = prev->state;
 		__entry->next = next;
 		__wrap_assign_str(next_name, next->name);
-		__entry->next_pid = xnthread_host_pid(next);
+		__entry->next_pid = next->host_pid;
 		__entry->next_prio = xnthread_current_priority(next);
 	),
 
@@ -310,7 +310,7 @@ DECLARE_EVENT_CLASS(schedquota_thread_event,
 	TP_fast_assign(
 		__entry->tgid = tg->tgid;
 		__entry->thread = thread;
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 	),
 
 	TP_printk("tgid=%d thread=%p pid=%d",
@@ -372,7 +372,7 @@ TRACE_EVENT(cobalt_thread_suspend,
 	),
 
 	TP_fast_assign(
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 		__entry->mask = mask;
 		__entry->timeout = timeout;
 		__entry->timeout_mode = timeout_mode;
@@ -396,7 +396,7 @@ TRACE_EVENT(cobalt_thread_resume,
 
 	TP_fast_assign(
 		__wrap_assign_str(name, thread->name);
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 		__entry->mask = mask;
 	),
 
@@ -434,7 +434,7 @@ TRACE_EVENT(cobalt_thread_set_current_prio,
 
 	TP_fast_assign(
 		__entry->thread = thread;
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 		__entry->cprio = xnthread_current_priority(thread);
 	),
 
@@ -504,7 +504,7 @@ TRACE_EVENT(cobalt_thread_migrate_passive,
 
 	TP_fast_assign(
 		__entry->thread = thread;
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 		__entry->cpu = cpu;
 	),
 
@@ -571,7 +571,7 @@ TRACE_EVENT(cobalt_shadow_map,
 
 	TP_fast_assign(
 		__entry->thread = thread;
-		__entry->pid = xnthread_host_pid(thread);
+		__entry->pid = thread->host_pid;
 		__entry->prio = xnthread_base_priority(thread);
 	),
 

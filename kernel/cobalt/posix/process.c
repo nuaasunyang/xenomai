@@ -656,8 +656,7 @@ int cobalt_map_user(struct xnthread *thread, __u32 __user *u_winoff)
 
 	xnthread_sync_window(thread);
 
-	xntrace_pid(xnthread_host_pid(thread),
-		    xnthread_current_priority(thread));
+	xntrace_pid(thread->host_pid, xnthread_current_priority(thread));
 
 	return 0;
 }
@@ -809,7 +808,7 @@ void cobalt_adjust_affinity(struct task_struct *task) /* nklocked, IRQs off */
 		 * Whine and cancel that thread.
 		 */
 		printk(XENO_WARNING "thread %s[%d] switched to non-rt CPU%d, aborted.\n",
-		       thread->name, xnthread_host_pid(thread), cpu);
+		       thread->name, thread->host_pid, cpu);
 		/*
 		 * Can't call xnthread_cancel() from a migration
 		 * point, that would break. Since we are on the wakeup
