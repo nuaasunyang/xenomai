@@ -29,11 +29,9 @@ int pipeline_create_inband_sirq(irqreturn_t (*handler)(int irq, void *dev_id))
 	if (sirq == 0)
 		return -EAGAIN;
 
-	ret = __request_percpu_irq(sirq,
-			handler,
-			IRQF_NO_THREAD,
-			"Inband sirq",
-			&cobalt_machine_cpudata);
+	ret = request_percpu_irq_affinity_flags(sirq, handler, IRQF_NO_THREAD,
+						"Inband sirq", NULL,
+						&cobalt_machine_cpudata);
 
 	if (ret) {
 		irq_dispose_mapping(sirq);

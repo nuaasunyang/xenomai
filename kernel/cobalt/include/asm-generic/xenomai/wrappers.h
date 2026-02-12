@@ -71,4 +71,13 @@
 #define timer_container_of	from_timer
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 19, 0)
+#define request_percpu_irq_affinity_flags(irq, handler, flags, devname,        \
+					  affinity, dev_id)                    \
+	({                                                                     \
+		WARN_ON_ONCE(affinity);                                        \
+		__request_percpu_irq(irq, handler, flags, devname, dev_id);    \
+	})
+#endif
+
 #endif /* _COBALT_ASM_GENERIC_WRAPPERS_H */
