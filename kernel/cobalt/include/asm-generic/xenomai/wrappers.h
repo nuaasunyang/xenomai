@@ -63,8 +63,12 @@
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(6,10,0)
-#define mm_get_unmapped_area(__mm, __filp, __addr, __len, __pgoff, __flags) \
-	(__mm)->get_unmapped_area(__filp, __addr, __len, __pgoff, __flags)
+#define mm_get_unmapped_area(__filp, __addr, __len, __pgoff, __flags)          \
+	(current->mm)                                                          \
+		->get_unmapped_area(__filp, __addr, __len, __pgoff, __flags)
+#elif LINUX_VERSION_CODE < KERNEL_VERSION(6,19,0)
+#define mm_get_unmapped_area(filp, addr, len, pgoff, flags)                    \
+	mm_get_unmapped_area(current->mm, filp, addr, len, pgoff, flags)
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(6,16,0)
