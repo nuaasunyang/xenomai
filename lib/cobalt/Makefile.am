@@ -4,6 +4,7 @@ noinst_HEADERS =	\
 	cond.h		\
 	current.h	\
 	mq.h		\
+	mutex.h		\
 	umm.h		\
 	internal.h
 
