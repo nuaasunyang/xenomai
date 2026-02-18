@@ -173,7 +173,21 @@ int pthread_attr_setpersonality_ex(pthread_attr_ex_t *attr_ex,
 
 int pthread_mutex_lock_interruptible_np(pthread_mutex_t *mutex);
 
-int pthread_timedmutex_lock_interruptible_np(pthread_mutex_t *mutex, const struct timespec *to);
+int pthread_timedmutex_lock_interruptible_np(pthread_mutex_t *mutex,
+					     const struct timespec *to);
+
+#if __USE_TIME_BITS64 && __TIMESIZE == 32
+int pthread_timedmutex_lock_interruptible_np_time64(pthread_mutex_t *mutex,
+						    const struct timespec *to);
+#ifdef __REDIRECT
+int __REDIRECT(pthread_timedmutex_lock_interruptible_np,
+	       (pthread_mutex_t * mutex, const struct timespec *to),
+	       pthread_timedmutex_lock_interruptible_np_time64);
+#else
+#define pthread_timedmutex_lock_interruptible_np                               \
+	pthread_timedmutex_lock_interruptible_np_time64
+#endif
+#endif
 
 #ifdef __cplusplus
 }

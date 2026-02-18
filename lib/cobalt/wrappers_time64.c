@@ -674,8 +674,16 @@ COBALT_IMPL_TIME64(int, pthread_mutex_timedlock, __pthread_mutex_timedlock64,
 	return ret;
 }
 
+#if __USE_TIME_BITS64 && __TIMESIZE == 32
+int pthread_timedmutex_lock_interruptible_np_time64(pthread_mutex_t *mutex,
+						    const struct timespec *to)
+{
+	return __pthread_mutex_timedlock(mutex, to);
+}
+#else
 int pthread_timedmutex_lock_interruptible_np(pthread_mutex_t *mutex,
 					     const struct timespec *to)
 {
 	return __pthread_mutex_timedlock(mutex, to);
 }
+#endif
