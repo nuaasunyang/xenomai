@@ -3,6 +3,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 noinst_HEADERS =	\
 	cond.h		\
 	current.h	\
+	mq.h		\
 	umm.h		\
 	internal.h
 
