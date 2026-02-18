@@ -16,14 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <errno.h>
-#include <string.h>
-#include <pthread.h>
-#include <asm/xenomai/syscall.h>
-
 #include "current.h"
 #include "internal.h"
 #include "mutex.h"
+
+#include <asm/xenomai/syscall.h>
+
+#include <pthread.h>
 
 /**
  * @ingroup cobalt_api
@@ -326,128 +325,6 @@ COBALT_IMPL(int, pthread_mutex_lock, (pthread_mutex_t *mutex))
 int pthread_mutex_lock_interruptible_np(pthread_mutex_t *mutex)
 {
 	return __pthread_mutex_lock(mutex);
-}
-
-/**
- * Attempt, during a bounded time, to lock a mutex.
- *
- * This service is equivalent to pthread_mutex_lock(), except that if the mutex
- * @a mx is locked by another thread than the current one, this service only
- * suspends the current thread until the timeout specified by @a to expires.
- *
- * @param mutex the mutex to be locked;
- *
- * @param to the timeout, expressed as an absolute value of the CLOCK_REALTIME
- * clock.
- *
- * @return 0 on success;
- * @return an error number if:
- * - EPERM, the caller is not allowed to perform the operation;
- * - EINVAL, the mutex @a mx is invalid;
- * - EPERM, the mutex is not process-shared and does not belong to the current
- *   process;
- * - ETIMEDOUT, the mutex could not be locked and the specified timeout
- *   expired;
- * - EDEADLK, the mutex is of the @a PTHREAD_MUTEX_ERRORCHECK type and the mutex
- *   was already locked by the current thread;
- * - EAGAIN, the mutex is of the @a PTHREAD_MUTEX_RECURSIVE type and the maximum
- *   number of recursive locks has been exceeded.
- *
- * @see
- * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/pthread_mutex_timedlock.html">
- * Specification.</a>
- *
- * @apitags{xthread-only, switch-primary}
- */
-static int __pthread_mutex_timedlock(pthread_mutex_t *mutex, const struct timespec *to)
-{
-	struct cobalt_mutex_shadow *_mutex =
-		&((union cobalt_mutex_union *)mutex)->shadow_mutex;
-	struct xnthread_user_window *u_window;
-	int status, ret, lazy_protect = 0;
-	xnhandle_t cur;
-
-	cur = cobalt_get_current();
-	if (cur == XN_NO_HANDLE)
-		return EPERM;
-
-	ret = cobalt_mutex_autoinit((union cobalt_mutex_union *)mutex);
-	if (ret)
-		return ret;
-
-	/* See __cobalt_pthread_mutex_lock() */
-	status = cobalt_get_current_mode();
-	if ((status & (XNRELAX|XNWEAK|XNDEBUG)) == 0) {
-		if (_mutex->attr.protocol == PTHREAD_PRIO_PROTECT)
-			goto protect;
-fast_path:
-		ret = xnsynch_fast_acquire(mutex_get_ownerp(_mutex), cur);
-		if (ret == 0) {
-			_mutex->lockcnt = 1;
-			return 0;
-		}
-	} else {
-slow_path:
-		ret = xnsynch_fast_owner_check(mutex_get_ownerp(_mutex), cur);
-		if (ret == 0)
-			ret = -EBUSY;
-	}
-
-	if (ret == -EBUSY) {
-		if (lazy_protect)
-			u_window->pp_pending = XN_NO_HANDLE;
-			
-		switch(_mutex->attr.type) {
-		case PTHREAD_MUTEX_NORMAL:
-			break;
-
-		case PTHREAD_MUTEX_ERRORCHECK:
-			return EDEADLK;
-
-		case PTHREAD_MUTEX_RECURSIVE:
-			if (_mutex->lockcnt == UINT32_MAX)
-				return EAGAIN;
-
-			++_mutex->lockcnt;
-			return 0;
-		}
-	}
-
-#ifdef __USE_TIME_BITS64
-	ret = XENOMAI_SYSCALL2(sc_cobalt_mutex_timedlock64, _mutex, to);
-#else
-	ret = XENOMAI_SYSCALL2(sc_cobalt_mutex_timedlock, _mutex, to);
-#endif
-
-	if (ret == 0)
-		_mutex->lockcnt = 1;
-	return -ret;
-protect:	
-	u_window = cobalt_get_current_window();
-	/*
-	 * Can't nest lazy ceiling requests, have to take the slow
-	 * path when this happens.
-	 */
-	if (u_window->pp_pending != XN_NO_HANDLE)
-		goto slow_path;
-	u_window->pp_pending = _mutex->handle;
-	lazy_protect = 1;
-	goto fast_path;
-}
-
-COBALT_IMPL_TIME64(int, pthread_mutex_timedlock, __pthread_mutex_timedlock64,
-		   (pthread_mutex_t *mutex, const struct timespec *to))
-{
-	int ret;
-	do
-		ret = __pthread_mutex_timedlock(mutex, to);
-	while (ret == EINTR);
-	return ret;
-}
-
-int pthread_timedmutex_lock_interruptible_np(pthread_mutex_t *mutex, const struct timespec *to)
-{
-	return __pthread_mutex_timedlock(mutex, to);
 }
 
 /**
