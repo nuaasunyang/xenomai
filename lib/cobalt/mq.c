@@ -346,64 +346,6 @@ COBALT_IMPL(int, mq_send, (mqd_t q, const char *buffer, size_t len, unsigned pri
 }
 
 /**
- * Attempt, during a bounded time, to send a message to a message queue.
- *
- * This service is equivalent to mq_send(), except that if the message queue is
- * full and the flag @a O_NONBLOCK is not set for the descriptor @a fd, the
- * calling thread is only suspended until the timeout specified by @a
- * abs_timeout expires.
- *
- * @param q message queue descriptor;
- *
- * @param buffer pointer to the message to be sent;
- *
- * @param len length of the message;
- *
- * @param prio priority of the message;
- *
- * @param timeout the timeout, expressed as an absolute value of the
- * CLOCK_REALTIME clock.
- *
- * @return 0 and send a message on success;
- * @return -1 with no message sent and @a errno set if:
- * - EBADF, @a fd is not a valid message queue descriptor open for writing;
- * - EMSGSIZE, the message length exceeds the @a mq_msgsize attribute of the
- *   message queue;
- * - EAGAIN, the flag O_NONBLOCK is set for the descriptor @a fd and the message
- *   queue is full;
- * - EPERM, the caller context is invalid;
- * - ETIMEDOUT, the specified timeout expired;
- * - EINTR, the service was interrupted by a signal.
- *
- * @see
- * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/mq_timedsend.html">
- * Specification.</a>
- *
- * @apitags{xthread-only, switch-primary}
- */
-COBALT_IMPL_TIME64(int, mq_timedsend, __mq_timedsend_time64,
-		   (mqd_t q, const char *buffer, size_t len, unsigned prio,
-		    const struct timespec *timeout))
-{
-	int err, oldtype;
-
-	if (timeout == NULL)
-		return -EFAULT;
-
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-
-	err = __do_mq_timesend(q, buffer, len, prio, timeout);
-
-	pthread_setcanceltype(oldtype, NULL);
-
-	if (!err)
-		return 0;
-
-	errno = -err;
-	return -1;
-}
-
-/**
  * Receive a message from a message queue.
  *
  * If the message queue @a fd is not empty and if @a len is greater than the @a
@@ -451,69 +393,6 @@ COBALT_IMPL(ssize_t, mq_receive, (mqd_t q, char *buffer, size_t len, unsigned *p
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
 
 	err = __do_mq_timedreceive(q, buffer, &rlen, prio, NULL);
-
-	pthread_setcanceltype(oldtype, NULL);
-
-	if (!err)
-		return rlen;
-
-	errno = -err;
-	return -1;
-}
-
-/**
- * Attempt, during a bounded time, to receive a message from a message queue.
- *
- * This service is equivalent to mq_receive(), except that if the flag @a
- * O_NONBLOCK is not set for the descriptor @a fd and the message queue is
- * empty, the calling thread is only suspended until the timeout @a abs_timeout
- * expires.
- *
- * @param q the queue descriptor;
- *
- * @param buffer the address where the received message will be stored on
- * success;
- *
- * @param len @a buffer length;
- *
- * @param prio address where the priority of the received message will be
- * stored on success.
- *
- * @param timeout the timeout, expressed as an absolute value of the
- * CLOCK_REALTIME clock.
- *
- * @return the message length, and copy a message at the address @a buffer on
- * success;
- * @return -1 with no message unqueued and @a errno set if:
- * - EBADF, @a fd is not a valid descriptor open for reading;
- * - EMSGSIZE, the length @a len is lesser than the message queue @a mq_msgsize
- *   attribute;
- * - EAGAIN, the queue is empty, and the flag @a O_NONBLOCK is set for the
- *   descriptor @a fd;
- * - EPERM, the caller context is invalid;
- * - EINTR, the service was interrupted by a signal;
- * - ETIMEDOUT, the specified timeout expired.
- *
- * @see
- * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/mq_timedreceive.html">
- * Specification.</a>
- *
- * @apitags{xthread-only, switch-primary}
- */
-COBALT_IMPL_TIME64(ssize_t, mq_timedreceive, __mq_timedreceive_time64,
-		   (mqd_t q, char *__restrict__ buffer, size_t len,
-		    unsigned *__restrict__ prio,
-		    const struct timespec *__restrict__ timeout))
-{
-	ssize_t rlen = (ssize_t) len;
-	int err, oldtype;
-
-	if (timeout == NULL)
-		return -EFAULT;
-
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-
-	err = __do_mq_timedreceive(q, buffer, &rlen, prio, timeout);
 
 	pthread_setcanceltype(oldtype, NULL);
 
