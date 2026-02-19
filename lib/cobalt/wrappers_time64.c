@@ -30,6 +30,11 @@
 #include <sys/time.h>
 #include <time.h>
 
+#if defined(__USE_TIME_BITS64) || __WORDSIZE == 64 ||                          \
+	(defined(__SYSCALL_WORDSIZE) && __SYSCALL_WORDSIZE == 64)
+#define XN_USE_TIME64_SYSCALL
+#endif
+
 /**
  * Get the resolution of the specified clock.
  * @ingroup cobalt_api_time
