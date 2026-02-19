@@ -120,7 +120,6 @@ AM_INIT_AUTOMAKE([foreign no-exeext dist-bzip2 tar-ustar subdir-objects])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
 AM_PROG_AS
-AM_PROG_LEX
 
 XENO_BUILD_ARGS="$ac_configure_args"
 
