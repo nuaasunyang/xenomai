@@ -62,6 +62,25 @@ libcobaltext_la_CPPFLAGS =		\
 	-I$(top_srcdir)/include		\
 	-U_TIME_BITS -U_FILE_OFFSET_BITS
 
+if CONFIG_XENO_LIBS_TIME64
+# If time64_t has ben requested libcobalt is already providing time64_t
+# interfaces. The native interfaces have to be build on top.
+libcobaltnativetime_la_SOURCES =	\
+	wrappers.c			\
+	wrappers_time64.c
+
+libcobaltnativetime_la_LDFLAGS = @XENO_LIB_LDFLAGS@
+
+libcobaltnativetime_la_CPPFLAGS =	\
+	@XENO_COBALT_CFLAGS@		\
+        -I$(top_srcdir)/include/cobalt	\
+        -I$(top_srcdir)/include		\
+        -U_TIME_BITS -U_FILE_OFFSET_BITS
+
+noinst_LTLIBRARIES += libcobaltnativetime.la
+libcobalt_la_LIBADD += libcobaltnativetime.la
+endif
+
 libmodechk_la_LIBADD = libcobalt.la
 
 libmodechk_la_SOURCES =	\
