@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.62)
+AC_PREREQ([2.69])
 
 # The config/version-code file defines the general versioning data
 # as: <major>.<minor>.<subrev>, giving the full Xenomai version stamp.
@@ -7,7 +7,7 @@ AC_PREREQ(2.62)
 # implement (which actually expresses the revision level of the
 # Copperplate library).  The kernel ABI is Cobalt-specific and is
 # defined for each architecture in the asm/features.h file.
-AC_INIT([Xenomai],m4_normalize(m4_include([config/version-label])),xenomai@xenomai.org)
+AC_INIT([Xenomai],[m4_normalize(m4_include([config/version-label]))],[xenomai@xenomai.org])
 
 AC_CONFIG_HEADERS(include/xeno_config.h)
 AC_CONFIG_AUX_DIR(config)
@@ -174,7 +174,7 @@ AC_MSG_RESULT([$target_cpu_arch])
 XENO_TARGET_ARCH=$target_cpu_arch
 AM_CONDITIONAL(XENO_X86,[test x$target_cpu_arch = xx86])
 AC_ENABLE_SHARED
-AC_PROG_LIBTOOL
+LT_INIT
 
 dnl
 dnl Parse options
@@ -677,11 +677,11 @@ dnl Check for atomic builtins. For now we only check for the legacy
 dnl interface, i.e. __sync_*.
 
 AC_CACHE_CHECK([whether the compiler provides atomic builtins], ac_cv_atomic_builtins, [
-LIBS=
-AC_TRY_LINK([
-int atomic_sub(int i) { return __sync_sub_and_fetch(&i, 1); }
-int atomic_add(int i) { return __sync_add_and_fetch(&i, 1); }
-], [], ac_cv_atomic_builtins="yes")
+  LIBS=
+  AC_LINK_IFELSE([AC_LANG_SOURCE([
+    int atomic_sub(int i) { return __sync_sub_and_fetch(&i, 1); }
+    int atomic_add(int i) { return __sync_add_and_fetch(&i, 1); }
+  ])], [], [ac_cv_atomic_builtins=yes])
 ])
 if test "$ac_cv_atomic_builtins" != "yes"; then
    AC_MSG_ERROR([compiler does not support atomic builtins])
@@ -690,7 +690,7 @@ fi
 unset want_fortify
 AC_MSG_CHECKING(for fortify support)
 AC_ARG_ENABLE([fortify],
-	      AC_HELP_STRING([--enable-fortify],
+	      AS_HELP_STRING([--enable-fortify],
 			     [Enable _FORTIFY_SOURCE]),
 	      [case "$enableval" in
 	      y | yes) want_fortify=yes;;
@@ -748,7 +748,7 @@ XENO_USER_CFLAGS="$XENO_USER_CFLAGS -I$topdir/include/$rtcore_type"
 AC_MSG_CHECKING([whether ld supports @file])
 AC_CACHE_VAL(ac_cv_ld_file_option,
   AC_LANG_SAVE
-  AC_LANG_C
+  AC_LANG([C])
   save_LDFLAGS="$LDFLAGS"
   [LDFLAGS="-Wl,@/dev/null"]
   AC_LINK_IFELSE([AC_LANG_SOURCE([main(){}])],
@@ -762,7 +762,7 @@ AC_SUBST(LD_FILE_OPTION)
 
 AC_MSG_CHECKING(whether to enable dlopening of Xenomai libraries)
 AC_ARG_ENABLE(dlopen-libs,
-	AC_HELP_STRING([--enable-dlopen-libs], [Allow dynamic loading of Xenomai libraries]),
+	AS_HELP_STRING([--enable-dlopen-libs], [Allow dynamic loading of Xenomai libraries]),
 	[case "$enableval" in
 	y | yes) CONFIG_XENO_LIBS_DLOPEN=y ;;
 	*) CONFIG_XENO_LIBS_DLOPEN=$enableval ;;
@@ -780,25 +780,24 @@ AM_CONDITIONAL(CONFIG_XENO_LIBS_DLOPEN,[test x$CONFIG_XENO_LIBS_DLOPEN = xy])
 
 AC_MSG_CHECKING(whether to enable TLS support)
 AC_ARG_ENABLE([tls],
-	    AC_HELP_STRING([--enable-tls],
+	    AS_HELP_STRING([--enable-tls],
 			   [Enable thread local storage]),
 	    [use_tls=$enableval])
 AC_MSG_RESULT($use_tls)
 
 AC_MSG_CHECKING(whether glibc has y2038 support)
-AC_TRY_COMPILE([#include <features.h>],
-	[
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <features.h>]], [[
 		#if !(__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 34))
 			#error "No y2038 support"
 		#endif
-	],
-	glibc_has_y2038_support=yes,
-	glibc_has_y2038_support=no)
+	]])],
+	[glibc_has_y2038_support=yes],
+	[glibc_has_y2038_support=no])
 AC_MSG_RESULT($glibc_has_y2038_support)
 
 AC_MSG_CHECKING(whether to enable y2038 support in Xenomai libraries)
 AC_ARG_ENABLE(y2038,
-	AC_HELP_STRING([--disable-y2038], [Disable y2038 support]),
+	AS_HELP_STRING([--disable-y2038], [Disable y2038 support]),
 	[
 		CONFIG_XENO_LIBS_TIME64=no
 	],
@@ -1158,4 +1157,4 @@ AC_CONFIG_FILES([ \
 	doc/asciidoc/Makefile \
 	])
 
-AC_OUTPUT()
+AC_OUTPUT
