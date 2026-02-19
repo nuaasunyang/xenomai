@@ -169,24 +169,6 @@ COBALT_IMPL(int, fcntl, (int fd, int cmd, ...))
 	return __STD(fcntl(fd, cmd, arg));
 }
 
-COBALT_IMPL_TIME64(int, ioctl, __ioctl_time64,
-		   (int fd, unsigned int request, ...))
-{
-	va_list ap;
-	void *arg;
-	int ret;
-
-	va_start(ap, request);
-	arg = va_arg(ap, void *);
-	va_end(ap);
-
-	ret = do_ioctl(fd, request, arg);
-	if (ret != -EADV && ret != -ENOSYS)
-		return set_errno(ret);
-
-	return __STD(ioctl(fd, request, arg));
-}
-
 COBALT_IMPL(ssize_t, read, (int fd, void *buf, size_t nbyte))
 {
 	int ret, oldtype;
@@ -241,29 +223,6 @@ COBALT_IMPL(ssize_t, recvmsg, (int fd, struct msghdr *msg, int flags))
 		return set_errno(ret);
 
 	return __STD(recvmsg(fd, msg, flags));
-}
-
-COBALT_IMPL_TIME64(int, recvmmsg, __recvmmsg64,
-		   (int fd, struct mmsghdr *msgvec, unsigned int vlen,
-		    unsigned int flags, struct timespec *timeout))
-{
-	int ret, oldtype;
-
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-
-#ifdef __USE_TIME_BITS64
-	ret = XENOMAI_SYSCALL5(sc_cobalt_recvmmsg64, fd, msgvec,
-				vlen, flags, timeout);
-#else
-	ret = XENOMAI_SYSCALL5(sc_cobalt_recvmmsg, fd, msgvec, vlen, flags, timeout);
-#endif
-
-	pthread_setcanceltype(oldtype, NULL);
-
-	if (ret != -EADV && ret != -ENOSYS)
-		return set_errno(ret);
-
-	return __STD(recvmmsg(fd, msgvec, vlen, flags, timeout));
 }
 
 static ssize_t do_sendmsg(int fd, const struct msghdr *msg, int flags)
@@ -406,36 +365,6 @@ COBALT_IMPL(ssize_t, send, (int fd, const void *buf, size_t len, int flags))
 		return set_errno(ret);
 
 	return __STD(send(fd, buf, len, flags));
-}
-
-COBALT_IMPL_TIME64(int, getsockopt, __getsockopt64,
-		   (int fd, int level, int optname, void *optval,
-		    socklen_t *optlen))
-{
-	struct _rtdm_getsockopt_args args = { level, optname, optval, optlen };
-	int ret;
-
-	ret = do_ioctl(fd, _RTIOC_GETSOCKOPT, &args);
-	if (ret != -EADV && ret != -ENOSYS)
-		return set_errno(ret);
-
-	return __STD(getsockopt(fd, level, optname, optval, optlen));
-}
-
-COBALT_IMPL_TIME64(int, setsockopt, __setsockopt64,
-		   (int fd, int level, int optname, const void *optval,
-		    socklen_t optlen))
-{
-	struct _rtdm_setsockopt_args args = {
-		level, optname, (void *)optval, optlen
-	};
-	int ret;
-
-	ret = do_ioctl(fd, _RTIOC_SETSOCKOPT, &args);
-	if (ret != -EADV && ret != -ENOSYS)
-		return set_errno(ret);
-
-	return __STD(setsockopt(fd, level, optname, optval, optlen));
 }
 
 COBALT_IMPL(int, bind, (int fd, const struct sockaddr *my_addr, socklen_t addrlen))
