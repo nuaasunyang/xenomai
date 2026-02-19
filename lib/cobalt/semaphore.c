@@ -16,14 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
+#include "internal.h"
+
+#include <asm/xenomai/syscall.h>
+
 #include <stdlib.h>		/* For malloc & free. */
 #include <stdarg.h>
 #include <errno.h>
 #include <fcntl.h>		/* For O_CREAT. */
 #include <pthread.h>		/* For pthread_setcanceltype. */
 #include <semaphore.h>
-#include <asm/xenomai/syscall.h>
-#include "internal.h"
 
 /**
  * @ingroup cobalt_api
@@ -318,67 +320,6 @@ COBALT_IMPL(int, sem_wait, (sem_t *sem))
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
 
 	ret = XENOMAI_SYSCALL1(sc_cobalt_sem_wait, _sem);
-
-	pthread_setcanceltype(oldtype, NULL);
-
-	if (ret) {
-		errno = -ret;
-		return -1;
-	}
-
-	return 0;
-}
-
-/**
- * @fn int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout)
- * @brief Attempt to decrement a semaphore with a time limit
- *
- * This service is equivalent to sem_wait(), except that the caller is only
- * blocked until the timeout @a abs_timeout expires.
- *
- * @param sem the semaphore to be decremented;
- *
- * @param abs_timeout the timeout, expressed as an absolute value of
- * the relevant clock for the semaphore, either CLOCK_MONOTONIC if
- * SEM_RAWCLOCK was mentioned via sem_init_np(), or CLOCK_REALTIME
- * otherwise.
- *
- * @retval 0 on success;
- * @retval -1 with @a errno set if:
- * - EPERM, the caller context is invalid;
- * - EINVAL, the semaphore is invalid or uninitialized;
- * - EINVAL, the specified timeout is invalid;
- * - EPERM, the semaphore @a sm is not process-shared and does not belong to the
- *   current process;
- * - EINTR, the caller was interrupted by a signal while blocked in this
- *   service;
- * - ETIMEDOUT, the semaphore could not be decremented and the
- *   specified timeout expired.
- *
- * @see
- * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/sem_timedwait.html">
- * Specification.</a>
- *
- * @apitags{xthread-only, switch-primary}
- */
-COBALT_IMPL_TIME64(int, sem_timedwait, __sem_timedwait64,
-		   (sem_t *sem, const struct timespec *abs_timeout))
-{
-	struct cobalt_sem_shadow *_sem = &((union cobalt_sem_union *)sem)->shadow_sem;
-	int ret, oldtype;
-
-	ret = __RT(sem_trywait(sem));
-	if (ret != -1 || errno != EAGAIN)
-		return ret;
-
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-
-#ifdef __USE_TIME_BITS64
-	ret = XENOMAI_SYSCALL2(sc_cobalt_sem_timedwait64, _sem,
-			       abs_timeout);
-#else
-	ret = XENOMAI_SYSCALL2(sc_cobalt_sem_timedwait, _sem, abs_timeout);
-#endif
 
 	pthread_setcanceltype(oldtype, NULL);
 

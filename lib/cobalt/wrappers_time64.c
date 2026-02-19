@@ -848,3 +848,65 @@ COBALT_IMPL_TIME64(int, select, __select64,
 {
 	return do_select(__nfds, __readfds, __writefds, __exceptfds, __timeout);
 }
+
+/**
+ * @fn int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout)
+ * @brief Attempt to decrement a semaphore with a time limit
+ * @ingroup cobalt_api_sem
+ *
+ * This service is equivalent to sem_wait(), except that the caller is only
+ * blocked until the timeout @a abs_timeout expires.
+ *
+ * @param sem the semaphore to be decremented;
+ *
+ * @param abs_timeout the timeout, expressed as an absolute value of
+ * the relevant clock for the semaphore, either CLOCK_MONOTONIC if
+ * SEM_RAWCLOCK was mentioned via sem_init_np(), or CLOCK_REALTIME
+ * otherwise.
+ *
+ * @retval 0 on success;
+ * @retval -1 with @a errno set if:
+ * - EPERM, the caller context is invalid;
+ * - EINVAL, the semaphore is invalid or uninitialized;
+ * - EINVAL, the specified timeout is invalid;
+ * - EPERM, the semaphore @a sm is not process-shared and does not belong to the
+ *   current process;
+ * - EINTR, the caller was interrupted by a signal while blocked in this
+ *   service;
+ * - ETIMEDOUT, the semaphore could not be decremented and the
+ *   specified timeout expired.
+ *
+ * @see
+ * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/sem_timedwait.html">
+ * Specification.</a>
+ *
+ * @apitags{xthread-only, switch-primary}
+ */
+COBALT_IMPL_TIME64(int, sem_timedwait, __sem_timedwait64,
+		   (sem_t *sem, const struct timespec *abs_timeout))
+{
+	struct cobalt_sem_shadow *_sem =
+		&((union cobalt_sem_union *)sem)->shadow_sem;
+	int ret, oldtype;
+
+	ret = __RT(sem_trywait(sem));
+	if (ret != -1 || errno != EAGAIN)
+		return ret;
+
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
+
+#ifdef __USE_TIME_BITS64
+	ret = XENOMAI_SYSCALL2(sc_cobalt_sem_timedwait64, _sem, abs_timeout);
+#else
+	ret = XENOMAI_SYSCALL2(sc_cobalt_sem_timedwait, _sem, abs_timeout);
+#endif
+
+	pthread_setcanceltype(oldtype, NULL);
+
+	if (ret) {
+		errno = -ret;
+		return -1;
+	}
+
+	return 0;
+}
