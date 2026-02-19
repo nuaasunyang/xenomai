@@ -17,7 +17,6 @@
  */
 
 #include <errno.h>
-#include <unistd.h>
 #include <sys/timerfd.h>
 #include <asm/xenomai/syscall.h>
 #include "internal.h"
@@ -35,41 +34,3 @@ COBALT_IMPL(int, timerfd_create, (int clockid, int flags))
 	return fd;
 }
 
-COBALT_IMPL_TIME64(int, timerfd_settime, __timerfd_settime64,
-		   (int fd, int flags, const struct itimerspec *new_value,
-		    struct itimerspec *old_value))
-{
-	int ret;
-
-#ifdef XN_USE_TIME64_SYSCALL
-	long sc_nr = sc_cobalt_timerfd_settime64;
-#else
-	long sc_nr = sc_cobalt_timerfd_settime;
-#endif
-
-	ret = -XENOMAI_SYSCALL4(sc_nr, fd, flags, new_value, old_value);
-	if (ret == 0)
-		return ret;
-	
-	errno = ret;
-	return -1;
-}
-
-COBALT_IMPL_TIME64(int, timerfd_gettime, __timerfd_gettime64,
-		   (int fd, struct itimerspec *curr_value))
-{
-	int ret;
-
-#ifdef XN_USE_TIME64_SYSCALL
-	long sc_nr = sc_cobalt_timerfd_gettime64;
-#else
-	long sc_nr = sc_cobalt_timerfd_gettime;
-#endif
-
-	ret = -XENOMAI_SYSCALL2(sc_nr, fd, curr_value);
-	if (ret == 0)
-		return ret;
-	
-	errno = ret;
-	return -1;
-}
