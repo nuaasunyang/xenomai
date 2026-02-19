@@ -910,3 +910,26 @@ COBALT_IMPL_TIME64(int, sem_timedwait, __sem_timedwait64,
 
 	return 0;
 }
+
+COBALT_IMPL_TIME64(int, sigtimedwait, __sigtimedwait64,
+		   (const sigset_t *set, siginfo_t *si,
+		    const struct timespec *timeout))
+{
+	int ret, oldtype;
+
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
+
+#ifdef __USE_TIME_BITS64
+	ret = XENOMAI_SYSCALL3(sc_cobalt_sigtimedwait64, set, si, timeout);
+#else
+	ret = XENOMAI_SYSCALL3(sc_cobalt_sigtimedwait, set, si, timeout);
+#endif
+	if (ret < 0) {
+		errno = -ret;
+		ret = -1;
+	}
+
+	pthread_setcanceltype(oldtype, NULL);
+
+	return ret;
+}

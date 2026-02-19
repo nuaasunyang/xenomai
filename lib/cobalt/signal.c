@@ -16,12 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
+#include <asm/xenomai/syscall.h>
+
 #include <stdlib.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <pthread.h>
 #include <signal.h>
-#include <asm/xenomai/syscall.h>
 
 COBALT_IMPL(int, sigwait, (const sigset_t *set, int *sig))
 {
@@ -43,29 +44,6 @@ COBALT_IMPL(int, sigwaitinfo, (const sigset_t *set, siginfo_t *si))
 	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
 
 	ret = XENOMAI_SYSCALL2(sc_cobalt_sigwaitinfo, set, si);
-	if (ret < 0) {
-		errno = -ret;
-		ret = -1;
-	}
-
-	pthread_setcanceltype(oldtype, NULL);
-
-	return ret;
-}
-
-COBALT_IMPL_TIME64(int, sigtimedwait, __sigtimedwait64,
-		   (const sigset_t *set, siginfo_t *si,
-		    const struct timespec *timeout))
-{
-	int ret, oldtype;
-
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-
-#ifdef __USE_TIME_BITS64
-	ret = XENOMAI_SYSCALL3(sc_cobalt_sigtimedwait64, set, si, timeout);
-#else
-	ret = XENOMAI_SYSCALL3(sc_cobalt_sigtimedwait, set, si, timeout);
-#endif
 	if (ret < 0) {
 		errno = -ret;
 		ret = -1;
