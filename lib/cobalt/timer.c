@@ -16,10 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
+#include "internal.h"
+
+#include <asm/xenomai/syscall.h>
+
 #include <errno.h>
 #include <time.h>
-#include <asm/xenomai/syscall.h>
-#include "internal.h"
 
 /**
  * @addtogroup cobalt_api_time
@@ -108,121 +110,6 @@ COBALT_IMPL(int, timer_delete, (timer_t timerid))
 	int ret;
 
 	ret = -XENOMAI_SYSCALL1(sc_cobalt_timer_delete, timerid);
-	if (ret == 0)
-		return 0;
-
-	errno = ret;
-
-	return -1;
-}
-
-/**
- * @fn timer_settime(timer_t timerid, int flags, const struct itimerspec *__restrict__ value, struct itimerspec *__restrict__ ovalue)
- * @brief Start or stop a timer
- *
- * This service sets a timer expiration date and reload value of the
- * timer @a timerid. If @a ovalue is not @a NULL, the current
- * expiration date and reload value are stored at the address @a
- * ovalue as with timer_gettime().
- *
- * If the member @a it_value of the @b itimerspec structure at @a
- * value is zero, the timer is stopped, otherwise the timer is
- * started. If the member @a it_interval is not zero, the timer is
- * periodic. The current thread must be a Cobalt thread (created with
- * pthread_create()) and will be notified via signal of timer
- * expirations.
- *
- * When starting the timer, if @a flags is TIMER_ABSTIME, the expiration value
- * is interpreted as an absolute date of the clock passed to the timer_create()
- * service. Otherwise, the expiration value is interpreted as a time interval.
- *
- * Expiration date and reload value are rounded to an integer count of
- * nanoseconds.
- *
- * @param timerid identifier of the timer to be started or stopped;
- *
- * @param flags one of 0 or TIMER_ABSTIME;
- *
- * @param value address where the specified timer expiration date and reload
- * value are read;
- *
- * @param ovalue address where the specified timer previous expiration date and
- * reload value are stored if not @a NULL.
- *
- * @retval 0 on success;
- * @retval -1 with @a errno set if:
- * - EINVAL, the specified timer identifier, expiration date or reload value is
- *   invalid. For @a timerid to be valid, it must belong to the current process.
- *
- * @see
- * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/timer_settime.html">
- * Specification.</a>
- *
- * @apitags{xcontext, switch-primary}
- */
-COBALT_IMPL_TIME64(int, timer_settime, __timer_settime64,
-		   (timer_t timerid, int flags,
-		    const struct itimerspec *__restrict__ value,
-		    struct itimerspec *__restrict__ ovalue))
-{
-	int ret;
-
-#ifdef XN_USE_TIME64_SYSCALL
-	long sc_nr = sc_cobalt_timer_settime64;
-#else
-	long sc_nr = sc_cobalt_timer_settime;
-#endif
-
-	ret = -XENOMAI_SYSCALL4(sc_nr, timerid, flags, value, ovalue);
-	if (ret == 0)
-		return 0;
-
-	errno = ret;
-
-	return -1;
-}
-
-/**
- * @fn int timer_gettime(timer_t timerid, struct itimerspec *value)
- * @brief Get timer next expiration date and reload value.
- *
- * This service stores, at the address @a value, the expiration date
- * (member @a it_value) and reload value (member @a it_interval) of
- * the timer @a timerid. The values are returned as time intervals,
- * and as multiples of the system clock tick duration (see note in
- * section @ref cobalt_api_time "Clocks and timers services" for details
- * on the duration of the system clock tick). If the timer was not
- * started, the returned members @a it_value and @a it_interval of @a
- * value are zero.
- *
- * @param timerid timer identifier;
- *
- * @param value address where the timer expiration date and reload value are
- * stored on success.
- *
- * @retval 0 on success;
- * @retval -1 with @a errno set if:
- * - EINVAL, @a timerid is invalid. For @a timerid to be valid, it
- * must belong to the current process.
- *
- * @see
- * <a href="http://www.opengroup.org/onlinepubs/000095399/functions/timer_gettime.html">
- * Specification.</a>
- *
- * @apitags{unrestricted}
- */
-COBALT_IMPL_TIME64(int, timer_gettime, __timer_gettime64,
-		   (timer_t timerid, struct itimerspec *value))
-{
-	int ret;
-
-#ifdef XN_USE_TIME64_SYSCALL
-	long sc_nr = sc_cobalt_timer_gettime64;
-#else
-	long sc_nr = sc_cobalt_timer_gettime;
-#endif
-
-	ret = -XENOMAI_SYSCALL2(sc_nr, timerid, value);
 	if (ret == 0)
 		return 0;
 
