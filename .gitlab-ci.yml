@@ -270,6 +270,7 @@ trigger-xenomai-images:
   stage: test
   variables:
     ONLY_RUN: xenomai-3/${CI_COMMIT_BRANCH}
+    TRIGGER_SOURCE: xenomai-3/${CI_COMMIT_BRANCH}
   trigger:
     project: xenomai/xenomai-images
     branch: next
