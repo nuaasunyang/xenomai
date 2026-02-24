@@ -84,4 +84,11 @@
 	})
 #endif
 
+#ifdef CONFIG_ARM64
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6,19,0)
+#define kernel_neon_begin(fpu_preempt_buffer)	kernel_neon_begin()
+#define kernel_neon_end(fpu_preempt_buffer)	kernel_neon_end()
+#endif
+#endif
+
 #endif /* _COBALT_ASM_GENERIC_WRAPPERS_H */

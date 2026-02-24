@@ -15,16 +15,23 @@
  * along with Xenomai; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #include <linux/module.h>
 #include <linux/vmalloc.h>
 #include <linux/semaphore.h>
+
+/*
+ * Needs to be the first non-Linux include, wrappers.h for older kernels
+ * involved on arm64 and further Linux headers included at the top of fptest.h
+ */
+#include <asm/xenomai/fptest.h>
+
 #include <cobalt/kernel/sched.h>
 #include <cobalt/kernel/synch.h>
 #include <cobalt/kernel/thread.h>
 #include <cobalt/kernel/trace.h>
 #include <rtdm/testing.h>
 #include <rtdm/driver.h>
-#include <asm/xenomai/fptest.h>
 
 MODULE_DESCRIPTION("Cobalt context switch test helper");
 MODULE_AUTHOR("Gilles Chanteperdrix <gilles.chanteperdrix@xenomai.org>");
@@ -236,6 +243,7 @@ static int rtswitch_to_nrt(struct rtswitch_context *ctx,
 			   unsigned int from_idx,
 			   unsigned int to_idx)
 {
+	struct cobalt_arch_fp_state state;
 	struct rtswitch_task *from, *to;
 	unsigned int expected, fp_val;
 	int fp_check;
@@ -276,7 +284,7 @@ static int rtswitch_to_nrt(struct rtswitch_context *ctx,
 
 		case RTSWITCH_RT:
 
-			if (!fp_check || fp_linux_begin() < 0) {
+			if (!fp_check || fp_linux_begin(&state) < 0) {
 				fp_check = 0;
 				goto signal_nofp;
 			}
@@ -287,7 +295,7 @@ static int rtswitch_to_nrt(struct rtswitch_context *ctx,
 			fp_regs_set(fp_features, expected);
 			rtdm_event_signal(&to->rt_synch);
 			fp_val = fp_regs_check(fp_features, expected, report);
-			fp_linux_end();
+			fp_linux_end(&state);
 
 			if(down_interruptible(&from->nrt_synch))
 				return -EINTR;
@@ -308,11 +316,11 @@ static int rtswitch_to_nrt(struct rtswitch_context *ctx,
 				(ctx->switches_count % 4000000) * 1000;
 			barrier();
 
-			fp_linux_begin();
+			fp_linux_begin(&state);
 			fp_regs_set(fp_features, expected);
 			rtdm_event_signal(&to->rt_synch);
 			fp_val = fp_regs_check(fp_features, expected, report);
-			fp_linux_end();
+			fp_linux_end(&state);
 
 			if (down_interruptible(&from->nrt_synch))
 				return -EINTR;

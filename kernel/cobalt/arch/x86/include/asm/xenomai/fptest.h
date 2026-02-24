@@ -19,12 +19,15 @@
 #ifndef _COBALT_X86_ASM_FPTEST_H
 #define _COBALT_X86_ASM_FPTEST_H
 
-#include <linux/errno.h>
+#include <asm/fpu/api.h>
+
 #include <asm/processor.h>
 #include <asm/xenomai/wrappers.h>
 #include <asm/xenomai/uapi/fptest.h>
 
-static inline int fp_linux_begin(void)
+struct cobalt_arch_fp_state {};
+
+static inline int fp_linux_begin(struct cobalt_arch_fp_state *state)
 {
 	kernel_fpu_begin();
 	/*
@@ -38,7 +41,7 @@ static inline int fp_linux_begin(void)
 	return true;
 }
 
-static inline void fp_linux_end(void)
+static inline void fp_linux_end(struct cobalt_arch_fp_state *state)
 {
 	kernel_fpu_end();
 }
