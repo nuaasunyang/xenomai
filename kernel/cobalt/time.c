@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 
+#include <linux/compat.h>
+
 #include <asm-generic/xenomai/syscall.h>
 #include <cobalt/kernel/time.h>
-#include <linux/compat.h>
 
 int cobalt_get_timespec64(struct timespec64 *ts,
 			  const struct __kernel_timespec __user *uts)
