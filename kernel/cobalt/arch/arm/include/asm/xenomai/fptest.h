@@ -30,12 +30,14 @@
 
 #include <asm/xenomai/uapi/fptest.h>
 
-static inline int fp_linux_begin(void)
+struct cobalt_arch_fp_state {};
+
+static inline int fp_linux_begin(struct cobalt_arch_fp_state *state)
 {
 	return -ENOSYS;
 }
 
-static inline void fp_linux_end(void)
+static inline void fp_linux_end(struct cobalt_arch_fp_state *state)
 {
 }
 
