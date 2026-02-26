@@ -1907,8 +1907,7 @@ driver_get_unmapped_area(struct file *filp,
 
 #ifdef CONFIG_MMU
 	/* Run default handler. */
-	return mm_get_unmapped_area(current->mm, filp, addr, len, pgoff,
-				    flags);
+	return mm_get_unmapped_area(filp, addr, len, pgoff, flags);
 #else
 	return -ENODEV;
 #endif
