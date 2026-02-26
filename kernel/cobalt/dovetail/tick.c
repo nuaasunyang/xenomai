@@ -153,10 +153,10 @@ int pipeline_install_tick_proxy(void)
 	 * CPUs.
 	 */
 	if (num_possible_cpus() > 1) {
-		ret = __request_percpu_irq(TIMER_OOB_IPI,
-					tick_ipi_handler,
-					IRQF_OOB, "Xenomai timer IPI",
-					&cobalt_machine_cpudata);
+		ret = request_percpu_irq_affinity_flags(
+				TIMER_OOB_IPI, tick_ipi_handler, IRQF_OOB,
+				"Xenomai timer IPI", NULL,
+				&cobalt_machine_cpudata);
 		if (ret)
 			return ret;
 	}
