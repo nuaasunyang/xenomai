@@ -42,10 +42,12 @@ static inline int pipeline_request_resched_ipi(void)
 		return 0;
 
 	/* Trap the out-of-band rescheduling interrupt. */
-	return __request_percpu_irq(RESCHEDULE_OOB_IPI,
+	return request_percpu_irq_affinity_flags(
+			RESCHEDULE_OOB_IPI,
 			pipeline_reschedule_ipi_handler,
 			IRQF_OOB,
 			"Xenomai reschedule",
+			NULL,
 			&cobalt_machine_cpudata);
 }
 
