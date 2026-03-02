@@ -16,13 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
+#include "mq.h"
+
+#include <asm/xenomai/syscall.h>
+
 #include <errno.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <pthread.h>
 #include <mqueue.h>
-#include <asm/xenomai/syscall.h>
 
 /**
  * @ingroup cobalt_api
@@ -288,18 +291,6 @@ COBALT_IMPL(int, mq_setattr, (mqd_t mqd,
 	return -1;
 }
 
-static inline int __do_mq_timesend(mqd_t q, const char *buffer, size_t len,
-				   unsigned int prio, const struct timespec *to)
-{
-#ifdef __USE_TIME_BITS64
-	long sc_nr = sc_cobalt_mq_timedsend64;
-#else
-	long sc_nr = sc_cobalt_mq_timedsend;
-#endif
-
-	return XENOMAI_SYSCALL5(sc_nr, q, buffer, len, prio, to);
-}
-
 /**
  * Send a message to a message queue.
  *
@@ -410,19 +401,6 @@ COBALT_IMPL_TIME64(int, mq_timedsend, __mq_timedsend_time64,
 
 	errno = -err;
 	return -1;
-}
-
-static inline int __do_mq_timedreceive(mqd_t q, char *buffer, ssize_t *len,
-				       unsigned int *prio,
-				       const struct timespec *timeout)
-{
-#ifdef __USE_TIME_BITS64
-	long sc_nr = sc_cobalt_mq_timedreceive64;
-#else
-	long sc_nr = sc_cobalt_mq_timedreceive;
-#endif
-
-	return XENOMAI_SYSCALL5(sc_nr, q, buffer, len, prio, timeout);
 }
 
 /**
