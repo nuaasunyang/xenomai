@@ -5,6 +5,7 @@ noinst_HEADERS =	\
 	current.h	\
 	mq.h		\
 	mutex.h		\
+	rtdm.h		\
 	umm.h		\
 	internal.h
 

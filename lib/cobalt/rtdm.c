@@ -17,33 +17,24 @@
   USA.
  */
 
-#include <errno.h>
+#include "rtdm.h"
+
+#include <asm/xenomai/syscall.h>
+#include <cobalt/uapi/syscall.h>
+#include <rtdm/rtdm.h>
+
 #include <string.h>
 #include <stdarg.h>
 #include <pthread.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/mman.h>
-#include <rtdm/rtdm.h>
-#include <cobalt/uapi/syscall.h>
-#include <asm/xenomai/syscall.h>
 
 /* support for very old c libraries not supporting O_TMPFILE */
 #ifndef O_TMPFILE
 #define O_TMPFILE (020000000 | 0200000)
 #endif
-
-
-static inline int set_errno(int ret)
-{
-	if (ret >= 0)
-		return ret;
-
-	errno = -ret;
-	return -1;
-}
 
 static int do_open(const char *path, int oflag, mode_t mode)
 {
@@ -158,19 +149,6 @@ COBALT_IMPL(int, close, (int fd))
 		return set_errno(ret);
 
 	return __STD(close(fd));
-}
-
-static int do_ioctl(int fd, unsigned int request, void *arg)
-{
-	int ret, oldtype;
-
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-
-	ret = XENOMAI_SYSCALL3(sc_cobalt_ioctl,	fd, request, arg);
-
-	pthread_setcanceltype(oldtype, NULL);
-
-	return ret;
 }
 
 COBALT_IMPL(int, fcntl, (int fd, int cmd, ...))
