@@ -62,6 +62,7 @@ Options :
         --core
         --info
         --compat
+        --disable-y2038
 EOF
     exit $1
 }
@@ -173,6 +174,9 @@ while test $# -gt 0; do
 	--posix|--cobalt|--vxworks|--psos|--alchemy|--rtdm|--smokey)
 	    skin_list="$skin_list `expr "$1" : '--\(.*\)'`"
 	    ;;
+	--disable-y2038)
+	    disable_y2038=y
+	    ;;
 	--cflags)
 	    do_cflags=y
 	    ;;
@@ -233,6 +237,7 @@ if test x$do_cflags = xy; then
 		;;
 	esac
     done
+    test x$disable_y2038 = xy && cflags="$cflags -U_TIME_BITS -U_FILE_OFFSET_BITS"
     echo $cflags
 fi
 
