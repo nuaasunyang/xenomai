@@ -16,15 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stddef.h>
+#include "internal.h"
+
+#include <asm/xenomai/syscall.h>
+
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <sys/types.h>
 #include <semaphore.h>
-#include <asm/xenomai/syscall.h>
-#include "internal.h"
 
 /**
  * @ingroup cobalt_api
