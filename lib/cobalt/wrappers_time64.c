@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) 2026 Florian Bezdeka <florian.bezdeka@siemens.com>.
- * Copyright (C) 2010 Gilles Chanteperdrix <gilles.chanteperdrix@xenomai.org>.
+ * Copyright (C) 2010, 2013 Gilles Chanteperdrix <gilles.chanteperdrix@xenomai.org>.
  * Copyright (C) 2005 Philippe Gerum <rpm@xenomai.org>.
  */
 
@@ -1049,5 +1049,44 @@ COBALT_IMPL_TIME64(int, timer_gettime, __timer_gettime64,
 
 	errno = ret;
 
+	return -1;
+}
+
+COBALT_IMPL_TIME64(int, timerfd_settime, __timerfd_settime64,
+		   (int fd, int flags, const struct itimerspec *new_value,
+		    struct itimerspec *old_value))
+{
+	int ret;
+
+#ifdef XN_USE_TIME64_SYSCALL
+	long sc_nr = sc_cobalt_timerfd_settime64;
+#else
+	long sc_nr = sc_cobalt_timerfd_settime;
+#endif
+
+	ret = -XENOMAI_SYSCALL4(sc_nr, fd, flags, new_value, old_value);
+	if (ret == 0)
+		return ret;
+
+	errno = ret;
+	return -1;
+}
+
+COBALT_IMPL_TIME64(int, timerfd_gettime, __timerfd_gettime64,
+		   (int fd, struct itimerspec *curr_value))
+{
+	int ret;
+
+#ifdef XN_USE_TIME64_SYSCALL
+	long sc_nr = sc_cobalt_timerfd_gettime64;
+#else
+	long sc_nr = sc_cobalt_timerfd_gettime;
+#endif
+
+	ret = -XENOMAI_SYSCALL2(sc_nr, fd, curr_value);
+	if (ret == 0)
+		return ret;
+
+	errno = ret;
 	return -1;
 }
