@@ -43,7 +43,8 @@ libcobalt_la_SOURCES =		\
 	timerfd.c		\
 	trace.c			\
 	umm.c			\
-	wrappers.c
+	wrappers.c		\
+	wrappers_time64.c
 
 libcobalt_la_CPPFLAGS =			\
 	@XENO_COBALT_CFLAGS@		\
