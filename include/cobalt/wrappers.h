@@ -34,13 +34,12 @@
  * Make __RT() and __STD() usable in combination with time64_t related services.
  */
 #define COBALT_IMPL_TIME64(T, FN, FN_64, I)                                    \
-	__typeof__(T) __wrap_##FN_64 I                                         \
-		__attribute__((alias("__cobalt_" __stringify(FN)), weak));     \
-	COBALT_IMPL(T, FN, I)
-#define COBALT_DECL_TIME64(T, FN, A, I)                                        \
-	__typeof__(T) __STD(A) I;                                              \
-	extern T __REDIRECT_NTH(__STD(FN), I, __real_##A);                     \
-	COBALT_DECL(T, FN, I)
+	COBALT_IMPL(T, FN_64, I)
+#define COBALT_DECL_TIME64(T, FN, FN_64, I)                                    \
+	COBALT_DECL(T, FN_64, I);                                              \
+	extern T __REDIRECT_NTH(__STD(FN), I, __real_##FN_64);                 \
+	extern T __REDIRECT_NTH(__RT(FN), I, __cobalt_##FN_64);                \
+	extern T __REDIRECT_NTH(__WRAP(FN), I, __wrap_##FN_64)
 #else
 #define COBALT_IMPL_TIME64(T, FN, FN_64, I) COBALT_IMPL(T, FN, I)
 #define COBALT_DECL_TIME64(T, FN, FN_64, I) COBALT_DECL(T, FN, I)
