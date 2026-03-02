@@ -33,7 +33,6 @@ libcobalt_la_SOURCES =		\
 	printf.c		\
 	rtdm.c			\
 	sched.c			\
-	select.c		\
 	semaphore.c		\
 	signal.c		\
 	sigshadow.c		\
