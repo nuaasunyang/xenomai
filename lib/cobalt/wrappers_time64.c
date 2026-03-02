@@ -16,13 +16,16 @@
 #include "internal.h"
 #include "mq.h"
 #include "mutex.h"
+#include "rtdm.h"
 
 #include <asm/xenomai/syscall.h>
 #include <cobalt/uapi/syscall.h>
+#include <rtdm/rtdm.h>
 
 #include <errno.h>
 #include <mqueue.h>
 #include <pthread.h>
+#include <sys/socket.h>
 #include <sys/time.h>
 #include <time.h>
 
@@ -687,3 +690,74 @@ int pthread_timedmutex_lock_interruptible_np(pthread_mutex_t *mutex,
 	return __pthread_mutex_timedlock(mutex, to);
 }
 #endif
+
+COBALT_IMPL_TIME64(int, ioctl, __ioctl_time64,
+		   (int fd, unsigned int request, ...))
+{
+	va_list ap;
+	void *arg;
+	int ret;
+
+	va_start(ap, request);
+	arg = va_arg(ap, void *);
+	va_end(ap);
+
+	ret = do_ioctl(fd, request, arg);
+	if (ret != -EADV && ret != -ENOSYS)
+		return set_errno(ret);
+
+	return __STD(ioctl(fd, request, arg));
+}
+
+COBALT_IMPL_TIME64(int, recvmmsg, __recvmmsg64,
+		   (int fd, struct mmsghdr *msgvec, unsigned int vlen,
+		    unsigned int flags, struct timespec *timeout))
+{
+	int ret, oldtype;
+
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
+
+#ifdef __USE_TIME_BITS64
+	ret = XENOMAI_SYSCALL5(sc_cobalt_recvmmsg64, fd, msgvec, vlen, flags,
+			       timeout);
+#else
+	ret = XENOMAI_SYSCALL5(sc_cobalt_recvmmsg, fd, msgvec, vlen, flags,
+			       timeout);
+#endif
+
+	pthread_setcanceltype(oldtype, NULL);
+
+	if (ret != -EADV && ret != -ENOSYS)
+		return set_errno(ret);
+
+	return __STD(recvmmsg(fd, msgvec, vlen, flags, timeout));
+}
+
+COBALT_IMPL_TIME64(int, getsockopt, __getsockopt64,
+		   (int fd, int level, int optname, void *optval,
+		    socklen_t *optlen))
+{
+	struct _rtdm_getsockopt_args args = { level, optname, optval, optlen };
+	int ret;
+
+	ret = do_ioctl(fd, _RTIOC_GETSOCKOPT, &args);
+	if (ret != -EADV && ret != -ENOSYS)
+		return set_errno(ret);
+
+	return __STD(getsockopt(fd, level, optname, optval, optlen));
+}
+
+COBALT_IMPL_TIME64(int, setsockopt, __setsockopt64,
+		   (int fd, int level, int optname, const void *optval,
+		    socklen_t optlen))
+{
+	struct _rtdm_setsockopt_args args = { level, optname, (void *)optval,
+					      optlen };
+	int ret;
+
+	ret = do_ioctl(fd, _RTIOC_SETSOCKOPT, &args);
+	if (ret != -EADV && ret != -ENOSYS)
+		return set_errno(ret);
+
+	return __STD(setsockopt(fd, level, optname, optval, optlen));
+}
