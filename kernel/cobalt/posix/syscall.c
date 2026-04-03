@@ -45,6 +45,7 @@
 #include "corectl.h"
 #include "../debug.h"
 #include <trace/events/cobalt-posix.h>
+#include <asm-generic/xenomai/wrappers.h>
 
 /* Syscall must run into the Linux domain. */
 #define __xn_exec_lostage    0x1
@@ -199,7 +200,7 @@ static COBALT_SYSCALL(ftrace_puts, current,
 		return -EFAULT;
 
 #ifdef CONFIG_TRACING
-	__trace_puts(_THIS_IP_, buf, len);
+	__trace_puts(_THIS_IP_, buf);
 #endif
 
 	return 0;

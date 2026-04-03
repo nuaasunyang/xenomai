@@ -84,6 +84,10 @@
 	})
 #endif
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(7, 0, 0)
+#define __trace_puts(ip, str) __trace_puts(ip, str, strlen(str))
+#endif
+
 #ifdef CONFIG_ARM64
 #if LINUX_VERSION_CODE < KERNEL_VERSION(6,19,0)
 #define kernel_neon_begin(fpu_preempt_buffer)	kernel_neon_begin()
