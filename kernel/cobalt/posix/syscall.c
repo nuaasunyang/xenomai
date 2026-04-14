@@ -46,6 +46,12 @@
 #include "../debug.h"
 #include <trace/events/cobalt-posix.h>
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(7,0,0)
+#include <linux/trace_printk.h>
+#else
+#include <linux/kernel.h>
+#endif
+
 /* Syscall must run into the Linux domain. */
 #define __xn_exec_lostage    0x1
 /* Syscall must run into the Xenomai domain. */
@@ -194,12 +200,13 @@ static COBALT_SYSCALL(ftrace_puts, current,
 	char buf[256];
 	unsigned len;
 
-	len = cobalt_strncpy_from_user(buf, str, sizeof(buf));
+	len = cobalt_strncpy_from_user(buf, str, sizeof(buf) - 1);
 	if (len < 0)
 		return -EFAULT;
 
 #ifdef CONFIG_TRACING
-	__trace_puts(_THIS_IP_, buf, len);
+	buf[sizeof(buf) - 1] = 0;
+	trace_puts(buf);
 #endif
 
 	return 0;
