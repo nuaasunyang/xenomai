@@ -121,6 +121,7 @@ void pipeline_init_shadow_tcb(struct xnthread *thread)
 	tcb->core.user_fpu_owner = p;
 #endif /* CONFIG_XENO_ARCH_FPU */
 	xnarch_init_shadow_tcb(thread);
+	thread->host_pid = task_pid_nr(xnthread_host_task(thread));
 
 	trace_cobalt_shadow_map(thread);
 }
@@ -135,6 +136,7 @@ void pipeline_init_root_tcb(struct xnthread *thread)
 	tcb->core.mm = p->mm;
 	tcb->core.tip = NULL;
 	xnarch_init_root_tcb(thread);
+	thread->host_pid = 0;
 }
 
 int pipeline_leave_inband(void)
