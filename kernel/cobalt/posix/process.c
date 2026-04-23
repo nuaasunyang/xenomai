@@ -1002,10 +1002,6 @@ static int attach_process(struct cobalt_process *process)
 
 	cobalt_umm_set_name(&p->umm, "private heap[%d]", task_pid_nr(current));
 
-	ret = pipeline_attach_process(process);
-	if (ret)
-		goto fail_pipeline;
-
 	exe_path = get_exe_path(current);
 	if (IS_ERR(exe_path)) {
 		printk(XENO_WARNING
@@ -1022,11 +1018,10 @@ static int attach_process(struct cobalt_process *process)
 		goto fail_hash;
 
 	return 0;
+
 fail_hash:
-	pipeline_detach_process(process);
 	if (p->exe_path)
 		kfree(p->exe_path);
-fail_pipeline:
 	cobalt_umm_destroy(&p->umm);
 
 	return ret;
