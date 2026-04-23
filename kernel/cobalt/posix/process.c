@@ -595,6 +595,7 @@ int cobalt_map_user(struct xnthread *thread, __u32 __user *u_winoff)
 {
 	struct xnthread_user_window *u_window;
 	struct xnthread_start_attr attr;
+	struct cobalt_threadinfo *p;
 	struct cobalt_ppd *sys_ppd;
 	struct cobalt_umm *umm;
 	int ret;
@@ -632,7 +633,11 @@ int cobalt_map_user(struct xnthread *thread, __u32 __user *u_winoff)
 	 */
 	pipeline_init_shadow_tcb(thread);
 	xnthread_suspend(thread, XNRELAX, XN_INFINITE, XN_RELATIVE, NULL);
-	pipeline_attach_current(thread);
+
+	p = pipeline_current();
+	p->thread = thread;
+	p->process = cobalt_search_process(current->mm);
+
 	xnthread_set_state(thread, XNMAPPED);
 	xndebug_shadow_init(thread);
 	sys_ppd = cobalt_ppd_get(0);

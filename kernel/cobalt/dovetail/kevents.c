@@ -330,16 +330,6 @@ void resume_oob_task(struct task_struct *p) /* inband, oob stage stalled */
 
 }
 
-void pipeline_attach_current(struct xnthread *thread)
-{
-	struct cobalt_threadinfo *p;
-
-	p = pipeline_current();
-	p->thread = thread;
-	p->process = cobalt_search_process(current->mm);
-	dovetail_init_altsched(&xnthread_archtcb(thread)->altsched);
-}
-
 int pipeline_trap_kevents(void)
 {
 	dovetail_start();

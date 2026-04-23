@@ -25,8 +25,6 @@ void pipeline_detach_process(struct cobalt_process *process)
 
 int pipeline_prepare_current(void);
 
-void pipeline_attach_current(struct xnthread *thread);
-
 int pipeline_trap_kevents(void);
 
 void pipeline_enable_kevents(void);
