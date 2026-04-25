@@ -5,3 +5,5 @@ usr/bin/wf_generate
 usr/bin/wrap-link.sh
 usr/bin/xeno
 usr/sbin
+etc/rtnet.conf
+etc/tdma.conf
