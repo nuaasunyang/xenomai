@@ -7,7 +7,7 @@ AC_PREREQ([2.69])
 # implement (which actually expresses the revision level of the
 # Copperplate library).  The kernel ABI is Cobalt-specific and is
 # defined for each architecture in the asm/features.h file.
-AC_INIT([Xenomai],[m4_normalize(m4_include([config/version-label]))],[xenomai@xenomai.org])
+AC_INIT([Xenomai],[m4_normalize(m4_include([config/version-label]))],[xenomai@lists.linux.dev])
 
 AC_CONFIG_HEADERS(include/xeno_config.h)
 AC_CONFIG_AUX_DIR(config)

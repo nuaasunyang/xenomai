@@ -30,7 +30,7 @@
  *
  * This group of devices is intended to provide in-kernel testing
  * results.  Feel free to comment on this profile via the Xenomai
- * mailing list <xenomai@xenomai.org> or directly to the author
+ * mailing list <xenomai@lists.linux.dev> or directly to the author
  * <jan.kiszka@web.de>.
  *
  * @b Profile @b Revision: 2

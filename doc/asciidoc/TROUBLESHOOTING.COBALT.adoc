@@ -59,7 +59,7 @@ first.
 
 If nothing seems wrong there, try capturing the OOPS information using
 a _serial console_ or _netconsole_, then post it to the
-mailto:xenomai@xenomai.org[xenomai mailing list], along with the
+mailto:xenomai@lists.linux.dev[xenomai mailing list], along with the
 kernel configuration file (aka `.config`) matching the kernel build.
 
 === Kernel boots but does not print any message

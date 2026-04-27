@@ -529,7 +529,7 @@ static void cleanup(void)
 	if (max_relaxed > 0)
 		printf(
 "Warning! some latency peaks may have been due to involuntary mode switches.\n"
-"Please contact xenomai@xenomai.org\n");
+"Please contact xenomai@lists.linux.dev\n");
 
 	if (histogram_avg)
 		free(histogram_avg);
