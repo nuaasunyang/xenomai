@@ -21,15 +21,12 @@
  * available in all processes).
  */
 
-#include <errno.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <copperplate/heapobj.h>
-#include <copperplate/threadobj.h>
-#include <vxworks/errnoLib.h>
-
 #include "wdLib.h"
 #include "tickLib.h"
+
+#include <copperplate/threadobj.h>
+#include <vxworks/errnoLib.h>
+#include <vxworks/wdLib.h>
 
 #define wd_magic	0x3a4b5c6d
 

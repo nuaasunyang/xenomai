@@ -10,27 +10,22 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <fcntl.h>
-#include <sched.h>
-#include "taskLib.h"
-#include "tickLib.h"
-#include "msgQLib.h"
-#include "taskHookLib.h"
 #include "boilerplate/namegen.h"
 #include "copperplate/internal.h"
 #include "copperplate/registry-obstack.h"
+#include "msgQLib.h"
+#include "taskHookLib.h"
+#include "taskLib.h"
+#include "tickLib.h"
 #include "vxworks/errnoLib.h"
+
+#include <boilerplate/ancillaries.h>
 
 union wind_wait_union {
 	struct wind_queue_wait queue_wait;
