@@ -10,23 +10,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <assert.h>
-#include <pthread.h>
-#include <malloc.h>
-
 #include "boilerplate/ancillaries.h"
 #include "boilerplate/lock.h"
 #include "boilerplate/signal.h"
+
+#include <malloc.h>
 
 static pthread_key_t btkey;
 

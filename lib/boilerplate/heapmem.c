@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -24,14 +24,9 @@
  * fast allocation bitmap to manage their blocks internally.
  */
 
-#include <sys/types.h>
-#include <assert.h>
-#include <errno.h>
-#include <stdio.h>
+#include <boilerplate/heapmem.h>
 #include <stdbool.h>
 #include <string.h>
-
-#include <boilerplate/heapmem.h>
 
 enum heapmem_pgtype {
 	page_free =0,

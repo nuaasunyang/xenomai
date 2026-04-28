@@ -18,15 +18,12 @@
    Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
-
-#include <xeno_config.h>
 #include <boilerplate/obstack.h>
+#include <xeno_config.h>
 
-/* Use this obstack implementation unconditionally.  */
-
-#include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /* Determine default alignment.  */
 union fooround

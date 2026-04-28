@@ -19,8 +19,6 @@
 #ifndef _TLSF_H_
 #define _TLSF_H_
 
-#include <sys/types.h>
-
 /* A basic heap size which won't be rejected by init_memory_pool(). */
 #define MIN_TLSF_HEAPSZ 65536
 

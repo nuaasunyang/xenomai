@@ -18,8 +18,9 @@
 #ifndef _TARGET_H_
 #define _TARGET_H_
 
-#include <pthread.h>
 #include "boilerplate/wrappers.h"
+
+#include <pthread.h>
 
 #define TLSF_MLOCK_T            pthread_mutex_t
 #define TLSF_CREATE_LOCK(l)     __RT(pthread_mutex_init (l, NULL))
