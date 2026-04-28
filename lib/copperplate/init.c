@@ -10,27 +10,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+#include "copperplate/registry.h"
+#include "copperplate/threadobj.h"
+#include "copperplate/timerobj.h"
+#include "internal.h"
+#include "xenomai/init.h"
+
+#include <copperplate/tunables.h>
+
 #include <ctype.h>
-#include <pwd.h>
-#include <errno.h>
 #include <getopt.h>
 #include <grp.h>
-
-#include "copperplate/threadobj.h"
-#include "copperplate/registry.h"
-#include "copperplate/timerobj.h"
-#include "xenomai/init.h"
-#include "internal.h"
+#include <pwd.h>
+#include <stdio.h>
+#include <unistd.h>
 
 struct copperplate_setup_data __copperplate_setup_data = {
 	.mem_pool = 1024 * 1024, /* Default, 1Mb. */

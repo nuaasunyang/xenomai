@@ -16,38 +16,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <limits.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "copperplate/registry.h"
+#include "boilerplate/atomic.h"
+#include "boilerplate/hash.h"
+#include "boilerplate/lock.h"
+#include "copperplate/clockobj.h"
+#include "copperplate/debug.h"
+#include "copperplate/heapobj.h"
+#include "copperplate/registry-obstack.h"
+#include "copperplate/syncobj.h"
+#include "copperplate/threadobj.h"
+#include "internal.h"
+#include "xenomai/init.h"
+
+#include <xeno_config.h>
+
 #include <assert.h>
-#include <string.h>
-#include <memory.h>
-#include <signal.h>
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <fuse.h>
+#include <limits.h>
 #include <malloc.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <fuse.h>
-#include <xeno_config.h>
-#include "boilerplate/atomic.h"
-#include "boilerplate/hash.h"
-#include "copperplate/heapobj.h"
-#include "copperplate/threadobj.h"
-#include "copperplate/syncobj.h"
-#include "copperplate/registry.h"
-#include "copperplate/registry-obstack.h"
-#include "copperplate/clockobj.h"
-#include "boilerplate/lock.h"
-#include "copperplate/debug.h"
-#include "xenomai/init.h"
-#include "internal.h"
+#include <signal.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 /*
  * CAUTION: this code shall NOT refer to the shared heap in any way,

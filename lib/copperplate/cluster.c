@@ -88,12 +88,9 @@
  * to appear in the dictionary.
  */
 
-#include <errno.h>
-#include <string.h>
-#include "copperplate/heapobj.h"
 #include "copperplate/cluster.h"
+#include "copperplate/heapobj.h"
 #include "copperplate/threadobj.h"
-#include "internal.h"
 
 const static struct hash_operations hash_operations;
 

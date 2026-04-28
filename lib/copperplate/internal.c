@@ -10,26 +10,19 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <sys/prctl.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <signal.h>
-#include <errno.h>
-#include <limits.h>
+#include "internal.h"
 
 #include <boilerplate/ancillaries.h>
-#include <copperplate/clockobj.h>
 #include <copperplate/threadobj.h>
-#include "internal.h"
+
+#include <sys/prctl.h>
+#include <sys/syscall.h>
 
 static int thread_spawn_prologue(struct corethread_attributes *cta);
 

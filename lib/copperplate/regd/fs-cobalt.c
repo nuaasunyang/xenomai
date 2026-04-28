@@ -16,14 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
-#include <cobalt/uapi/thread.h>
 #include "sysregfs.h"
+
+#include <cobalt/uapi/thread.h>
+
+#include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #ifdef CONFIG_XENO_PSHARED
 /*

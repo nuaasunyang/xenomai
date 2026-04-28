@@ -16,20 +16,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <signal.h>
-#include <malloc.h>
-#include <sched.h>
+#include "../internal.h"
+#include "sysregfs.h"
+
+#include <copperplate/clockobj.h>
 #include <copperplate/heapobj.h>
 #include <copperplate/threadobj.h>
-#include <copperplate/clockobj.h>
+
+#include <fcntl.h>
+#include <malloc.h>
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <xenomai/version.h>
-#include "sysregfs.h"
-#include "../internal.h"
 
 #ifdef CONFIG_XENO_PSHARED
 

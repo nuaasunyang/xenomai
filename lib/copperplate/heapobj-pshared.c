@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -21,30 +21,30 @@
  * multiple processes in user-space.
  */
 
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/file.h>
-#include <sys/stat.h>
-#include <stdbool.h>
+#include "boilerplate/hash.h"
+#include "boilerplate/list.h"
+#include "boilerplate/lock.h"
+#include "copperplate/debug.h"
+#include "copperplate/heapobj.h"
+#include "internal.h"
+#include "xenomai/init.h"
+
 #include <assert.h>
 #include <errno.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <signal.h>
 #include <fcntl.h>
 #include <malloc.h>
+#include <pthread.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/file.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
-#include "boilerplate/list.h"
-#include "boilerplate/hash.h"
-#include "boilerplate/lock.h"
-#include "copperplate/heapobj.h"
-#include "copperplate/debug.h"
-#include "xenomai/init.h"
-#include "internal.h"
 
 enum sheapmem_pgtype {
 	page_free =0,

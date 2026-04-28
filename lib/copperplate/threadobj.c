@@ -18,30 +18,18 @@
  * Thread object abstraction.
  */
 
-#include <signal.h>
-#include <memory.h>
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <time.h>
-#include <fcntl.h>
-#include <assert.h>
-#include <limits.h>
-#include <sched.h>
-#include "boilerplate/signal.h"
-#include "boilerplate/atomic.h"
-#include "boilerplate/lock.h"
-#include "copperplate/traceobj.h"
 #include "copperplate/threadobj.h"
-#include "copperplate/syncobj.h"
+#include "boilerplate/signal.h"
 #include "copperplate/cluster.h"
-#include "copperplate/clockobj.h"
 #include "copperplate/eventobj.h"
-#include "copperplate/heapobj.h"
+#include "copperplate/traceobj.h"
 #include "internal.h"
+
+#include <boilerplate/ancillaries.h>
+#include <boilerplate/atomic.h>
+
+#include <stdio.h>
+#include <unistd.h>
 
 union copperplate_wait_union {
 	struct syncluster_wait_struct syncluster_wait;

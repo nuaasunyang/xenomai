@@ -16,14 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "boilerplate/lock.h"
 #include "copperplate/traceobj.h"
 #include "copperplate/threadobj.h"
-#include "copperplate/heapobj.h"
 #include "xenomai/init.h"
-#include "internal.h"
+
+#include <stdio.h>
+
 #ifdef CONFIG_XENO_VALGRIND_API
 #include <valgrind/valgrind.h>
 static inline int valgrind_detected(void)

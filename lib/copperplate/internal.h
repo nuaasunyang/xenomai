@@ -15,22 +15,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
+
 #ifndef _COPPERPLATE_INTERNAL_H
 #define _COPPERPLATE_INTERNAL_H
 
-#include <sys/types.h>
-#include <stdarg.h>
-#include <time.h>
+#include <boilerplate/sched.h>
+
 #include <pthread.h>
 #include <semaphore.h>
-#include <xeno_config.h>
-#include <boilerplate/list.h>
-#include <boilerplate/ancillaries.h>
-#include <boilerplate/limits.h>
-#include <boilerplate/sched.h>
-#include <boilerplate/setup.h>
-#include <copperplate/heapobj.h>
-#include <copperplate/tunables.h>
 
 #ifdef CONFIG_XENO_PSHARED
 

@@ -16,28 +16,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <sys/timerfd.h>
-#include <sys/un.h>
-#include <signal.h>
-#include <stdio.h>
-#include <limits.h>
-#include <memory.h>
-#include <malloc.h>
-#include <getopt.h>
-#include <string.h>
-#include <error.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <boilerplate/list.h>
-#include <boilerplate/hash.h>
 #include "../internal.h"
 #include "sysregfs.h"
+
+#include <boilerplate/hash.h>
+#include <boilerplate/list.h>
+
+#include <errno.h>
+#include <error.h>
+#include <getopt.h>
+#include <malloc.h>
+#include <pwd.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/timerfd.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <unistd.h>
 
 #define note(fmt, args...)					\
 	do {							\

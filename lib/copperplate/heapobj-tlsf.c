@@ -10,22 +10,23 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <unistd.h>
 #include "boilerplate/tlsf/tlsf.h"
-#include "copperplate/heapobj.h"
 #include "copperplate/debug.h"
+#include "copperplate/heapobj.h"
 #include "copperplate/threadobj.h"
-#include "xenomai/init.h"
 #include "internal.h"
+#include "xenomai/init.h"
+
+#include <errno.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #if LONG_BIT == 32
 #define TLSF_BLOCK_ALIGN  (8 * 2)
