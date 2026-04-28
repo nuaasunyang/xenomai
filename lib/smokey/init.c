@@ -10,25 +10,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <malloc.h>
-#include <string.h>
-#include <errno.h>
-#include <getopt.h>
-#include <fnmatch.h>
-#include <boilerplate/list.h>
-#include <boilerplate/ancillaries.h>
+#include <copperplate/tunables.h>
 #include <smokey/smokey.h>
 
-#include "copperplate/internal.h"
+#include <ctype.h>
+#include <fnmatch.h>
+#include <getopt.h>
+#include <malloc.h>
+#include <stdlib.h>
 
 /**
  * @defgroup smokey Smokey API
