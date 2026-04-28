@@ -24,6 +24,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <unistd.h>
+
+#ifdef HAVE_FORK
+#define do_fork fork
+#else
+#define do_fork vfork
+#endif
 
 int smokey_int(const char *s, struct smokey_arg *arg)
 {

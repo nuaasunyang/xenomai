@@ -26,12 +26,6 @@
 #include <copperplate/clockobj.h>
 #include <xenomai/init.h>
 
-#ifdef HAVE_FORK
-#define do_fork fork
-#else
-#define do_fork vfork
-#endif
-
 #define SMOKEY_INT(__name) {		\
 	 .name = # __name,		\
 	 .parser = smokey_int,		\
