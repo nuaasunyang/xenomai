@@ -16,12 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <errno.h>
-#include <string.h>
-#include <copperplate/threadobj.h>
-#include "internal.h"
 #include "mutex.h"
-#include "timer.h"
+#include "boilerplate/ancillaries.h"
+#include "boilerplate/namegen.h"
+#include "internal.h"
 #include "task.h"
 
 /**

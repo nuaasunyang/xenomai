@@ -10,19 +10,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <errno.h>
-#include <string.h>
-#include <copperplate/threadobj.h>
-#include "reference.h"
-#include "internal.h"
 #include "buffer.h"
-#include "timer.h"
+#include "boilerplate/ancillaries.h"
+#include "boilerplate/namegen.h"
+#include "internal.h"
+
+#include <alchemy/buffer.h>
+#include <alchemy/timer.h>
+#include <copperplate/threadobj.h>
 
 /**
  * @ingroup alchemy

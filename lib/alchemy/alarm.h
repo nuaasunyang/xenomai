@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -19,10 +19,9 @@
 #ifndef _ALCHEMY_ALARM_H
 #define _ALCHEMY_ALARM_H
 
+#include <copperplate/cluster.h>
 #include <copperplate/registry-obstack.h>
 #include <copperplate/timerobj.h>
-#include <copperplate/cluster.h>
-#include <alchemy/alarm.h>
 
 #define alarm_magic	0x8888ebeb
 

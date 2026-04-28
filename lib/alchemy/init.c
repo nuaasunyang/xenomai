@@ -10,28 +10,28 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
+#include "alarm.h"
+#include "buffer.h"
+#include "cond.h"
+#include "event.h"
+#include "heap.h"
+#include "mutex.h"
+#include "pipe.h"
+#include "queue.h"
+#include "sem.h"
+#include "task.h"
+
 #include <xenomai/init.h>
 
-#include "timer.h"
-#include "task.h"
-#include "sem.h"
-#include "event.h"
-#include "cond.h"
-#include "mutex.h"
-#include "queue.h"
-#include "buffer.h"
-#include "heap.h"
-#include "alarm.h"
-#include "pipe.h"
+#include <getopt.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * @defgroup alchemy Alchemy API

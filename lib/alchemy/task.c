@@ -10,25 +10,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sched.h>
-#include <pthread.h>
-#include <errno.h>
-#include <string.h>
-
-#include "copperplate/heapobj.h"
-#include "copperplate/internal.h"
-#include "internal.h"
 #include "task.h"
+#include "boilerplate/ancillaries.h"
+#include "boilerplate/namegen.h"
 #include "buffer.h"
-#include "queue.h"
-#include "timer.h"
+#include "copperplate/internal.h"
 #include "heap.h"
+#include "internal.h"
+#include "queue.h"
 
 /**
  * @ingroup alchemy

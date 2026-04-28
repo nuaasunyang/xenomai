@@ -10,17 +10,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <string.h>
-#include <boilerplate/lock.h>
+#include "internal.h"
+#include "boilerplate/ancillaries.h"
+
 #include <copperplate/cluster.h>
 #include <copperplate/heapobj.h>
-#include "internal.h"
 
 int alchemy_bind_object(const char *name, struct syncluster *sc,
 			RTIME timeout,

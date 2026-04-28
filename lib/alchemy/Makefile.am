@@ -29,8 +29,7 @@ libalchemy@CORE@_la_SOURCES =	\
 	task.h		\
 	sem.c		\
 	sem.h		\
-	timer.c		\
-	timer.h
+	timer.c
 
 if XENO_COBALT
 libalchemy@CORE@_la_SOURCES +=	\

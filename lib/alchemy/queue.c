@@ -16,14 +16,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <errno.h>
-#include <string.h>
-#include <copperplate/threadobj.h>
-#include <copperplate/registry-obstack.h>
-#include "reference.h"
-#include "internal.h"
 #include "queue.h"
-#include "timer.h"
+#include "boilerplate/ancillaries.h"
+#include "boilerplate/namegen.h"
+#include "internal.h"
+
+#include <alchemy/queue.h>
+#include <copperplate/registry-obstack.h>
+#include <copperplate/threadobj.h>
 
 /**
  * @ingroup alchemy
