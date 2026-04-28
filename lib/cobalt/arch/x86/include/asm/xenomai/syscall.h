@@ -18,8 +18,8 @@
 #ifndef _LIB_COBALT_X86_SYSCALL_H
 #define _LIB_COBALT_X86_SYSCALL_H
 
-#include <xeno_config.h>
 #include <cobalt/uapi/syscall.h>
+#include <xeno_config.h>
 
 /* Some code pulled from glibc's inline syscalls. */
 

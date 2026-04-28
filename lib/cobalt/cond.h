@@ -13,9 +13,8 @@
 
 #include <asm/xenomai/syscall.h>
 #include <cobalt/uapi/cond.h>
-
-#include <string.h>
 #include <pthread.h>
+#include <string.h>
 
 struct cobalt_cond_cleanup_t {
 	struct cobalt_cond_shadow *cond;

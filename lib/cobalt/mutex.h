@@ -8,10 +8,7 @@
 #ifndef _LIB_COBALT_MUTEX_H
 #define _LIB_COBALT_MUTEX_H
 
-#include <boilerplate/ancillaries.h>
-#include <cobalt/uapi/mutex.h>
-
-#include <pthread.h>
+#include <string.h>
 
 extern pthread_mutex_t *const cobalt_autoinit_mutex;
 

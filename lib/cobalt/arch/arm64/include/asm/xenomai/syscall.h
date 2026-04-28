@@ -16,12 +16,12 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
+
 #ifndef _LIB_COBALT_ARM64_SYSCALL_H
 #define _LIB_COBALT_ARM64_SYSCALL_H
 
-#include <xeno_config.h>
-#include <errno.h>
 #include <cobalt/uapi/syscall.h>
+#include <xeno_config.h>
 
 #define __xn_syscall_args0
 #define __xn_syscall_args1 , unsigned long __a1

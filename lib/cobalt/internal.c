@@ -11,7 +11,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -21,17 +21,11 @@
  * respect to object validity, callers have to take care of this.
  */
 
-#include <sys/types.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <signal.h>
-#include <errno.h>
-#include <stdarg.h>
-#include <pthread.h>
-#include <asm/xenomai/syscall.h>
-#include <cobalt/sys/cobalt.h>
 #include "internal.h"
+
+#include <asm/xenomai/syscall.h>
+#include <string.h>
+#include <unistd.h>
 
 int cobalt_extend(unsigned int magic)
 {

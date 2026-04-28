@@ -14,21 +14,13 @@
  */
 
 #include "cond.h"
-#include "internal.h"
 #include "mq.h"
 #include "mutex.h"
 #include "rtdm.h"
 
-#include <asm/xenomai/syscall.h>
-#include <cobalt/uapi/syscall.h>
 #include <rtdm/rtdm.h>
 
-#include <errno.h>
-#include <mqueue.h>
-#include <pthread.h>
-#include <sys/socket.h>
 #include <sys/time.h>
-#include <time.h>
 
 #if defined(__USE_TIME_BITS64) || __WORDSIZE == 64 ||                          \
 	(defined(__SYSCALL_WORDSIZE) && __SYSCALL_WORDSIZE == 64)

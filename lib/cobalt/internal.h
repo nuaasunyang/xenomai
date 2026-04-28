@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -18,12 +18,10 @@
 #ifndef _LIB_COBALT_INTERNAL_H
 #define _LIB_COBALT_INTERNAL_H
 
-#include <limits.h>
-#include <stdbool.h>
-#include <time.h>
+#include "current.h"
+
 #include <boilerplate/ancillaries.h>
 #include <cobalt/sys/cobalt.h>
-#include "current.h"
 
 extern void *cobalt_umm_private;
 

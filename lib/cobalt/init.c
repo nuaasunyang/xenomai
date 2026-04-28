@@ -10,30 +10,22 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <stdio.h>
+#include "internal.h"
+#include "umm.h"
+
+#include <asm/xenomai/syscall.h>
+#include <cobalt/tunables.h>
+#include <getopt.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <signal.h>
-#include <getopt.h>
-#include <limits.h>
+#include <sys/mman.h>
 #include <unistd.h>
-#include <stdint.h>
-#include <semaphore.h>
-#include <boilerplate/setup.h>
-#include <cobalt/tunables.h>
-#include <asm/xenomai/syscall.h>
-#include <xenomai/init.h>
-#include "umm.h"
-#include "internal.h"
 
 /**
  * @ingroup cobalt

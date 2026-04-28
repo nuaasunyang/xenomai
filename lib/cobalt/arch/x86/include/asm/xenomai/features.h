@@ -19,7 +19,6 @@
 #define _LIB_COBALT_X86_FEATURES_H
 
 #include_next <features.h>
-#include <xeno_config.h>
 #include <asm/xenomai/uapi/features.h>
 
 int cobalt_fp_detect(void);

@@ -18,12 +18,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
+
 #ifndef _LIB_COBALT_ARM_SYSCALL_H
 #define _LIB_COBALT_ARM_SYSCALL_H
 
-#include <xeno_config.h>
-#include <errno.h>
 #include <cobalt/uapi/syscall.h>
+#include <xeno_config.h>
+
+#include <errno.h>
 
 #ifndef __ARM_EABI__
 #error "ARM OABI support has been removed with Xenomai 3.3.x"

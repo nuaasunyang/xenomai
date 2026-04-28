@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -21,27 +21,18 @@
  * wrapped. These are fallback functions for __real* functions used by
  * the library itself.
  */
-#include <xeno_config.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/ioctl.h>
-#include <sys/select.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <syslog.h>
+
+#include <fcntl.h>
+#include <malloc.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <sched.h>
-#include <memory.h>
+#include <signal.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <syslog.h>
 #include <unistd.h>
-#include <malloc.h>
-#include <boilerplate/compiler.h>
 
 /* support for very old c libraries not supporting O_TMPFILE */
 #ifndef O_TMPFILE

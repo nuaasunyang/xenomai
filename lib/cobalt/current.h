@@ -18,10 +18,8 @@
 #ifndef _LIB_COBALT_CURRENT_H
 #define _LIB_COBALT_CURRENT_H
 
-#include <stdint.h>
 #include <pthread.h>
-#include <cobalt/uapi/thread.h>
-#include <xeno_config.h>
+#include <stdint.h>
 
 extern pthread_key_t cobalt_current_window_key;
 

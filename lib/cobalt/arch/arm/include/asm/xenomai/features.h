@@ -15,11 +15,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
+
 #ifndef _LIB_COBALT_ARM_FEATURES_H
 #define _LIB_COBALT_ARM_FEATURES_H
 
 #include_next <features.h>
-#include <xeno_config.h>
 
 #if defined(__ARM_ARCH_2__)
 #define __LINUX_ARM_ARCH__ 2

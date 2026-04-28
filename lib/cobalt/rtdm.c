@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
@@ -19,17 +19,11 @@
 
 #include "rtdm.h"
 
-#include <asm/xenomai/syscall.h>
-#include <cobalt/uapi/syscall.h>
 #include <rtdm/rtdm.h>
 
 #include <string.h>
 #include <stdarg.h>
-#include <pthread.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include <sys/socket.h>
-#include <sys/mman.h>
 
 /* support for very old c libraries not supporting O_TMPFILE */
 #ifndef O_TMPFILE

@@ -15,15 +15,11 @@
  * architecture that has a vDSO.
  */
 
-#include <sys/auxv.h>
-#include <stdbool.h>
-#include <string.h>
-#include <limits.h>
-#include <pthread.h>
-#include <error.h>
-#include <errno.h>
-#include <elf.h>
 #include "internal.h"
+
+#include <error.h>
+#include <string.h>
+#include <sys/auxv.h>
 
 #ifndef ELF_BITS
 # if ULONG_MAX > 0xffffffffUL

@@ -10,8 +10,9 @@
 #ifndef _LIB_COBALT_ARM_DEBUG_H
 #define _LIB_COBALT_ARM_DEBUG_H
 
-#include <signal.h>
 #include "current.h"
+
+#include <signal.h>
 
 static inline int cobalt_avoid_backtrace(int reason)
 {
