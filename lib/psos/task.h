@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -19,10 +19,9 @@
 #ifndef _PSOS_TASK_H
 #define _PSOS_TASK_H
 
-#include <boilerplate/hash.h>
-#include <copperplate/threadobj.h>
-#include <copperplate/syncobj.h>
 #include <copperplate/cluster.h>
+#include <copperplate/syncobj.h>
+#include <copperplate/threadobj.h>
 
 struct psos_task_args {
 	void (*entry)(u_long a0, u_long a1, u_long a2, u_long a3);

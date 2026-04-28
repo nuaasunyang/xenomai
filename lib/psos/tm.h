@@ -19,9 +19,6 @@
 #ifndef _PSOS_TM_H
 #define _PSOS_TM_H
 
-#include <sys/types.h>
-#include <time.h>
-#include <boilerplate/list.h>
 #include <copperplate/timerobj.h>
 
 struct psos_tm {

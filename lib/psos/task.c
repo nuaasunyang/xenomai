@@ -10,30 +10,22 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
-
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
 
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <pthread.h>
-#include <sched.h>
-
-#include "boilerplate/namegen.h"
-#include "copperplate/heapobj.h"
-#include "copperplate/threadobj.h"
-#include "copperplate/syncobj.h"
-#include "copperplate/cluster.h"
-#include "copperplate/internal.h"
-#include "psos/psos.h"
-#include "internal.h"
 #include "task.h"
-#include "tm.h"
+#include "boilerplate/namegen.h"
+#include "copperplate/internal.h"
+#include "internal.h"
+#include "psos/psos.h"
 #include "queue.h"
 #include "rn.h"
+#include "tm.h"
+
+#include <boilerplate/ancillaries.h>
 
 union psos_wait_union {
 	struct psos_queue_wait queue_wait;
