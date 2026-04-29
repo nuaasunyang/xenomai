@@ -23,6 +23,9 @@ version_code=`cat $srcdir/config/version-code`
 CONFIG_XENO_VERSION_MAJOR=`expr $version_code : '\([[0-9]]*\)'`
 CONFIG_XENO_VERSION_MINOR=`expr $version_code : '[[0-9]]*\.\([[0-9]]*\)'`
 CONFIG_XENO_REVISION_LEVEL=`expr $version_code : '[[0-9]]*\.[[0-9]]*\.\([[0-9]]*\)'`
+if test "x$CONFIG_XENO_REVISION_LEVEL" = "x"; then
+	CONFIG_XENO_REVISION_LEVEL=0
+fi
 CONFIG_XENO_UAPI_LEVEL=`cat $srcdir/config/apirev`
 CONFIG_XENO_VERSION_STRING="$PACKAGE_VERSION"
 topdir=`cd $srcdir && pwd`
