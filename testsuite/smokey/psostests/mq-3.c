@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <copperplate/traceobj.h>
 #include <psos/psos.h>
 
@@ -11,6 +13,8 @@ static int tseq[] = {
 };
 
 static u_long tidA, tidB, qid;
+
+static bool on_vm;
 
 static void task_A(u_long a0, u_long a1, u_long a2, u_long a3)
 {
@@ -27,7 +31,7 @@ static void task_A(u_long a0, u_long a1, u_long a2, u_long a3)
 	traceobj_mark(&trobj, 1);
 
 	for (n = 0; n < 3; n++) {
-		ret = q_receive(qid, Q_WAIT, 10, msgbuf);
+		ret = q_receive(qid, Q_WAIT, on_vm ? 0 : 10, msgbuf);
 		traceobj_mark(&trobj, 2);
 		traceobj_assert(&trobj, ret == SUCCESS);
 		traceobj_assert(&trobj, msgbuf[0] == n + 1);
@@ -56,7 +60,7 @@ static void task_B(u_long a0, u_long a1, u_long a2, u_long a3)
 	traceobj_mark(&trobj, 4);
 
 	for (n = 0; n < 3; n++) {
-		ret = q_receive(qid, Q_WAIT, 10, msgbuf);
+		ret = q_receive(qid, Q_WAIT, on_vm ? 0 : 10, msgbuf);
 		traceobj_mark(&trobj, 5);
 		traceobj_assert(&trobj, ret == SUCCESS);
 		traceobj_assert(&trobj, msgbuf[0] == n + 1);
@@ -74,6 +78,8 @@ int main(int argc, char *const argv[])
 {
 	u_long args[] = { 1, 2, 3, 4 }, msgbuf[4], count;
 	int ret, n;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], sizeof(tseq) / sizeof(int));
 

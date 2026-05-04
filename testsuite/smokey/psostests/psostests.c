@@ -48,6 +48,7 @@ static int run_psostests(struct smokey_test *t, int argc, char *const argv[])
 	smokey_note("psostests skipped. --enable-lores-clock missing.");
 	return 0;
 #else
+	const char *args = "--vm";
 	int test_ret = 0;
 	int ret = 0;
 	int tmp;
@@ -61,7 +62,7 @@ static int run_psostests(struct smokey_test *t, int argc, char *const argv[])
 
 	for (size_t i = 0; i < ARRAY_SIZE(tests); i++) {
 		tmp = smokey_run_extprog(XENO_TEST_DIR, tests[i],
-					 NULL, &test_ret);
+					 smokey_on_vm ? args : NULL, &test_ret);
 		if (test_ret)
 			ret = test_ret; /* Return the last failed test result */
 		if (tmp)
@@ -72,4 +73,3 @@ static int run_psostests(struct smokey_test *t, int argc, char *const argv[])
 #endif
 }
 smokey_test_plugin(psostests, SMOKEY_NOARGS, "Run external psostests");
-
