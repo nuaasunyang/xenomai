@@ -11,6 +11,8 @@ static RT_TASK t_bgnd, t_fgnd;
 
 static RT_EVENT event;
 
+static bool on_vm;
+
 static void background_task(void *arg)
 {
 	unsigned int flags;
@@ -30,7 +32,7 @@ static void background_task(void *arg)
 	}
 
 	ret = rt_event_wait(&event, 0x55555, &flags, EV_ANY, TM_INFINITE);
-	traceobj_check(&trobj, ret, -EIDRM);
+	traceobj_assert(&trobj, ret == -EIDRM || (on_vm && ret == -EINVAL));
 
 	traceobj_exit(&trobj);
 }
@@ -66,6 +68,8 @@ int main(int argc, char *const argv[])
 {
 	unsigned int flags;
 	int ret;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], 0);
 
