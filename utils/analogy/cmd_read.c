@@ -19,16 +19,15 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <errno.h>
+#include <rtdm/analogy.h>
+
 #include <error.h>
 #include <getopt.h>
-#include <string.h>
 #include <pthread.h>
-#include <rtdm/analogy.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 typedef int (*dump_function_t) (a4l_desc_t *, a4l_cmd_t*, unsigned char *, int);
 

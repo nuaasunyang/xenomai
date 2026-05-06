@@ -18,10 +18,9 @@
  * along with Xenomai; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+
 #ifndef __SIGNAL_GENERATION_H__
 #define  __SIGNAL_GENERATION_H__
-
-#include <stdio.h>
 
 #define MAX_SAMPLE_COUNT 8096
 #define MIN_SAMPLE_COUNT 2

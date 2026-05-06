@@ -24,13 +24,11 @@
 #ifndef __ANALOGY_CALIBRATE_H__
 #define __ANALOGY_CALIBRATE_H__
 
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
-#include <unistd.h>
+#include <error.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#include "error.h"
+#include <unistd.h>
 
 extern struct timespec calibration_start_time;
 extern a4l_desc_t descriptor;

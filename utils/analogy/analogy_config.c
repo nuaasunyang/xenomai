@@ -19,13 +19,12 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
-#include <string.h>
-#include <errno.h>
-#include <xeno_config.h>
 #include <rtdm/analogy.h>
+
+#include <errno.h>
+#include <getopt.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define ANALOGY_DRIVERS_PROC "/proc/analogy/drivers"
 #define ANALOGY_DEVICES_PROC "/proc/analogy/devices"

@@ -20,11 +20,10 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <sys/time.h>
-#include <getopt.h>
-#include <rtdm/analogy.h>
-#include "analogy_calibrate.h"
 #include "calibration_ni_m.h"
+
+#include <errno.h>
+#include <getopt.h>
 
 struct timespec calibration_start_time;
 a4l_desc_t descriptor;

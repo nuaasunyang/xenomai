@@ -19,12 +19,12 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
+#include "wf_facilities.h"
+
 #include <assert.h>
 #include <errno.h>
 #include <math.h>
-
-#include "wf_facilities.h"
+#include <stdio.h>
 
 #ifndef PI
 #define PI 3.14159265358979323846
