@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <copperplate/traceobj.h>
-#include <alchemy/task.h>
 #include <alchemy/pipe.h>
+#include <alchemy/task.h>
+#include <copperplate/traceobj.h>
 #include <smokey/smokey.h>
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
 
 static struct traceobj trobj;
 

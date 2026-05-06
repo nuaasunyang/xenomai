@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <string.h>
-#include <stdlib.h>
 #include <smokey/smokey.h>
+
+#include <stdio.h>
+#include <stdlib.h>
 
 static const char * const tests[] = {
 	"alchemytests_alarm1",

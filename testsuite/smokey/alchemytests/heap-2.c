@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdio.h>
-#include <stdlib.h>
-#include <copperplate/traceobj.h>
-#include <alchemy/task.h>
 #include <alchemy/heap.h>
 #include <alchemy/queue.h>
+#include <alchemy/task.h>
+#include <copperplate/traceobj.h>
 
 #define HEAPSIZE  16384
 #define MSGSIZE   16

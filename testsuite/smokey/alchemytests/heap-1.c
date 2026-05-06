@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <copperplate/traceobj.h>
-#include <alchemy/task.h>
 #include <alchemy/heap.h>
+#include <alchemy/task.h>
+#include <copperplate/traceobj.h>
+
+#include <stdbool.h>
 
 static int tseq[] = {
 	7, 1, 2, 3, 4,

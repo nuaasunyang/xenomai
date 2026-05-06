@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdio.h>
-#include <stdlib.h>
+#include <alchemy/queue.h>
+#include <alchemy/task.h>
 #include <boilerplate/ancillaries.h>
 #include <copperplate/traceobj.h>
-#include <alchemy/task.h>
-#include <alchemy/queue.h>
+
+#include <stdbool.h>
 
 static struct traceobj trobj;
 static bool on_vm;
