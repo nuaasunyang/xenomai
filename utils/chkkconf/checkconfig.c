@@ -4,17 +4,17 @@
  * Copyright (C) 2020 Philippe Gerum  <rpm@xenomai.org>
  */
 
-#include <unistd.h>
-#include <getopt.h>
-#include <stdbool.h>
 #include <ctype.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <search.h>
-#include <error.h>
 #include <errno.h>
+#include <error.h>
+#include <getopt.h>
+#include <search.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/utsname.h>
+#include <unistd.h>
 
 #define DEFAULT_KCONFIG    "/proc/config.gz"
 #define DEFAULT_CHECKLIST  DATADIR"/kconf-checklist"

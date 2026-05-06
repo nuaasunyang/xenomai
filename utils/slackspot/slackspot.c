@@ -19,20 +19,19 @@
  * vfile, to get backtraces of spurious relaxes.
  */
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdio.h>
-#include <error.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <fnmatch.h>
-#include <search.h>
-#include <unistd.h>
-#include <string.h>
 #include <errno.h>
-#include <limits.h>
-#include <malloc.h>
+#include <error.h>
+#include <fnmatch.h>
 #include <getopt.h>
+#include <limits.h>
+#include <search.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+/* UAPI and dependencies */
 #include <signal.h>
 #include <cobalt/uapi/signal.h>
 

@@ -16,16 +16,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-#include <xeno_config.h>
-#include <unistd.h>
-#include <getopt.h>
-#include <stdlib.h>
-#include <malloc.h>
-#include <stdio.h>
-#include <error.h>
-#include <fcntl.h>
+
 #include <copperplate/cluster.h>
 #include <xenomai/init.h>
+
+#include <error.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static const struct option options[] = {
 	{

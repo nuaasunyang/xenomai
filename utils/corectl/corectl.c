@@ -16,14 +16,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-#include <xeno_config.h>
-#include <unistd.h>
-#include <getopt.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <error.h>
+
 #include <sys/cobalt.h>
 #include <xenomai/init.h>
+
+#include <error.h>
+#include <getopt.h>
+#include <stdlib.h>
 
 int __cobalt_control_bind = 1;
 

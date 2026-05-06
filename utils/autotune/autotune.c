@@ -16,19 +16,14 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-#include <fcntl.h>
-#include <unistd.h>
+
+#include <rtdm/autotune.h>
+#include <sys/cobalt.h>
+#include <xenomai/init.h>
+
+#include <error.h>
 #include <getopt.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <limits.h>
-#include <time.h>
-#include <signal.h>
-#include <error.h>
-#include <sys/cobalt.h>
-#include <rtdm/autotune.h>
-#include <xenomai/init.h>
 
 static int tune_irqlat, tune_kernlat, tune_userlat;
 
