@@ -1,21 +1,15 @@
-#include <semaphore.h>
-#include <pthread.h>
-#include <signal.h>
 #include <rtdm/gpiopwm.h>
-#include <stdlib.h>
-#include <getopt.h>
-#include <errno.h>
-#include <error.h>
-#include <stdio.h>
-#include <time.h>
 
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
+#include <error.h>
+#include <getopt.h>
 #include <linux/netdevice.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MIN_DUTY_CYCLE				(0)
 #define MAX_DUTY_CYCLE				(100)

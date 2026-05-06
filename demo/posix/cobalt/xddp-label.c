@@ -64,18 +64,13 @@
  *   =>  mirror traffic to RT domain via write()           +--+
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
-#include <malloc.h>
-#include <pthread.h>
-#include <fcntl.h>
-#include <errno.h>
-
 #include <boilerplate/ancillaries.h>
 #include <rtdm/ipc.h>
+
+#include <malloc.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <string.h>
 
 pthread_t rt1, rt2, nrt;
 

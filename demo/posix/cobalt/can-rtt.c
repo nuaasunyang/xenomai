@@ -34,20 +34,15 @@
  * loopback messages.
  */
 
-#include <errno.h>
+#include <rtdm/can.h>
+#include <xenomai/init.h>
+
+#include <getopt.h>
 #include <mqueue.h>
 #include <signal.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <getopt.h>
-#include <netinet/in.h>
-#include <net/if.h>
-#include <sys/ioctl.h>
-#include <rtdm/can.h>
-#include <xenomai/init.h>
 
 #define NSEC_PER_SEC 1000000000
 

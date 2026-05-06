@@ -24,20 +24,17 @@
  *
  */
 
+#include <arpa/inet.h>
+#include <net/if.h>
+#include <netinet/ether.h>
+#include <netpacket/packet.h>
+#include <pthread.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <signal.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/socket.h>
 #include <sys/ioctl.h>
-#include <netpacket/packet.h>
-#include <net/ethernet.h>
-#include <net/if.h>
-#include <arpa/inet.h>
-#include <netinet/ether.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 char buffer[10*1024];
 int sock;
