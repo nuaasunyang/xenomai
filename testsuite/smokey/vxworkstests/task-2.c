@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdlib.h>
-#include <unistd.h>
+
 #include <copperplate/traceobj.h>
 #include <vxworks/errnoLib.h>
 #include <vxworks/semLib.h>
+
+#include <stdlib.h>
+#include <unistd.h>
 
 static inline void safe_pause(void)
 {
