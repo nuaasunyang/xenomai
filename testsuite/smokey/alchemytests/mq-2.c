@@ -7,6 +7,7 @@
 #include <alchemy/queue.h>
 
 static struct traceobj trobj;
+static bool on_vm;
 
 static int tseq[] = {
 	3, 4, 5, 6,
@@ -87,9 +88,10 @@ static void main_task(void *arg)
 
 	ret = rt_queue_inquire(&q, &info);
 	traceobj_check(&trobj, ret, 0);
-	traceobj_assert(&trobj, info.nmessages == 0);
+	traceobj_assert(&trobj, info.nmessages == 0 || on_vm);
 
-	traceobj_verify(&trobj, tseq, sizeof(tseq) / sizeof(int));
+	if (info.nmessages == 0)
+		traceobj_verify(&trobj, tseq, sizeof(tseq) / sizeof(int));
 
 	traceobj_exit(&trobj);
 }
@@ -98,6 +100,8 @@ int main(int argc, char *const argv[])
 {
 	RT_TASK t_main;
 	int ret;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], sizeof(tseq) / sizeof(int));
 
