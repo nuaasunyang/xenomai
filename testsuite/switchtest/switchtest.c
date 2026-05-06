@@ -21,28 +21,20 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <ctype.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
-#include <limits.h>
-#include <sched.h>
-#include <signal.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <setjmp.h>
-#include <getopt.h>
-#include <asm/unistd.h>
 #include <asm/xenomai/features.h>
 #include <asm/xenomai/uapi/fptest.h>
-#include <cobalt/uapi/asm-generic/syscall.h>
 #include <cobalt/trace.h>
+#include <cobalt/uapi/asm-generic/syscall.h>
 #include <rtdm/testing.h>
 #include <sys/cobalt.h>
 #include <xenomai/init.h>
+
+#include <asm/unistd.h>
+#include <ctype.h>
+#include <getopt.h>
+#include <setjmp.h>
+#include <stdlib.h>
+#include <string.h>
 
 static unsigned int nr_cpus;
 
