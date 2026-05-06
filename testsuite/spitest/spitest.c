@@ -21,18 +21,12 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <sys/ioctl.h>
-#include <sys/timerfd.h>
-#include <stdio.h>
-#include <semaphore.h>
-#include <errno.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <smokey/smokey.h>
-#include <linux/spi/spidev.h>
 #include <rtdm/spi.h>
+
+#include <linux/spi/spidev.h>
+#include <sys/mman.h>
+#include <sys/timerfd.h>
 
 smokey_test_plugin(spi_transfer,
 		   SMOKEY_ARGLIST(
