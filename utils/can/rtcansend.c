@@ -1,16 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <unistd.h>
-#include <time.h>
-#include <errno.h>
-#include <getopt.h>
-
-#include <boilerplate/ancillaries.h>
 #include <alchemy/task.h>
 #include <alchemy/timer.h>
-
+#include <boilerplate/ancillaries.h>
 #include <rtdm/can.h>
+
+#include <getopt.h>
 
 extern int optind, opterr, optopt;
 
