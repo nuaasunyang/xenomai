@@ -2,7 +2,7 @@
 #define __RT_UTILS_H
 
 #include <stdint.h>
-#include <linux/sched.h>
+#include <sys/types.h>
 
 #ifndef SCHED_NORMAL
 #define SCHED_NORMAL SCHED_OTHER

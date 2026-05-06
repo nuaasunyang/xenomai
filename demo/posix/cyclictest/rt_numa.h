@@ -20,8 +20,9 @@
 #ifndef _RT_NUMA_H
 #define _RT_NUMA_H
 
-#include "rt-utils.h"
 #include "error.h"
+
+#include <stdlib.h>
 
 static int numa = 0;
 

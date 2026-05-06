@@ -12,35 +12,25 @@
  *
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdarg.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <getopt.h>
-#include <pthread.h>
-#include <signal.h>
-#include <sched.h>
-#include <string.h>
-#include <time.h>
-#include <errno.h>
-#include <limits.h>
-#include <linux/unistd.h>
-
-#include <sys/prctl.h>
-#include <sys/stat.h>
-#include <sys/sysinfo.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <sys/utsname.h>
-#include <sys/mman.h>
+#include "rt_numa.h"
+#include "rt-utils.h"
 
 #include <boilerplate/ancillaries.h>
 
-#include "rt_numa.h"
-#include "rt-utils.h"
+#include <fcntl.h>
+#include <getopt.h>
+#include <linux/unistd.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <sys/prctl.h>
+#include <sys/resource.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/utsname.h>
+#include <unistd.h>
 
 #define DEFAULT_INTERVAL 1000
 #define DEFAULT_DISTANCE 500
