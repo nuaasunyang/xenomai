@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <rtdm/testing.h>
 #include "memcheck/memcheck.h"
+
+#include <rtdm/testing.h>
+
+#include <stdlib.h>
 
 smokey_test_plugin(memory_coreheap,
 		   MEMCHECK_ARGS,

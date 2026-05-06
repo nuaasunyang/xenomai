@@ -21,16 +21,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <string.h>
-#include <errno.h>
-#include <unistd.h>
-#include <mqueue.h>
-#include <pthread.h>
-#include <boilerplate/atomic.h>
-#include <sys/select.h>
-#include <sys/types.h>
-#include <fcntl.h>
 #include <smokey/smokey.h>
+
+#include <mqueue.h>
+#include <unistd.h>
 
 smokey_test_plugin(posix_select,
 		   SMOKEY_NOARGS,

@@ -9,17 +9,14 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <error.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <sys/wait.h>
-#include <smokey/smokey.h>
 #include "lib/cobalt/current.h"
+
+#include <smokey/smokey.h>
+
+#include <error.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 static void send_command(const char *string, int wait_for_prompt);
 

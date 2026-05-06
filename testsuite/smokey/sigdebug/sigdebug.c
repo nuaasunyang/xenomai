@@ -9,19 +9,12 @@
  * Released under the terms of GPLv2.
  */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <signal.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <asm/unistd.h>
-#include <sys/cobalt.h>
 #include <smokey/smokey.h>
+
+#include <asm/unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <unistd.h>
 
 smokey_test_plugin(sigdebug,
 		   SMOKEY_ARGLIST(

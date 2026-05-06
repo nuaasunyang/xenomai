@@ -21,13 +21,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <unistd.h>
-#include <sched.h>
-
 #include <smokey/smokey.h>
+
+#include <stdlib.h>
+#include <unistd.h>
 
 #if CONFIG_SMP
 #define smp_sched_setaffinity(pid,len,mask) sched_setaffinity(pid,len,mask)

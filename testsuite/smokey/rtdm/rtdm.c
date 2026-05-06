@@ -6,13 +6,10 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
 #include <rtdm/testing.h>
 #include <smokey/smokey.h>
+
+#include <stdlib.h>
 
 smokey_test_plugin(rtdm,
 		   SMOKEY_NOARGS,

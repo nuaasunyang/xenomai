@@ -6,14 +6,9 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <errno.h>
-#include <pthread.h>
-#include <semaphore.h>
 #include <smokey/smokey.h>
+
+#include <stdlib.h>
 
 smokey_test_plugin(posix_cond,
 		   SMOKEY_NOARGS,

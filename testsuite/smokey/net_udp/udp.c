@@ -6,10 +6,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <netinet/in.h>
-
-#include <sys/cobalt.h>
-#include <smokey/smokey.h>
 #include "smokey_net.h"
 
 smokey_test_plugin(net_udp,

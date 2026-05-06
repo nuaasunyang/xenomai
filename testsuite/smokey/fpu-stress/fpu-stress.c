@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <pthread.h>
-#include <smokey/smokey.h>
 #include <asm/xenomai/features.h>
 #include <asm/xenomai/uapi/fptest.h>
+#include <smokey/smokey.h>
 
 smokey_test_plugin(fpu_stress,
 		   SMOKEY_ARGLIST(

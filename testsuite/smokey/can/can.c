@@ -7,13 +7,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <pthread.h>
-#include <rtdm/can.h>
-#include <sys/cobalt.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
 #include <smokey/smokey.h>
-#include <stdbool.h>
+
+#include <rtdm/can.h>
 
 #define CAN_MOD                        "xeno_can"
 #define CAN_VIRT_MOD                   "xeno_can_virt"

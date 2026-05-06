@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include "memcheck/memcheck.h"
+
+#include <copperplate/heapobj.h>
 #include <xenomai/init.h>
 #include <xenomai/tunables.h>
-#include <copperplate/heapobj.h>
-#include "memcheck/memcheck.h"
 
 smokey_test_plugin(memory_pshared,
 		   MEMCHECK_ARGS,

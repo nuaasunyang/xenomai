@@ -6,17 +6,11 @@
  * Released under the terms of GPLv2.
  */
 
-#include <time.h>
+#include <smokey/smokey.h>
+
+#include <error.h>
 #include <malloc.h>
 #include <unistd.h>
-#include <string.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <sched.h>
-#include <errno.h>
-#include <error.h>
-#include <sys/cobalt.h>
-#include <smokey/smokey.h>
 
 smokey_test_plugin(sched_tp,
 		   SMOKEY_NOARGS,

@@ -8,11 +8,8 @@
  * Released under the terms of GPLv2.
  */
 
-#include <pthread.h>
-#include <sched.h>
-#include <signal.h>
 #include <smokey/smokey.h>
-#include <string.h>
+
 #include <sys/io.h>
 
 #define PORT (0x378)

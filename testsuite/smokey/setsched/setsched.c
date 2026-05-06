@@ -9,14 +9,11 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <pthread.h>
-#include <error.h>
-#include <semaphore.h>
-#include <unistd.h>
-#include <sys/syscall.h>
 #include <smokey/smokey.h>
-#include <sys/cobalt.h>
+
+#include <error.h>
+#include <sys/syscall.h>
+#include <unistd.h>
 
 smokey_test_plugin(setsched, SMOKEY_NOARGS,
    "Validate correct application of scheduling parameters to running threads."

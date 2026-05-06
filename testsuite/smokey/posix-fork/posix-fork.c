@@ -6,7 +6,6 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
 #include <smokey/smokey.h>
 
 smokey_test_plugin(posix_fork,

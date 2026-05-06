@@ -4,14 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <time.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <memory.h>
-#include <sched.h>
-#include <pthread.h>
 #include "memcheck.h"
+
+#include <stdlib.h>
+#include <unistd.h>
 
 enum pattern {
 	alphabet_series,

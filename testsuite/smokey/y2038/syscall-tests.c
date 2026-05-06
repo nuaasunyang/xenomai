@@ -9,13 +9,13 @@
  */
 
 #include <asm/xenomai/syscall.h>
+#include <rtdm/ipc.h>
 #include <smokey/smokey.h>
+
 #include <sys/timerfd.h>
 #include <sys/utsname.h>
 #include <sys/syscall.h> /* For __NR_gettid definitions */
 #include <mqueue.h>
-#include <sched.h>
-#include <rtdm/ipc.h>
 
 smokey_test_plugin(y2038, SMOKEY_NOARGS, "Validate correct y2038 support");
 

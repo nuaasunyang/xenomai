@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/syscall.h>
+#include <unistd.h>
 
 /*
  * We can't really trust POSIX headers to check for features, since

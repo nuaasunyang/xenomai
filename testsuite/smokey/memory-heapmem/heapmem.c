@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <boilerplate/heapmem.h>
 #include "memcheck/memcheck.h"
+
+#include <boilerplate/heapmem.h>
 
 smokey_test_plugin(memory_heapmem,
 		   MEMCHECK_ARGS,

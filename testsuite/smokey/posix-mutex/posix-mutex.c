@@ -9,15 +9,9 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <unistd.h>
-#include <signal.h>
-#include <pthread.h>
-#include <cobalt/sys/cobalt.h>
 #include <smokey/smokey.h>
+
+#include <unistd.h>
 
 smokey_test_plugin(posix_mutex,
 		   SMOKEY_NOARGS,

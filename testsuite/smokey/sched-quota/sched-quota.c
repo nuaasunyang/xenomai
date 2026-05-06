@@ -6,19 +6,12 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <math.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <sched.h>
-#include <errno.h>
-#include <error.h>
-#include <sys/cobalt.h>
-#include <boilerplate/time.h>
-#include <boilerplate/ancillaries.h>
 #include <copperplate/threadobj.h>
 #include <smokey/smokey.h>
+
+#include <error.h>
+#include <math.h>
+#include <unistd.h>
 
 smokey_test_plugin(sched_quota,
 		   SMOKEY_ARGLIST(

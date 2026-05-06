@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <tlsf/tlsf.h>
-#include <stdlib.h>
-#include <pthread.h>
 #include "memcheck/memcheck.h"
+
+#include <stdlib.h>
+#include <tlsf/tlsf.h>
 
 smokey_test_plugin(memory_tlsf,
 		   MEMCHECK_ARGS,

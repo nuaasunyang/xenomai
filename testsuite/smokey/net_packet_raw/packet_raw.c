@@ -6,16 +6,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <unistd.h>
+#include "smokey_net.h"
+
 #include <net/if.h>
-#include <arpa/inet.h>
 #include <net/ethernet.h>
 #include <sys/ioctl.h>
-#include <sys/socket.h>
-
-#include <sys/cobalt.h>
-#include <smokey/smokey.h>
-#include "smokey_net.h"
 
 smokey_test_plugin(net_packet_raw,
 	SMOKEY_ARGLIST(

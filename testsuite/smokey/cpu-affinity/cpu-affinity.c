@@ -6,10 +6,6 @@
  * Released under the terms of GPLv2.
  */
 
-#include <pthread.h>
-#include <sched.h>
-#include <unistd.h>
-#include <semaphore.h>
 #include <rtdm/testing.h>
 #include <smokey/smokey.h>
 

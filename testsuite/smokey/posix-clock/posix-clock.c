@@ -21,12 +21,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <string.h>
-#include <errno.h>
-#include <unistd.h>
-#include <time.h>
 #include <smokey/smokey.h>
+
 #include <sys/timerfd.h>
+#include <unistd.h>
 
 smokey_test_plugin(posix_clock,
 		   SMOKEY_NOARGS,

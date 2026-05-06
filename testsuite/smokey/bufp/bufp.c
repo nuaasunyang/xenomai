@@ -6,15 +6,10 @@
  * Released under the terms of GPLv2.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <pthread.h>
-#include <fcntl.h>
-#include <errno.h>
 #include <smokey/smokey.h>
 #include <rtdm/ipc.h>
+
+#include <stdlib.h>
 
 smokey_test_plugin(bufp,
 		   SMOKEY_NOARGS,
