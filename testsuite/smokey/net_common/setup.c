@@ -4,25 +4,16 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <errno.h>
-
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <arpa/inet.h>
-#include <netinet/ether.h>
-#include <netpacket/packet.h>
-
-#include <sys/cobalt.h>
-#include <smokey/smokey.h>
-
-#include <rtnet_chrdev.h>
-#include <rtcfg_chrdev.h>
 #include "smokey_net.h"
 #include "smokey_net_server.h"
+
+#include <rtcfg_chrdev.h>
+
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <netinet/ether.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 
 struct module {

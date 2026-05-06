@@ -6,23 +6,10 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-
-#include <unistd.h>
-#include <pthread.h>
-#include <sched.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netpacket/packet.h>
-#include <net/ethernet.h>
-
-#include <sys/cobalt.h>
-#include <smokey/smokey.h>
 #include "smokey_net.h"
 #include "smokey_net_server.h"
+
+#include <stdlib.h>
 
 struct smokey_server {
 	sem_t sync;

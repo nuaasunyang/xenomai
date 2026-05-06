@@ -1,12 +1,3 @@
-#include <stdio.h>
-#include <stdbool.h>
-
-#include <unistd.h>
-#include <pthread.h>
-#include <sched.h>
-#include <sys/socket.h>
-#include <sys/select.h>
-
 #include "smokey_net.h"
 
 static int duration = 10;

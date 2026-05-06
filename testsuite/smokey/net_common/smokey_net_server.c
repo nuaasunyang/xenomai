@@ -6,21 +6,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <unistd.h>
-#include <getopt.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <netinet/ether.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#include "smokey_net_server.h"
 
 #include <rtcfg_chrdev.h>
-#include <sys/cobalt.h>
 #include <smokey/smokey.h>
-#include "smokey_net_server.h"
+
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <netinet/ether.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 static const char *intf = "rteth0";
 
