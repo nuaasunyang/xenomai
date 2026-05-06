@@ -1,17 +1,13 @@
+#include <ctype.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <ctype.h>
-
-#include <sys/types.h>
-#include <fcntl.h>
 #include <sys/stat.h>
-#include <unistd.h>
-#include <signal.h>
 #include <sys/wait.h>
-#include <sys/select.h>
 #include <time.h>
+#include <unistd.h>
 
 #define CHILD_SCRIPT  0
 #define CHILD_CHECKED 1
