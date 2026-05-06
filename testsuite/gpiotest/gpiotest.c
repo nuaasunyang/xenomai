@@ -21,14 +21,10 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdio.h>
-#include <error.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <smokey/smokey.h>
 #include <rtdm/gpio.h>
+
+#include <error.h>
 
 smokey_test_plugin(interrupt,
 		   SMOKEY_ARGLIST(
