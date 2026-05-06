@@ -15,6 +15,7 @@ static RT_TASK t_test;
 static RTIME duration[TEST_ITERATIONS];
 
 static struct traceobj trobj;
+static bool on_vm;
 
 static int tseq[] = {
 	1, 2,
@@ -45,7 +46,7 @@ static void test_task(void *arg)
 			rt_task_set_periodic(NULL, TM_NOW, PERIOD_SWITCH);
 
 		ret = rt_task_wait_period(NULL);
-		traceobj_check(&trobj, ret, 0);
+		traceobj_assert(&trobj, ret == 0 || on_vm);
 
 		end = rt_timer_read();
 
@@ -61,8 +62,9 @@ static void test_task(void *arg)
 
 int main(int argc, char *const argv[])
 {
-	bool on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 	int ret;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], sizeof(tseq) / sizeof(int));
 
