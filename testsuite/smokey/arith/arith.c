@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <smokey/smokey.h>
-#include <cobalt/arith.h>
 #include "arith-noinline.h"
+
+#include <cobalt/arith.h>
+#include <smokey/smokey.h>
 
 smokey_test_plugin(arith,
 		   SMOKEY_NOARGS,

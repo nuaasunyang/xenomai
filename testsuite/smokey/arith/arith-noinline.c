@@ -1,5 +1,6 @@
-#include <cobalt/arith.h>
 #include "arith-noinline.h"
+
+#include <cobalt/arith.h>
 
 long long dummy(void)
 {
