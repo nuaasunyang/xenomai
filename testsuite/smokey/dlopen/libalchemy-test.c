@@ -22,9 +22,6 @@
  */
 
 #include <alchemy/queue.h>
-#include <string.h>
-
-#include <xenomai/init.h>
 #include <xenomai/tunables.h>
 
 static int ran_init = 0;
