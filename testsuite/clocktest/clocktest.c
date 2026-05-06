@@ -16,22 +16,16 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include <errno.h>
-#include <pthread.h>
-#include <sched.h>
-#include <signal.h>
-#include <stdio.h>
-#include <error.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <ctype.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#include <sys/syscall.h>
-#include <sys/time.h>
 #include <boilerplate/ancillaries.h>
-#include <xeno_config.h>
+
+#include <ctype.h>
+#include <error.h>
+#include <signal.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/syscall.h>
 
 /*
  * We can't really trust POSIX headers to check for features, since
