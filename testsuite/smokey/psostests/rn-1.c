@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdlib.h>
-#include <memory.h>
+
 #include <copperplate/traceobj.h>
 #include <psos/psos.h>
+
+#include <memory.h>
+#include <stdlib.h>
 
 static struct traceobj trobj;
 

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <string.h>
-#include <stdlib.h>
+
 #include <smokey/smokey.h>
+
+#include <stdlib.h>
 
 static const char * const tests[] = {
 	"psostests_mq1",
@@ -73,3 +74,4 @@ static int run_psostests(struct smokey_test *t, int argc, char *const argv[])
 #endif
 }
 smokey_test_plugin(psostests, SMOKEY_NOARGS, "Run external psostests");
+

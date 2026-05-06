@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <stdio.h>
-#include <stdlib.h>
+
 #include <copperplate/traceobj.h>
 #include <psos/psos.h>
+
+#include <stdlib.h>
 
 #define TEST_DATE  ((2008 << 16)|(4 << 8)|25) /* 4/25/2008 */
 #define TEST_TIME  ((11 << 16)|(17 << 8)|30)  /* 11:17:30 */
