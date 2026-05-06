@@ -21,9 +21,6 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
 #include <alchemy/task.h>
 #include <rtdm/serial.h>
 

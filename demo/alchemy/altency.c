@@ -4,20 +4,14 @@
  * Licensed under the LGPL v2.1.
  */
 
-#include <stdlib.h>
+#include <alchemy/sem.h>
+#include <alchemy/task.h>
+#include <boilerplate/trace.h>
+#include <rtdm/testing.h>
+#include <xenomai/init.h>
+
 #include <math.h>
 #include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <sched.h>
-#include <time.h>
-#include <unistd.h>
-#include <signal.h>
-#include <alchemy/task.h>
-#include <alchemy/sem.h>
-#include <rtdm/testing.h>
-#include <boilerplate/trace.h>
-#include <xenomai/init.h>
 
 RT_TASK latency_task, display_task;
 
