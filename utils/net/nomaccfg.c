@@ -23,15 +23,13 @@
  *
  */
 
+#include <nomac_chrdev.h>
+
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <sys/ioctl.h>
-
-#include <nomac_chrdev.h>
-
 
 static int                     f;
 static struct nomac_config     nomac_cfg;

@@ -22,24 +22,19 @@
  *
  */
 
+#include <rtcfg_chrdev.h>
+
+#include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
+#include <netinet/ether.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <net/if.h>
-#include <netinet/in.h>
-#include <netinet/ether.h>
-#include <arpa/inet.h>
-
-#include <rtcfg_chrdev.h>
-
+#include <sys/stat.h>
+#include <unistd.h>
 
 #define DFLT_PACKET_SIZE        1500 /* Ethernet packet */
 #define DFLT_CLIENT_BURST_RATE  4

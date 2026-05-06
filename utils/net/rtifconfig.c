@@ -23,20 +23,17 @@
  *
  */
 
+#include <rtnet_chrdev.h>
+
+#include <arpa/inet.h>
+#include <ctype.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <netinet/ether.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <ctype.h>
-#include <fcntl.h>
 #include <sys/ioctl.h>
-#include <net/ethernet.h>
-#include <net/if_arp.h>
-#include <netinet/ether.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
-#include <rtnet_chrdev.h>
 
 /* Some old toolchains don't ARPHRD_IEEE1394 defined */
 #ifndef ARPHRD_IEEE1394

@@ -23,18 +23,15 @@
  *
  */
 
-#include <errno.h>
+#include <tdma_chrdev.h>
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
-#include <arpa/inet.h>
-
-#include <tdma_chrdev.h>
-
+#include <unistd.h>
 
 static int                  f;
 static struct tdma_config   tdma_cfg;

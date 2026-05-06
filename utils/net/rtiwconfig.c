@@ -1,15 +1,11 @@
+#include <rtwlan_io.h>
+
+#include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
-#include <fcntl.h>
 #include <sys/ioctl.h>
-#include <net/ethernet.h>
-#include <net/if_arp.h>
-#include <netinet/ether.h>
-#include <netinet/in.h>
-
-#include <rtwlan_io.h>
 
 #define PRINT_FLAG_ALL          1
 #define PRINT_FLAG_INACTIVE     2
