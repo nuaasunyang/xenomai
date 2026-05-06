@@ -21,20 +21,16 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <signal.h>
-#include <sched.h>
-#include <time.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <rtdm/testing.h>
 #include <rtdm/gpio.h>
-#include <boilerplate/trace.h>
-#include <sys/mman.h>
+
 #include <getopt.h>
+#include <pthread.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
 
 #define NS_PER_MS (1000000)
 #define NS_PER_S (1000000000)
