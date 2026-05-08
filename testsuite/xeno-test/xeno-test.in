@@ -108,7 +108,7 @@ fi
 
 start_timesyncd
 
-$testdir/clocktest -D -T 30 -C CLOCK_HOST_REALTIME || $testdir/clocktest -T 30
+$testdir/clocktest -T 30
 $testdir/switchtest -T 30
 
 start_load
