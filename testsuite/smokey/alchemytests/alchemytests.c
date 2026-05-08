@@ -52,8 +52,7 @@ static int run_alchemytests(struct smokey_test *t, int argc, char *const argv[])
 
 	for (size_t i = 0; i < ARRAY_SIZE(tests); i++) {
 		tmp = smokey_run_extprog(XENO_TEST_DIR, tests[i],
-					 smokey_on_vm ? args : args + 5,
-					 &test_ret);
+					 smokey_on_vm ? args : NULL, &test_ret);
 		if (test_ret)
 			ret = test_ret; /* Return the last failed test result */
 		if (tmp)
