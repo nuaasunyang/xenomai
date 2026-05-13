@@ -21,7 +21,6 @@ test_PROGRAMS =				\
 		alchemytests_mq3	\
 		alchemytests_mutex1	\
 		alchemytests_mutex2	\
-		alchemytests_pipe1	\
 		alchemytests_sem1	\
 		alchemytests_sem2	\
 		alchemytests_task1	\
@@ -35,6 +34,11 @@ test_PROGRAMS =				\
 		alchemytests_task9	\
 		alchemytests_task10	\
 		alchemytests_task11
+
+if XENO_COBALT
+test_PROGRAMS +=			\
+		alchemytests_pipe1
+endif
 
 alchemycppflags =			\
 	$(XENO_USER_CFLAGS)		\
@@ -75,10 +79,6 @@ alchemytests_mutex2_SOURCES = mutex-2.c
 alchemytests_mutex2_CPPFLAGS = $(alchemycppflags)
 alchemytests_mutex2_LDADD = $(alchemyldadd)
 alchemytests_mutex2_LDFLAGS = @XENO_AUTOINIT_LDFLAGS@
-alchemytests_pipe1_SOURCES = pipe-1.c
-alchemytests_pipe1_CPPFLAGS = $(alchemycppflags)
-alchemytests_pipe1_LDADD = $(alchemyldadd)
-alchemytests_pipe1_LDFLAGS = @XENO_AUTOINIT_LDFLAGS@
 alchemytests_mq1_SOURCES = mq-1.c
 alchemytests_mq1_CPPFLAGS = $(alchemycppflags)
 alchemytests_mq1_LDADD = $(alchemyldadd)
@@ -143,3 +143,10 @@ alchemytests_task11_SOURCES = task-11.c
 alchemytests_task11_CPPFLAGS = $(alchemycppflags)
 alchemytests_task11_LDADD = $(alchemyldadd)
 alchemytests_task11_LDFLAGS = @XENO_AUTOINIT_LDFLAGS@
+
+if XENO_COBALT
+alchemytests_pipe1_SOURCES = pipe-1.c
+alchemytests_pipe1_CPPFLAGS = $(alchemycppflags)
+alchemytests_pipe1_LDADD = $(alchemyldadd)
+alchemytests_pipe1_LDFLAGS = @XENO_AUTOINIT_LDFLAGS@
+endif

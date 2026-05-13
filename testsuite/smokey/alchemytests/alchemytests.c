@@ -15,7 +15,9 @@ static const char * const tests[] = {
 	"alchemytests_mq3",
 	"alchemytests_mutex1",
 	"alchemytests_mutex2",
+#ifdef CONFIG_XENO_COBALT
 	"alchemytests_pipe1",
+#endif
 	"alchemytests_sem1",
 	"alchemytests_sem2",
 	"alchemytests_task1",
