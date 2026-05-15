@@ -996,7 +996,7 @@ void xnthread_suspend(struct xnthread *thread, int mask,
 	 * assumptions regarding suspended threads.
 	 *
 	 * We only care for threads that are not current, and for
-	 * XNSUSP, XNDELAY, XNDORMANT and XNHELD conditions, because:
+	 * XNSUSP and XNHELD conditions, because:
 	 *
 	 * - There is no point in dealing with a relaxed thread which
 	 * is current, since personalities have to ask for primary
@@ -1005,15 +1005,16 @@ void xnthread_suspend(struct xnthread *thread, int mask,
 	 *
 	 * - among all blocking bits (XNTHREAD_BLOCK_BITS), only
 	 * XNSUSP, XNDELAY, XNHELD and XNDBGSTOP may be applied by the
-	 * current thread to a non-current thread. XNPEND is always
-	 * added by the caller to its own state, XNMIGRATE, XNRELAX
-	 * and XNDBGSTOP have special semantics escaping this issue.
+	 * current thread to a non-current thread. XNPEND, XNDELAY and
+	 * XNDORMANT are always added by the caller to its own state,
+	 * XNMIGRATE, XNRELAX and XNDBGSTOP have special semantics
+	 * escaping this issue.
 	 *
 	 * We don't signal threads which are already in a dormant
 	 * state, since they are suspended by definition.
 	 */
 	if (((oldstate & (XNTHREAD_BLOCK_BITS|XNUSER)) == (XNRELAX|XNUSER)) &&
-	    (mask & (XNDELAY | XNSUSP | XNHELD)) != 0)
+	    (mask & (XNSUSP | XNHELD)) != 0)
 		__xnthread_signal(thread, SIGSHADOW, SIGSHADOW_ACTION_HARDEN);
 out:
 	xnlock_put_irqrestore(&nklock, s);
