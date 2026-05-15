@@ -152,9 +152,10 @@ retry:
 	if (pss->budget == 0)
 		return;
 
-	if (xnthread_test_state(thread, XNHELD))
+	if (xnthread_test_state(thread, XNHELD)) {
+		xnthread_clear_info(thread, XNPNDHELD);
 		xnthread_resume(thread, XNHELD);
-	else if (thread->cprio < pss->param.normal_prio) {
+	} else if (thread->cprio < pss->param.normal_prio) {
 		p.pss.init_budget = 0;
 		p.pss.current_prio = pss->param.normal_prio;
 		/* Move sporadic thread to the foreground. */

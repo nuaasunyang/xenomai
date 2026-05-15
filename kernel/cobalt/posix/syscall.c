@@ -118,6 +118,8 @@ static void prepare_for_signal(struct task_struct *p,
 static COBALT_SYSCALL(migrate, current, (int domain))
 {
 	struct xnthread *thread = xnthread_current();
+	int err;
+	spl_t s;
 
 	if (is_secondary_domain()) {
 		if (domain == COBALT_PRIMARY) {
@@ -131,7 +133,29 @@ static COBALT_SYSCALL(migrate, current, (int domain))
 			if (xnthread_test_state(thread, XNDORMANT))
 				return 0;
 
-			return xnthread_harden() ? : 1;
+			err = xnthread_harden();
+			if (err)
+				return err;
+
+			xnlock_get_irqsave(&nklock, s);
+
+			if (xnthread_test_info(thread, XNPNDSUSP|XNPNDHELD)) {
+				int mask = 0;
+
+				if (xnthread_test_info(thread, XNPNDSUSP))
+					mask |= XNSUSP;
+				if (xnthread_test_info(thread, XNPNDHELD))
+					mask |= XNHELD;
+
+				xnthread_clear_info(thread,
+						    XNPNDSUSP|XNPNDHELD);
+				xnthread_suspend(thread, mask, XN_INFINITE,
+						 XN_RELATIVE, NULL);
+			}
+
+			xnlock_put_irqrestore(&nklock, s);
+
+			return 1;
 		}
 		return 0;
 	}

@@ -73,6 +73,8 @@
 #define XNPIALERT 0x00000080 /**< Priority inversion alert (SIGDEBUG sent) */
 #define XNSCHEDP  0x00000100 /**< schedparam propagation is pending */
 #define XNCONTHI  0x00000200 /**< Continue in primary mode after debugging */
+#define XNPNDSUSP 0x00000400 /**< Pending suspension on migrate syscall */
+#define XNPNDHELD 0x00000800 /**< Pending held on migrate syscall */
 
 /* Local information flags (private to current thread) */
 

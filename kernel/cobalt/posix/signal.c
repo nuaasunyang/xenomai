@@ -510,6 +510,7 @@ int __cobalt_kill(struct cobalt_thread *thread, int sig, int group) /* nklocked,
 			ret = -EINTR;
 		break;
 	case SIGRESM:
+		xnthread_clear_info(&thread->threadbase, XNPNDSUSP);
 		xnthread_resume(&thread->threadbase, XNSUSP);
 		goto resched;
 	case SIGRELS:

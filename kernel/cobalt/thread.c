@@ -1013,8 +1013,13 @@ void xnthread_suspend(struct xnthread *thread, int mask,
 	 * state, since they are suspended by definition.
 	 */
 	if (((oldstate & (XNTHREAD_BLOCK_BITS|XNUSER)) == (XNRELAX|XNUSER)) &&
-	    (mask & (XNDELAY | XNSUSP | XNHELD)) != 0)
+	    (mask & (XNDELAY | XNSUSP | XNHELD)) != 0) {
+		if (mask & XNSUSP)
+			xnthread_set_info(thread, XNPNDSUSP);
+		if (mask & XNHELD)
+			xnthread_set_info(thread, XNPNDHELD);
 		__xnthread_signal(thread, SIGSHADOW, SIGSHADOW_ACTION_HARDEN);
+	}
 out:
 	xnlock_put_irqrestore(&nklock, s);
 	return;
