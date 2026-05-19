@@ -25,13 +25,14 @@
 #include <linux/slab.h>
 #include <linux/err.h>
 #include <linux/dma-mapping.h>
+#include <linux/gpio.h>
+#include <linux/gpio/driver.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
 #include <linux/io.h>
 #include <linux/clk.h>
 #include <linux/spi/spi.h>
 #include <linux/of_irq.h>
-#include <linux/of_gpio.h>
 #include "spi-master.h"
 
 #define RTDM_SUBCLASS_BCM2835  1
