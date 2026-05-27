@@ -34,7 +34,7 @@ void pipeline_set_timer_shot(unsigned long delay) /* ns */
 	ktime_t t;
 	int ret;
 
-	if (real_dev->features & CLOCK_EVT_FEAT_KTIME) {
+	if (real_dev->features & COBALT_CLOCK_EVT_FEAT_HRTIMER) {
 		t = ktime_add(delay, xnclock_core_read_raw());
 		real_dev->set_next_ktime(t, real_dev);
 	} else {
@@ -125,7 +125,7 @@ static void setup_proxy(struct clock_proxy_device *dev)
 
 	dev->handle_oob_event = (typeof(dev->handle_oob_event))
 		xnintr_core_clock_handler;
-	proxy_dev->features |= CLOCK_EVT_FEAT_KTIME;
+	proxy_dev->features |= COBALT_CLOCK_EVT_FEAT_HRTIMER;
 	proxy_dev->set_next_ktime = proxy_set_next_ktime;
 	if (proxy_dev->set_state_oneshot_stopped)
 		proxy_dev->set_state_oneshot_stopped = proxy_set_oneshot_stopped;
