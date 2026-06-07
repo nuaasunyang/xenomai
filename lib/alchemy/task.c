@@ -1130,9 +1130,6 @@ int rt_task_same(RT_TASK *task1, RT_TASK *task2)
  * Xenomai task, or if @a task is non-NULL but not a valid task
  * descriptor.
  *
- * - -EINTR is returned if a Linux signal has been received by the
- * caller if suspended.
- *
  * - -EPERM is returned if @a task is NULL and this service was called
  * from an invalid context.
  *
