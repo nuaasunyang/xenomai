@@ -120,7 +120,7 @@ static void server_loop_cleanup(void *cookie)
 	free(fds);
 }
 
-void smokey_net_server_loop(int net_config)
+void smokey_net_server_loop(int net_config, sem_t *ready)
 {
 	struct sched_param prio;
 	const struct proto *p;
@@ -152,6 +152,9 @@ void smokey_net_server_loop(int net_config)
 	prio.sched_priority = 20;
 	check_pthread(
 		__RT(pthread_setschedparam(pthread_self(), SCHED_FIFO, &prio)));
+
+	if (ready)
+		check_unix(__RT(sem_post(ready)));
 
 	for (;;) {
 		fd_set tfds;

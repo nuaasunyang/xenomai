@@ -35,6 +35,7 @@ struct module {
 static struct rtnet_core_cmd cmd;
 static int fd;
 static pthread_t loopback_server_tid;
+static sem_t loopback_server_ready;
 static bool loopback_thread_created, ifup;
 static struct module modules[] = {
 	{
@@ -335,7 +336,7 @@ int smokey_net_server_check_inner(const char *file, int line,
 static void *loopback_server(void *cookie)
 {
 	int net_config = (long)cookie;
-	smokey_net_server_loop(net_config);
+	smokey_net_server_loop(net_config, &loopback_server_ready);
 	return NULL;
 }
 
@@ -425,13 +426,21 @@ running:
 	}
 
 	if (strcmp(driver, "rt_loopback") == 0) {
-		err  = smokey_check_status(
+		err = smokey_check_errno(
+			__RT(sem_init(&loopback_server_ready, 0, 0)));
+		if (err < 0)
+			goto err;
+		err = smokey_check_status(
 			__RT(pthread_create(&loopback_server_tid, NULL,
 						loopback_server,
 						(void *)(long)tested_config)));
 		if (err < 0)
 			goto err;
 		loopback_thread_created = true;
+		err = smokey_check_errno(
+			__RT(sem_wait(&loopback_server_ready)));
+		if (err < 0)
+			goto err;
 	}
 
 	switch (peer->sa_family) {
@@ -476,6 +485,11 @@ int smokey_net_teardown(const char *driver, const char *intf, int tested_config)
 			err = tmp;
 		if (err == 0 && status != PTHREAD_CANCELED)
 			err = (long)status;
+
+		tmp = smokey_check_errno(
+			__RT(sem_destroy(&loopback_server_ready)));
+		if (err == 0)
+			err = tmp;
 	}
 
 	tmp = smokey_check_errno(open("/dev/rtnet", O_RDWR));

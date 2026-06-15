@@ -206,6 +206,6 @@ int main(int argc, char *argv[])
 
 	close(fd);
 
-	smokey_net_server_loop(net_config);
+	smokey_net_server_loop(net_config, NULL);
 	exit(EXIT_SUCCESS);
 }

@@ -26,6 +26,6 @@ struct smokey_server;
 int smokey_net_server_check_inner(const char *file, int line,
 				     const char *msg, int status);
 
-void smokey_net_server_loop(int net_config);
+void smokey_net_server_loop(int net_config, sem_t *ready);
 
 #endif /* SMOKEY_NET_CHECK_H */
