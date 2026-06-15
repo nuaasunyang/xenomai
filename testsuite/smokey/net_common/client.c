@@ -176,7 +176,7 @@ static int smokey_net_client_loop(struct smokey_net_client *client)
 		unsigned seq = payload.seq;
 
 		next_shot.tv_nsec += 1000000000 / rate;
-		if (next_shot.tv_nsec > 1000000000) {
+		if (next_shot.tv_nsec >= 1000000000) {
 			next_shot.tv_nsec -= 1000000000;
 			next_shot.tv_sec++;
 		}
