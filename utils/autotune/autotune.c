@@ -92,7 +92,7 @@ static const struct option base_options[] = {
 
 static void *sampler_thread(void *arg)
 {
-	int fd = (long)arg, ret, n = 0;
+	int fd = (long)arg, ret;
 	__u64 timestamp = 0;
 	struct timespec now;
 
@@ -102,9 +102,7 @@ static void *sampler_thread(void *arg)
 			if (errno != EPIPE)
 				error(1, errno, "pulse failed");
 			timestamp = 0; /* Next tuning period. */
-			n = 0;
 		} else {
-			n++;
 			clock_gettime(CLOCK_MONOTONIC, &now);
 			timestamp = (__u64)now.tv_sec * 1000000000 + now.tv_nsec;
 		}
