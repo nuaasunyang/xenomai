@@ -122,8 +122,8 @@ static int run_sched_tp(struct smokey_test *t, int argc, char *const argv[])
 {
 	union sched_config *p;
 	int ret, n, policies;
+	const char *s;
 	size_t len;
-	char *s;
 
 	ret = cobalt_corectl(_CC_COBALT_GET_POLICIES, &policies, sizeof(policies));
 	if (ret || (policies & _CC_COBALT_SCHED_TP) == 0)
