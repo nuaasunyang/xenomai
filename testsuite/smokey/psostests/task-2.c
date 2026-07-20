@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <copperplate/traceobj.h>
+#include <copperplate/threadobj.h>
 #include <psos/psos.h>
 
 static struct traceobj trobj;
@@ -16,7 +17,6 @@ static u_long sem_id;
 
 static void backgroundTask(u_long a1, u_long a2, u_long a3, u_long a4)
 {
-	unsigned int safety = 100000000, count = 0;
 	int ret;
 
 	traceobj_enter(&trobj);
@@ -28,8 +28,7 @@ static void backgroundTask(u_long a1, u_long a2, u_long a3, u_long a4)
 
 	traceobj_mark(&trobj, 2);
 
-	while (--safety > 0)
-		count++;
+	threadobj_spin(2000000);
 
 	traceobj_mark(&trobj, 3);
 
