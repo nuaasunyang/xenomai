@@ -15,9 +15,7 @@ static const char * const tests[] = {
 	"psostests_sem1",
 	"psostests_sem2",
 	"psostests_task1",
-	// 0"014.452| BUG in __traceobj_assert_failed(): [FGND] trace assertion failed:
-	//		../../../../../../../../../workspace/sources/xenomai/testsuite/smokey/psostests/task-2.c:56 => "ret == 0"
-	//"psostests_task2",
+	"psostests_task2",
 	"psostests_task3",
 	"psostests_task4",
 	"psostests_task5",
