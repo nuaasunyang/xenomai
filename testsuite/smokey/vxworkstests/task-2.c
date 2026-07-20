@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <stdlib.h>
 #include <unistd.h>
+#include <copperplate/threadobj.h>
 #include <copperplate/traceobj.h>
 #include <vxworks/errnoLib.h>
 #include <vxworks/semLib.h>
@@ -23,7 +24,6 @@ static SEM_ID sem_id, fdone_sem_id;
 
 static void backgroundTask(long arg, ...)
 {
-	unsigned int safety = 100000000, count = 0;
 	int ret;
 
 	traceobj_enter(&trobj);
@@ -35,8 +35,7 @@ static void backgroundTask(long arg, ...)
 
 	traceobj_mark(&trobj, 2);
 
-	while (--safety > 0)
-		count++;
+	threadobj_spin(2000000);
 
 	/*
 	 * Enter infinite pause so that any pending cancellation is
