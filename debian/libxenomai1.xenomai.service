@@ -1,0 +1,12 @@
+[Unit]
+Description=Set Xenomai group
+After=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/xenomai/xenomai-group start
+ExecStop=/usr/lib/xenomai/xenomai-group stop
+
+[Install]
+WantedBy=multi-user.target

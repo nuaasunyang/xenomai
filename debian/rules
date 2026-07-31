@@ -75,6 +75,7 @@ install: build
 	    cat $$f >> $(CURDIR)/debian/libxenomai1/etc/udev/xenomai.rules ; \
 	done
 	install -m 644 debian/libxenomai1.modprobe $(CURDIR)/debian/libxenomai1/etc/modprobe.d/xenomai.conf
+	install -D -m 755 debian/libxenomai1.xenomai-group $(CURDIR)/debian/libxenomai1/usr/lib/xenomai/xenomai-group
 	# remove empty directory
 	rm -rf $(CURDIR)/debian/xenomai-doc/usr/share/doc/xenomai-doc/ps
 	cp debian/libxenomai1.lintian $(CURDIR)/debian/libxenomai1/usr/share/lintian/overrides/libxenomai1
@@ -103,7 +104,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir -a
 	dh_testroot -a
-	dh_installinit -a --name=xenomai
+	dh_installsystemd -a --name=xenomai
 	dh_installman -a
 	dh_installdocs -a -A README
 	dh_link -a

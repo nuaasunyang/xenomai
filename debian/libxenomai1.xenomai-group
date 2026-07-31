@@ -1,0 +1,26 @@
+#!/bin/sh -e
+
+GROUP=xenomai
+FILENAME=/sys/module/xenomai/parameters/allowed_group
+GID=$(getent group "$GROUP" | cut -d: -f3)
+
+test -e "$FILENAME" || exit 0
+test -n "$GID" || exit 0
+
+case "$1" in
+  start)
+        echo "$GID" > "$FILENAME"
+        ;;
+  stop)
+        echo "-1" > "$FILENAME"
+        ;;
+  restart|force-reload)
+        "$0" start
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
