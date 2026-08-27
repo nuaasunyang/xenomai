@@ -56,7 +56,12 @@ static void sigdebug(int sig, siginfo_t *si, void *context)
 #define THREAD_PRIO_HIGH	3
 #define THREAD_PRIO_VERY_HIGH	4
 
-#define MAX_100_MS  100000000ULL
+/* On single-core ARM and kernels < 6.17, some tests can take longer */
+#ifdef __arm__
+#define TEST_TIMEOUT  300000000ULL	/* 300 ms */
+#else
+#define TEST_TIMEOUT  100000000ULL	/* 100 ms */
+#endif
 
 struct locker_context {
 	pthread_mutex_t *mutex;
@@ -1435,30 +1440,30 @@ static int run_posix_mutex(struct smokey_test *t, int argc, char *const argv[])
 					    SCHED_FIFO, &param)))
 		return ret;
 
-	do_test(static_init_normal_destroy, MAX_100_MS);
-	do_test(static_init_normal_contend, MAX_100_MS);
-	do_test(dynamic_init_normal_contend, MAX_100_MS);
-	do_test(static_init_recursive_destroy, MAX_100_MS);
-	do_test(static_init_recursive_contend, MAX_100_MS);
-	do_test(dynamic_init_recursive_contend, MAX_100_MS);
-	do_test(static_init_errorcheck_destroy, MAX_100_MS);
-	do_test(static_init_errorcheck_contend, MAX_100_MS);
-	do_test(dynamic_init_errorcheck_contend, MAX_100_MS);
-	do_test(timed_contend, MAX_100_MS);
-	do_test(weak_mode_switch, MAX_100_MS);
-	do_test(pi_contend, MAX_100_MS);
-	do_test(pi_nesting_contend_multicore, MAX_100_MS);
-	do_test(steal, MAX_100_MS);
-	do_test(no_steal, MAX_100_MS);
-	do_test(protect_raise, MAX_100_MS);
-	do_test(protect_lower, MAX_100_MS);
-	do_test(protect_nesting_protect, MAX_100_MS);
-	do_test(protect_nesting_pi, MAX_100_MS);
-	do_test(protect_weak, MAX_100_MS);
-	do_test(protect_dynamic, MAX_100_MS);
-	do_test(protect_trylock, MAX_100_MS);
-	do_test(protect_handover, MAX_100_MS);
-	do_test(check_timedlock_abstime_validation, MAX_100_MS);
+	do_test(static_init_normal_destroy, TEST_TIMEOUT);
+	do_test(static_init_normal_contend, TEST_TIMEOUT);
+	do_test(dynamic_init_normal_contend, TEST_TIMEOUT);
+	do_test(static_init_recursive_destroy, TEST_TIMEOUT);
+	do_test(static_init_recursive_contend, TEST_TIMEOUT);
+	do_test(dynamic_init_recursive_contend, TEST_TIMEOUT);
+	do_test(static_init_errorcheck_destroy, TEST_TIMEOUT);
+	do_test(static_init_errorcheck_contend, TEST_TIMEOUT);
+	do_test(dynamic_init_errorcheck_contend, TEST_TIMEOUT);
+	do_test(timed_contend, TEST_TIMEOUT);
+	do_test(weak_mode_switch, TEST_TIMEOUT);
+	do_test(pi_contend, TEST_TIMEOUT);
+	do_test(pi_nesting_contend_multicore, TEST_TIMEOUT);
+	do_test(steal, TEST_TIMEOUT);
+	do_test(no_steal, TEST_TIMEOUT);
+	do_test(protect_raise, TEST_TIMEOUT);
+	do_test(protect_lower, TEST_TIMEOUT);
+	do_test(protect_nesting_protect, TEST_TIMEOUT);
+	do_test(protect_nesting_pi, TEST_TIMEOUT);
+	do_test(protect_weak, TEST_TIMEOUT);
+	do_test(protect_dynamic, TEST_TIMEOUT);
+	do_test(protect_trylock, TEST_TIMEOUT);
+	do_test(protect_handover, TEST_TIMEOUT);
+	do_test(check_timedlock_abstime_validation, TEST_TIMEOUT);
 
 	return 0;
 }
