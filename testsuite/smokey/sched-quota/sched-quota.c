@@ -41,13 +41,18 @@ smokey_test_plugin(sched_quota,
 );
 
 #define MAX_THREADS 8
-#define TEST_SECS   1
+#define PERIOD_NS   10000000	/* 10 ms, default XENO_OPT_SCHED_QUOTA_PERIOD */
+#define NR_PERIODS  100
 
-static unsigned long long crunch_per_sec, loops_per_sec;
+static enum runtime_phase {
+	idle_phase,
+	calibration_phase,
+	accuracy_measurement_phase,
+} current_phase = idle_phase;
 
 static pthread_t threads[MAX_THREADS];
 
-static unsigned long counts[MAX_THREADS];
+static unsigned long long counts[MAX_THREADS];
 
 static int nrthreads;
 
@@ -55,85 +60,90 @@ static pthread_cond_t barrier;
 
 static pthread_mutex_t lock;
 
-static int started;
-
 static sem_t ready;
 
-static volatile int throttle;
-
-static unsigned long __attribute__(( noinline ))
-__do_work(unsigned long count)
-{
-	threadobj_spin(1000);
-	return count + 1;
-}
+static int tgid = -1;
 
 static void __attribute__(( noinline ))
-do_work(unsigned long loops, unsigned long *count_r)
+do_work(unsigned long long *loops, long work_ns)
 {
-	unsigned long n;
+	struct timespec now, to, delay;
 
-	for (n = 0; n < loops; n++)
-		*count_r = __do_work(*count_r);
+	clock_gettime(CLOCK_MONOTONIC, &now);
+	timespec_adds(&to, &now, work_ns);
+
+	while (to.tv_sec > now.tv_sec ||
+	       (to.tv_sec == now.tv_sec && to.tv_nsec > now.tv_nsec)) {
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		if (loops) {
+			threadobj_spin(1000);
+			(*loops)++;
+			/*
+			 * Yield to siblings. We do that every ten loops
+			 * not to over-consume the budget with scheduling
+			 * overhead.
+			 *
+			 * Do not use sched_yield as the sibling(s) may not be
+			 * awake and we would then be delayed by the cobalt
+			 * core for TICK_NSEC.
+			 */
+			if (nrthreads > 1 && !(*loops % 10)) {
+				delay.tv_sec = 0;
+				delay.tv_nsec = 5000;
+				clock_nanosleep(CLOCK_MONOTONIC, 0,
+						&delay, NULL);
+			}
+		}
+	}
 }
 
-static void *thread_body(void *arg)
+static void wait_phase(enum runtime_phase phase)
 {
-	unsigned long *count_r = arg, loops;
-	int oldstate, oldtype;
-
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate);
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
-	loops = crunch_per_sec / 100; /* yield each 10 ms runtime */
-	*count_r = 0;
 	sem_post(&ready);
 
 	pthread_mutex_lock(&lock);
 	for (;;) {
-		if (started)
+		if (current_phase == phase)
 			break;
 		pthread_cond_wait(&barrier, &lock);
 	}
 	pthread_mutex_unlock(&lock);
+}
 
-	for (;;) {
-		do_work(loops, count_r);
-		if (throttle)
-			sleep(1);
-		else if (nrthreads > 1)
-			sched_yield();
-	}
+static void start_phase(enum runtime_phase phase)
+{
+	pthread_mutex_lock(&lock);
+	current_phase = phase;
+	pthread_cond_broadcast(&barrier);
+	pthread_mutex_unlock(&lock);
+}
+
+static void *thread_body(void *arg)
+{
+	struct sched_param_ex param_ex;
+	unsigned long long *loops = arg;
+	int oldstate, oldtype;
+
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &oldstate);
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
+
+	wait_phase(calibration_phase);
+
+	do_work(loops, PERIOD_NS * NR_PERIODS);
+
+	param_ex.sched_priority = 1;
+	param_ex.sched_quota_group = tgid;
+	pthread_setschedparam_ex(pthread_self(), SCHED_QUOTA, &param_ex);
+
+	wait_phase(accuracy_measurement_phase);
+
+	do_work(loops, PERIOD_NS * NR_PERIODS);
 
 	return NULL;
 }
 
-static void __create_quota_thread(pthread_t *tid, const char *name,
-				  int tgid, unsigned long *count_r)
-{
-	struct sched_param_ex param_ex;
-	pthread_attr_ex_t attr_ex;
-	int ret;
-
-	pthread_attr_init_ex(&attr_ex);
-	pthread_attr_setdetachstate_ex(&attr_ex, PTHREAD_CREATE_JOINABLE);
-	pthread_attr_setinheritsched_ex(&attr_ex, PTHREAD_EXPLICIT_SCHED);
-	pthread_attr_setschedpolicy_ex(&attr_ex, SCHED_QUOTA);
-	param_ex.sched_priority = 1;
-	param_ex.sched_quota_group = tgid;
-	pthread_attr_setschedparam_ex(&attr_ex, &param_ex);
-	ret = pthread_create_ex(tid, &attr_ex, thread_body, count_r);
-	if (ret)
-		error(1, ret, "pthread_create_ex(SCHED_QUOTA)");
-
-	pthread_attr_destroy_ex(&attr_ex);
-	pthread_setname_np(*tid, name);
-}
-
-#define create_quota_thread(__tid, __label, __tgid, __count)	\
-	__create_quota_thread(&(__tid), __label, __tgid, &(__count))
-
-static void __create_fifo_thread(pthread_t *tid, const char *name,
-				 unsigned long *count_r)
+static void new_thread(pthread_t *tid, const char *name,
+		       unsigned long long *loops)
 {
 	struct sched_param param;
 	pthread_attr_t attr;
@@ -145,7 +155,7 @@ static void __create_fifo_thread(pthread_t *tid, const char *name,
 	pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
 	param.sched_priority = 1;
 	pthread_attr_setschedparam(&attr, &param);
-	ret = pthread_create(tid, &attr, thread_body, count_r);
+	ret = pthread_create(tid, &attr, thread_body, loops);
 	if (ret)
 		error(1, ret, "pthread_create(SCHED_FIFO)");
 
@@ -153,16 +163,12 @@ static void __create_fifo_thread(pthread_t *tid, const char *name,
 	pthread_setname_np(*tid, name);
 }
 
-#define create_fifo_thread(__tid, __label, __count)	\
-	__create_fifo_thread(&(__tid), __label, &(__count))
-
 static double run_quota(int quota)
 {
+	unsigned long long loops_at_calibration, loops_at_accuracy;
 	size_t len = sched_quota_confsz();
-	unsigned long long count;
 	union sched_config cf;
-	struct timespec req;
-	int ret, tgid, n;
+	int ret, n;
 	double percent;
 	char label[12];
 
@@ -183,35 +189,48 @@ static double run_quota(int quota)
 
 	smokey_trace("new thread group #%d on CPU0, quota sum is %d%%",
 		     tgid, cf.quota.info.quota_sum);
+	smokey_trace("calibration x %d thread%s",
+		     nrthreads, nrthreads > 1 ? "s" : "");
 
 	for (n = 0; n < nrthreads; n++) {
 		snprintf(label, sizeof(label), "t%d", n);
-		create_quota_thread(threads[n], label, tgid, counts[n]);
+		new_thread(&threads[n], label, &counts[n]);
 		sem_wait(&ready);
 	}
 
-	pthread_mutex_lock(&lock);
-	started = 1;
-	pthread_cond_broadcast(&barrier);
-	pthread_mutex_unlock(&lock);
+	start_phase(calibration_phase);
 
-	req.tv_sec = TEST_SECS;
-	req.tv_nsec = 0;
-	clock_nanosleep(CLOCK_MONOTONIC, 0, &req, NULL);
-
-	for (n = 0, count = 0; n < nrthreads; n++)
-		count += counts[n];
-
-	percent = ((double)count / TEST_SECS) * 100.0 / loops_per_sec;
-
-	throttle = 1;
-	smp_wmb();
-
-	for (n = 0; n < nrthreads; n++) {
-		smokey_trace("done quota_thread[%d], count=%lu", n, counts[n]);
-		pthread_cancel(threads[n]);
-		pthread_join(threads[n], NULL);
+	/*
+	 * Wait for the calibration to end, then collect the expected
+	 * number of loops we should be able to run during the
+	 * allotted quota, even in case of runtime disruption.
+	 */
+	for (n = 0; n < nrthreads; n++)
+		sem_wait(&ready);
+	for (n = 0, loops_at_calibration = 0; n < nrthreads; n++) {
+		smokey_trace("calibration: quota_thread[%d]: %llu loops",
+			     n, counts[n]);
+		loops_at_calibration += counts[n];
+		counts[n] = 0;
 	}
+
+	smokey_trace("starting accuracy measurement");
+
+	start_phase(accuracy_measurement_phase);
+
+	/*
+	 * Wait for the accuracy measurement to end, then collect the
+	 * numbers.
+	 */
+	for (n = 0; n < nrthreads; n++)
+		pthread_join(threads[n], NULL);
+	for (n = 0, loops_at_accuracy = 0; n < nrthreads; n++) {
+		smokey_trace("accuracy: quota_thread[%d]: %llu loops",
+			     n, counts[n]);
+		loops_at_accuracy += counts[n];
+	}
+
+	percent = 100.0 * (double)loops_at_accuracy / (double)loops_at_calibration;
 
 	cf.quota.op = sched_quota_remove;
 	cf.quota.remove.tgid = tgid;
@@ -220,57 +239,6 @@ static double run_quota(int quota)
 		error(1, ret, "sched_setconfig_np(remove-quota-group)");
 
 	return percent;
-}
-
-static unsigned long long calibrate(void)
-{
-	struct timespec start, end, delta;
-	const int crunch_loops = 100000;
-	unsigned long long ns, lps;
-	unsigned long count;
-	struct timespec req;
-	char label[12];
-	int n;
-
-	count = 0;
-	clock_gettime(CLOCK_MONOTONIC, &start);
-	do_work(crunch_loops, &count);
-	clock_gettime(CLOCK_MONOTONIC, &end);
-	
-	timespec_sub(&delta, &end, &start);
-	ns = delta.tv_sec * ONE_BILLION + delta.tv_nsec;
-	crunch_per_sec = (unsigned long long)((double)ONE_BILLION / (double)ns * crunch_loops);
-
-	for (n = 0; n < nrthreads; n++) {
-		snprintf(label, sizeof(label), "t%d", n);
-		create_fifo_thread(threads[n], label, counts[n]);
-		sem_wait(&ready);
-	}
-
-	pthread_mutex_lock(&lock);
-	started = 1;
-	pthread_cond_broadcast(&barrier);
-	pthread_mutex_unlock(&lock);
-
-	req.tv_sec = 1;
-	req.tv_nsec = 0;
-	clock_nanosleep(CLOCK_MONOTONIC, 0, &req, NULL);
-
-	for (n = 0, lps = 0; n < nrthreads; n++)
-		lps += counts[n];
-
-	throttle = 1;
-	smp_wmb();
-
-	for (n = 0; n < nrthreads; n++) {
-		pthread_cancel(threads[n]);
-		pthread_join(threads[n], NULL);
-	}
-
-	started = 0;
-	throttle = 0;
-
-	return lps;
 }
 
 static int run_sched_quota(struct smokey_test *t, int argc, char *const argv[])
@@ -316,11 +284,6 @@ static int run_sched_quota(struct smokey_test *t, int argc, char *const argv[])
 		nrthreads = 3;
 	if (nrthreads > MAX_THREADS)
 		error(1, EINVAL, "max %d threads", MAX_THREADS);
-
-	calibrate();	/* Warming up, ignore result. */
-	loops_per_sec = calibrate();
-
-	smokey_trace("calibrating: %Lu loops/sec", loops_per_sec);
 
 	effective = run_quota(quota);
 	smokey_trace("%d thread%s: cap=%d%%, effective=%.1f%%",
