@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <copperplate/traceobj.h>
 #include <psos/psos.h>
 
 static struct traceobj trobj;
+
+static bool on_vm;
 
 static int tseq[] = {
 	8, 1, 9, 4, 10, 2, 11, 12, 3, 5, 13
@@ -30,7 +34,7 @@ static void backgroundTask(u_long a1, u_long a2, u_long a3, u_long a4)
 	ret = t_suspend(ftid);
 	traceobj_assert(&trobj, ret == SUCCESS);
 
-	tm_wkafter(2);
+	tm_wkafter(on_vm ? 200 : 2);
 
 	traceobj_mark(&trobj, 3);
 
@@ -62,6 +66,8 @@ int main(int argc, char *const argv[])
 {
 	u_long args[] = { 1, 2, 3, 4 };
 	int ret;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], sizeof(tseq) / sizeof(int));
 

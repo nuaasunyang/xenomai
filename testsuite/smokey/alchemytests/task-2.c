@@ -7,6 +7,8 @@
 
 static struct traceobj trobj;
 
+static bool on_vm;
+
 static int tseq[] = {
 	8, 1, 9, 4, 10, 5, 11, 2, 6, 7
 };
@@ -49,7 +51,7 @@ static void foreground_task(void *arg)
 
 	traceobj_mark(&trobj, 5);
 
-	rt_task_sleep(20000000ULL);
+	rt_task_sleep(on_vm ? 200000000ULL : 20000000ULL);
 
 	traceobj_mark(&trobj, 6);
 
@@ -64,6 +66,8 @@ static void foreground_task(void *arg)
 int main(int argc, char *const argv[])
 {
 	int ret;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], sizeof(tseq) / sizeof(int));
 

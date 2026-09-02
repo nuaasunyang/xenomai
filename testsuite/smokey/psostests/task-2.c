@@ -7,6 +7,8 @@
 
 static struct traceobj trobj;
 
+static bool on_vm;
+
 static int tseq[] = {
 	8, 1, 9, 4, 10, 5, 11, 2, 6, 7
 };
@@ -28,7 +30,7 @@ static void backgroundTask(u_long a1, u_long a2, u_long a3, u_long a4)
 
 	traceobj_mark(&trobj, 2);
 
-	threadobj_spin(2000000);
+	threadobj_spin(300000000);
 
 	traceobj_mark(&trobj, 3);
 
@@ -48,7 +50,7 @@ static void foregroundTask(u_long a1, u_long a2, u_long a3, u_long a4)
 
 	traceobj_mark(&trobj, 5);
 
-	tm_wkafter(2);
+	tm_wkafter(on_vm ? 200 : 2);
 
 	traceobj_mark(&trobj, 6);
 
@@ -64,6 +66,8 @@ int main(int argc, char *const argv[])
 {
 	u_long args[] = { 1, 2, 3, 4 };
 	int ret;
+
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
 
 	traceobj_init(&trobj, argv[0], sizeof(tseq) / sizeof(int));
 
