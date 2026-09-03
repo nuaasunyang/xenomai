@@ -8,7 +8,12 @@
 #include <alchemy/pipe.h>
 #include <smokey/smokey.h>
 
+#define TIMEOUT_SLACK	(on_vm ? 10000000 : 5000000)
+
+
 static struct traceobj trobj;
+
+static bool on_vm;
 
 static RT_TASK t_real;
 
@@ -83,6 +88,8 @@ int main(int argc, char *const argv[])
 	SRTIME timeout;
 	int ret;
 
+	on_vm = argc > 1 && strcmp(argv[1], "--vm") == 0;
+
 	traceobj_init(&trobj, argv[0], 0);
 
 	ret = rt_pipe_create(&mpipe, "pipe", P_MINOR_AUTO, 0);
@@ -120,14 +127,14 @@ int main(int argc, char *const argv[])
 	ret = rt_pipe_read(&mpipe, &m, sizeof(m), timeout);
 	end = rt_timer_read();
 	traceobj_assert(&trobj, end - start >= timeout);
-	traceobj_assert(&trobj, end - start < timeout + rt_timer_ns2ticks(5000000));
+	traceobj_assert(&trobj, end - start < timeout + rt_timer_ns2ticks(TIMEOUT_SLACK));
 
 	start = rt_timer_read();
 	timeout = start + rt_timer_ns2ticks(100000000);
 	ret = rt_pipe_read_until(&mpipe, &m, sizeof(m), timeout);
 	end = rt_timer_read();
 	traceobj_assert(&trobj, end >= timeout);
-	traceobj_assert(&trobj, end < timeout + rt_timer_ns2ticks(5000000));
+	traceobj_assert(&trobj, end < timeout + rt_timer_ns2ticks(TIMEOUT_SLACK));
 
 	clock_gettime(CLOCK_COPPERPLATE, &ts_start);
 	timespec_adds(&ts_timeout, &ts_start, 100000000);
@@ -135,7 +142,7 @@ int main(int argc, char *const argv[])
 	clock_gettime(CLOCK_COPPERPLATE, &ts_end);
 	timespec_sub(&ts_delta, &ts_end, &ts_timeout);
 	traceobj_assert(&trobj, ts_delta.tv_sec >= 0);
-	traceobj_assert(&trobj, ts_delta.tv_nsec < 5000000);
+	traceobj_assert(&trobj, ts_delta.tv_nsec < TIMEOUT_SLACK);
 
 	ret = pthread_create(&t_reg, NULL, regular_thread, NULL);
 	traceobj_check(&trobj, ret, 0);
