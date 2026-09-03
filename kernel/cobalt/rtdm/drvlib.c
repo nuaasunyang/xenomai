@@ -2265,9 +2265,6 @@ EXPORT_SYMBOL_GPL(rtdm_get_iov_flatlen);
  * @param[in] format Format string (conforming standard @c printf())
  * @param ... Arguments referred by @a format
  *
- * @return On success, this service returns the number of characters printed.
- * Otherwise, a negative error code is returned.
- *
  * @coretags{unrestricted}
  */
 void rtdm_printk_ratelimited(const char *format, ...);
