@@ -91,7 +91,7 @@ html/%: %.adoc Makefile
 	$(A2X) -f manpage -D man1 $(ASCIIDOC_MAN_OPTS) $<
 
 %.pdf: %.adoc Makefile
-	$(A2X) -f pdf -D . $(ASCIIDOC_PDF_OPTS) $<
+	$(A2X) -f pdf $(ASCIIDOC_PDF_OPTS) $<
 
 $(tmpdir)/%.txt: %.adoc Makefile plaintext.conf plaintext.xsl
 	@$(mkdir_p) $(tmpdir)
