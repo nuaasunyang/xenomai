@@ -414,7 +414,7 @@ rtdm_timedwait_condition(struct rtdm_wait_queue *wq, C_expr condition,
 			 nanosecs_rel_t timeout, rtdm_toseq_t *toseq);
 
 /**
- * @fn void rtdm_timedwait(struct rtdm_wait_queue *wq, nanosecs_rel_t timeout, rtdm_toseq_t *toseq)
+ * @fn int rtdm_timedwait(struct rtdm_wait_queue *wq, nanosecs_rel_t timeout, rtdm_toseq_t *toseq)
  * @brief Timed sleep on a waitqueue unconditionally
  *
  * The calling task is put to sleep until the waitqueue is signaled by
@@ -443,11 +443,11 @@ rtdm_timedwait_condition(struct rtdm_wait_queue *wq, C_expr condition,
  *
  * @coretags{primary-only, might-switch}
  */
-void rtdm_timedwait(struct rtdm_wait_queue *wq,
+int rtdm_timedwait(struct rtdm_wait_queue *wq,
 		    nanosecs_rel_t timeout, rtdm_toseq_t *toseq);
 
 /**
- * @fn void rtdm_timedwait_locked(struct rtdm_wait_queue *wq, nanosecs_rel_t timeout, rtdm_toseq_t *toseq)
+ * @fn int rtdm_timedwait_locked(struct rtdm_wait_queue *wq, nanosecs_rel_t timeout, rtdm_toseq_t *toseq)
  * @brief Timed sleep on a locked waitqueue unconditionally
  *
  * The calling task is put to sleep until the waitqueue is signaled by
@@ -481,7 +481,7 @@ void rtdm_timedwait(struct rtdm_wait_queue *wq,
  *
  * @coretags{primary-only, might-switch}
  */
-void rtdm_timedwait_locked(struct rtdm_wait_queue *wq,
+int rtdm_timedwait_locked(struct rtdm_wait_queue *wq,
 			   nanosecs_rel_t timeout, rtdm_toseq_t *toseq);
 
 /**
@@ -509,7 +509,7 @@ void rtdm_timedwait_locked(struct rtdm_wait_queue *wq,
 rtdm_wait_condition(struct rtdm_wait_queue *wq, C_expr condition);
 
 /**
- * @fn void rtdm_wait(struct rtdm_wait_queue *wq)
+ * @fn int rtdm_wait(struct rtdm_wait_queue *wq)
  * @brief Sleep on a waitqueue unconditionally
  *
  * The calling task is put to sleep until the waitqueue is signaled by
@@ -526,10 +526,10 @@ rtdm_wait_condition(struct rtdm_wait_queue *wq, C_expr condition);
  *
  * @coretags{primary-only, might-switch}
  */
-void rtdm_wait(struct rtdm_wait_queue *wq);
+int rtdm_wait(struct rtdm_wait_queue *wq);
 
 /**
- * @fn void rtdm_wait_locked(struct rtdm_wait_queue *wq)
+ * @fn int rtdm_wait_locked(struct rtdm_wait_queue *wq)
  * @brief Sleep on a locked waitqueue unconditionally
  *
  * The calling task is put to sleep until the waitqueue is signaled by
@@ -551,7 +551,7 @@ void rtdm_wait(struct rtdm_wait_queue *wq);
  *
  * @coretags{primary-only, might-switch}
  */
-void rtdm_wait_locked(struct rtdm_wait_queue *wq);
+int rtdm_wait_locked(struct rtdm_wait_queue *wq);
 
 /**
  * @fn void rtdm_waitqueue_lock(struct rtdm_wait_queue *wq, rtdm_lockctx_t context)
@@ -585,7 +585,7 @@ void rtdm_waitqueue_lock(struct rtdm_wait_queue *wq, rtdm_lockctx_t context);
 void rtdm_waitqueue_unlock(struct rtdm_wait_queue *wq, rtdm_lockctx_t context);
 
 /**
- * @fn void rtdm_waitqueue_signal(struct rtdm_wait_queue *wq)
+ * @fn int rtdm_waitqueue_signal(struct rtdm_wait_queue *wq)
  * @brief Signal a waitqueue
  *
  * Signals the waitqueue @a wq, waking up a single waiter (if
@@ -598,10 +598,10 @@ void rtdm_waitqueue_unlock(struct rtdm_wait_queue *wq, rtdm_lockctx_t context);
  *
  * @coretags{unrestricted, might-switch}
  */
-void rtdm_waitqueue_signal(struct rtdm_wait_queue *wq);
+int rtdm_waitqueue_signal(struct rtdm_wait_queue *wq);
 
 /**
- * @fn void rtdm_waitqueue_broadcast(struct rtdm_wait_queue *wq)
+ * @fn int rtdm_waitqueue_broadcast(struct rtdm_wait_queue *wq)
  * @brief Broadcast a waitqueue
  *
  * Broadcast the waitqueue @a wq, waking up all waiters. Each
@@ -614,10 +614,10 @@ void rtdm_waitqueue_signal(struct rtdm_wait_queue *wq);
  *
  * @coretags{unrestricted, might-switch}
  */
-void rtdm_waitqueue_broadcast(struct rtdm_wait_queue *wq);
+int rtdm_waitqueue_broadcast(struct rtdm_wait_queue *wq);
 
 /**
- * @fn void rtdm_waitqueue_flush(struct rtdm_wait_queue *wq)
+ * @fn int rtdm_waitqueue_flush(struct rtdm_wait_queue *wq)
  * @brief Flush a waitqueue
  *
  * Flushes the waitqueue @a wq, unblocking all waiters with an error
@@ -630,7 +630,7 @@ void rtdm_waitqueue_broadcast(struct rtdm_wait_queue *wq);
  *
  * @coretags{unrestricted, might-switch}
  */
-void rtdm_waitqueue_flush(struct rtdm_wait_queue *wq);
+int rtdm_waitqueue_flush(struct rtdm_wait_queue *wq);
 
 /**
  * @fn void rtdm_waitqueue_wakeup(struct rtdm_wait_queue *wq, rtdm_task_t waiter)
