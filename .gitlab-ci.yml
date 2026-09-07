@@ -265,6 +265,11 @@ i386-userland-y2038-unavailable:
   image: debian:bullseye
   variables:
     GCC_VERSION: "10"
+  before_script:
+    - sed -e 's|^# deb http://snapshot\.|deb http://snapshot.|g'
+          -e '/^deb http:\/\/deb\./d' -i /etc/apt/sources.list
+    - echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/use-snapshot.conf
+    - !reference [.build, before_script]
 
 trigger-xenomai-images:
   stage: test
